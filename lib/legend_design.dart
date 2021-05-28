@@ -1,7 +1,4 @@
 library legend_design;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'styles/styles.dart';
+export 'components/components.dart';
