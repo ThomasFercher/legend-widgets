@@ -132,8 +132,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "979c5226092cc0b655450a19b38ee22d01dd85cb"
+      ref: master
+      resolved-ref: "810fa276630e1688eafcac73170b366df449b36f"
       url: "https://github.com/ThomasFercher/Legend-Design-Core"
     source: git
     version: "0.0.1"
