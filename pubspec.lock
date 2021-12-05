@@ -133,8 +133,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "810fa276630e1688eafcac73170b366df449b36f"
-      url: "https://github.com/ThomasFercher/Legend-Design-Core"
+      resolved-ref: "576a253db58ffb95a00a5c585569950ff7dc8689"
+      url: "https://github.com/ThomasFercher/Legend-Design-Core.git"
     source: git
     version: "0.0.1"
   lints:
