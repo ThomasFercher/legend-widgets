@@ -1,14 +1,38 @@
-# legend_design
+# Custom Widgets
+These Widgets can be fully implemented in the Legend Design ecosystem. But you can also use them without depending on anything.
+There are a few different categories of widgets.
 
-A new Flutter package project.
+## Basic
 
-## Getting Started
+### Tag
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+##  Data Display
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+### Table
+
+### Carousel
+
+### Chart
+
+### Card
+
+##  Data Input
+
+### Form
+
+### Textfield
+
+### Select Bar
+
+
+##  Modals
+
+### Alert
+
+### Bottom
+
+### Custom
+
+##  Layout
+
+
