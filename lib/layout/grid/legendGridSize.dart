@@ -70,10 +70,10 @@ class LegendGridSize {
       }
     }
 
-    this.small = infos[0] ?? def;
-    this.medium = infos[1] ?? def;
-    this.large = infos[2] ?? def;
-    this.xxl = infos[3] ?? def;
+    this.small = infos[0];
+    this.medium = infos[1];
+    this.large = infos[2];
+    this.xxl = infos[3];
   }
 
   bool checkIfNoSizing(List<LegendGridSizeInfo?> sizes) {

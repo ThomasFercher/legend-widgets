@@ -83,6 +83,7 @@ class _LegendCarouselState extends State<LegendCarousel> {
         height: widget.height,
         width: MediaQuery.of(context).size.width,
         color: Colors.transparent,
+        padding: widget.padding,
         child: Stack(
           children: [
             Align(

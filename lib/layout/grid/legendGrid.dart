@@ -5,33 +5,36 @@ import 'package:legend_design_widgets/layout/grid/legendGridSize.dart';
 
 class LegendGrid extends StatelessWidget {
   final List<Widget> children;
-  final LegendGridSize sizes;
+  final LegendGridSize? sizes;
   final int? crossAxisCount;
   final EdgeInsets? margin;
   final double? width;
   final double? crossAxisSpacing;
   final double? mainAxisSpacing;
+  final EdgeInsets? padding;
 
   LegendGrid({
-    required this.sizes,
+    this.sizes,
     required this.children,
     this.crossAxisCount,
     this.margin,
     this.width,
+    this.padding,
     this.crossAxisSpacing,
     this.mainAxisSpacing,
   });
 
   @override
   Widget build(BuildContext context) {
-    int crossAxisCount;
     ScreenSize ss = SizeProvider.of(context).screenSize;
 
-    LegendGridSizeInfo size = sizes.getSizeForSize(ss);
+    LegendGridSizeInfo? size = sizes?.getSizeForSize(ss);
 
     return LayoutBuilder(builder: (context, constraints) {
-      int count = size.count;
+      int count = size?.count ?? crossAxisCount ?? 1;
       double singleChildWidth;
+
+      double maxHeight = constraints.maxHeight;
 
       if (constraints.maxWidth == 0.0) {
         if (width != null)
@@ -40,12 +43,26 @@ class LegendGrid extends StatelessWidget {
           throw Error();
       } else
         singleChildWidth = constraints.maxWidth / count;
+
       int rows = (children.length / count).ceil();
-      double height = size.height * rows +
-          (rows - 1) * (mainAxisSpacing ?? 4) +
-          (margin?.vertical ?? 0);
-      double aspectRatio = singleChildWidth /
-          ((height - (rows - 1) * (mainAxisSpacing ?? 4)) / rows);
+
+      // Height
+      double? height;
+      double? aspectRatio;
+      if (size != null) {
+        height = size.height * rows +
+            (rows - 1) * (mainAxisSpacing ?? 0) +
+            (margin?.vertical ?? 0);
+        aspectRatio = singleChildWidth /
+            ((height - (rows - 1) * (mainAxisSpacing ?? 0)) / rows);
+      } else {
+        height = maxHeight -
+            (rows - 1) * (mainAxisSpacing ?? 0) -
+            (margin?.vertical ?? 0);
+        aspectRatio = singleChildWidth /
+            ((height - (rows - 1) * (mainAxisSpacing ?? 0)) / rows);
+      }
+
       return Container(
         height: height,
         margin: margin,
@@ -54,10 +71,10 @@ class LegendGrid extends StatelessWidget {
           crossAxisCount: count,
           children: children,
           shrinkWrap: true,
-          crossAxisSpacing: crossAxisSpacing ?? 4.0,
-          padding: EdgeInsets.all(0),
+          crossAxisSpacing: crossAxisSpacing ?? 0.0,
+          padding: padding,
           physics: NeverScrollableScrollPhysics(),
-          mainAxisSpacing: mainAxisSpacing ?? 4.0,
+          mainAxisSpacing: mainAxisSpacing ?? 0.0,
         ),
       );
     });
