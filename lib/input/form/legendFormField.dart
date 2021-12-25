@@ -26,9 +26,10 @@ class LegendFormField<T> {
   final T? initalValue;
   final Function(T value)? onChanged;
   final Function(T value)? onSave;
-  final String? title;
+  final String title;
   final Function(T? val)? validator;
   late bool isRequired;
+  late T? value;
 
   LegendFormField({
     required this.type,
@@ -36,14 +37,16 @@ class LegendFormField<T> {
     this.initalValue,
     this.onChanged,
     this.onSave,
-    this.title,
+    required this.title,
     this.validator,
     bool? isRequired,
   }) {
     this.isRequired = isRequired ?? false;
+    this.value = initalValue;
   }
   factory LegendFormField.text({
     required LegendTextField text,
+    required String title,
     Function(T value)? onChanged,
     Function(T value)? onSave,
     bool? isRequired,
@@ -54,11 +57,13 @@ class LegendFormField<T> {
       onChanged: onChanged,
       onSave: onSave,
       isRequired: isRequired,
+      title: title,
     );
   }
 
   factory LegendFormField.integer({
     required LegendTextField text,
+    required String title,
     Function(T value)? onChanged,
     Function(T value)? onSave,
     bool? isRequired,
@@ -69,11 +74,13 @@ class LegendFormField<T> {
       onChanged: onChanged,
       onSave: onSave,
       isRequired: isRequired,
+      title: title,
     );
   }
 
   factory LegendFormField.float({
     required LegendTextField text,
+    required String title,
     Function(T value)? onChanged,
     Function(T value)? onSave,
     bool? isRequired,
@@ -84,11 +91,13 @@ class LegendFormField<T> {
       onChanged: onChanged,
       onSave: onSave,
       isRequired: isRequired,
+      title: title,
     );
   }
 
   factory LegendFormField.color({
     required LegendTextField text,
+    required String title,
     Function(T value)? onChanged,
     Function(T value)? onSave,
     bool? isRequired,
@@ -99,6 +108,7 @@ class LegendFormField<T> {
       onChanged: onChanged,
       onSave: onSave,
       isRequired: isRequired,
+      title: title,
     );
   }
 

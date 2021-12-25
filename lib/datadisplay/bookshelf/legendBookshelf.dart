@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
 
 class LegendBookshelf extends StatefulWidget {
@@ -76,7 +77,7 @@ class _LegendBookshelfState extends State<LegendBookshelf> {
               child: SizedBox(
                 width: 100,
                 child: LegendButton(
-                  text: Text("next"),
+                  text: LegendText(text: "next"),
                   onPressed: () {
                     changedSelected(true);
                   },
@@ -88,7 +89,7 @@ class _LegendBookshelfState extends State<LegendBookshelf> {
               child: Container(
                 width: 100,
                 child: LegendButton(
-                  text: Text("back"),
+                  text: LegendText(text: "back"),
                   onPressed: () {
                     changedSelected(false);
                   },

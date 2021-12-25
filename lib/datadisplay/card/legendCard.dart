@@ -17,6 +17,7 @@ class LegendCard extends StatelessWidget {
     this.value,
     this.children,
     this.iconColor,
+    this.image,
   });
 
   final double? height;
@@ -27,29 +28,21 @@ class LegendCard extends StatelessWidget {
   final IconData? icon;
   final Color? iconColor;
   final List<Widget>? children;
+  final Widget? image;
 
   @override
   Widget build(BuildContext context) {
     ThemeProvider theme = Provider.of<ThemeProvider>(context);
 
     return Card(
-      elevation: theme.colors.elevations?[1],
-      shape: RoundedRectangleBorder(
-        borderRadius: theme.sizing.borderRadius[1],
-      ),
       color: theme.colors.cardBackgroundColor,
       child: LayoutBuilder(
         builder: (context, constraints) {
           return SizedBox(
             height: height,
             width: width,
-            child: Padding(
-              padding: EdgeInsets.all(
-                18.0,
-              ),
-              child: Stack(
-                children: getContent(height, width, context),
-              ),
+            child: Stack(
+              children: getContent(height, width, context),
             ),
           );
         },
@@ -60,9 +53,9 @@ class LegendCard extends StatelessWidget {
   List<Widget> getContent(height, width, context) {
     ThemeProvider theme = Provider.of<ThemeProvider>(context);
 
-    if (children != null)
+    if (children != null) {
       return children!;
-    else
+    } else
       return [
         Column(
           children: [

@@ -126,7 +126,10 @@ class LegendBottomSheet extends StatelessWidget {
                           text: "Confirm",
                           selectable: false,
                         ),
-                        style: LegendButtonStyle.confirm(),
+                        style: LegendButtonStyle.confirm(
+                          color: Colors.blue,
+                          activeColor: Colors.blueAccent,
+                        ),
                       ),
                     ],
                   ),

@@ -28,7 +28,10 @@ class LegendAlert extends StatelessWidget {
 
   LegendAlert.success({this.message}) {
     icon = flareIcon(AssetInfo.successAlert);
-    buttonStyle = LegendButtonStyle.confirm();
+    buttonStyle = LegendButtonStyle.confirm(
+      activeColor: Colors.redAccent,
+      color: Colors.red,
+    );
   }
 
   LegendAlert.info({this.message}) {

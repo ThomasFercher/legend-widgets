@@ -97,9 +97,7 @@ class LegendTable extends StatelessWidget {
             cell = LegendTableCell.action(
               button: LegendButton(
                 style: LegendButtonStyle.danger(),
-                text: Text(
-                  val.toString(),
-                ),
+                text: LegendText(text: val.toString()),
                 onPressed: () {
                   value.actionFunction!();
                 },

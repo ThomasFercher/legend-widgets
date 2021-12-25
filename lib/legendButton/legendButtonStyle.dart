@@ -146,18 +146,24 @@ class LegendButtonStyle extends ButtonStyle {
     );
   }
 
-  factory LegendButtonStyle.confirm({double? height, double? width}) {
+  factory LegendButtonStyle.confirm({
+    double? height,
+    double? width,
+    required Color color,
+    required Color activeColor,
+    Color? textColor,
+  }) {
     return LegendButtonStyle(
       backgroundColor: MaterialStateProperty.resolveWith(
         (states) {
           if (states.contains(MaterialState.hovered)) {
-            return Colors.blueAccent;
+            return activeColor;
           } else {
-            return Colors.blueAccent[700];
+            return color;
           }
         },
       ),
-      foregroundColor: MaterialStateProperty.all(Colors.white),
+      foregroundColor: MaterialStateProperty.all(textColor),
       animationDuration: legendAnimationDuration,
       minimumSize: width != null && height != null
           ? MaterialStateProperty.all(Size(width, height))
@@ -214,6 +220,37 @@ class LegendButtonStyle extends ButtonStyle {
       ),
       height: height,
       width: width,
+    );
+  }
+
+  factory LegendButtonStyle.text({
+    double? height,
+    double? width,
+    Radius? borderRadius,
+    required Color color,
+    required Color activeColor,
+    TextStyle? textStyle,
+  }) {
+    return LegendButtonStyle(
+      backgroundColor: MaterialStateProperty.all(Colors.transparent),
+      animationDuration: legendAnimationDuration,
+      overlayColor: MaterialStateProperty.all(Colors.transparent),
+      foregroundColor: MaterialStateProperty.resolveWith(
+        (states) {
+          if (states.contains(MaterialState.hovered)) {
+            return activeColor;
+          } else {
+            return color;
+          }
+        },
+      ),
+      fixedSize: width != null && height != null
+          ? MaterialStateProperty.all(Size(width, height))
+          : null,
+      borderRadius: borderRadius ?? Radius.circular(4),
+      height: height,
+      width: width,
+      textStyle: MaterialStateProperty.all(textStyle),
     );
   }
 

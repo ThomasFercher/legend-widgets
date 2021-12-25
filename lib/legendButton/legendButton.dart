@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
+import 'package:legend_design_core/typography/legend_text.dart';
+
+import 'legendButtonStyle.dart';
 
 class LegendButton extends StatelessWidget {
   final LegendButtonStyle? style;

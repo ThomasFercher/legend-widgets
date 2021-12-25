@@ -1,3 +1,6 @@
+import 'dart:collection';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
@@ -13,11 +16,17 @@ class LegendForm extends StatefulWidget {
   late List<Widget> layouts;
   final bool? autovalidate;
   final double? height;
+  final bool showSubmitButton;
+  final void Function(Map<String, dynamic> values)? onSubmit;
+  final Widget Function(GlobalKey<FormState> key)? buildSubmitButton;
 
   LegendForm({
     required this.children,
     this.autovalidate,
     this.height,
+    this.onSubmit,
+    this.showSubmitButton = true,
+    this.buildSubmitButton,
   }) {
     fields = children.whereType<LegendFormField>().toList();
     layouts = children.whereType<Widget>().toList();
@@ -41,6 +50,8 @@ class _LegendFormState extends State<LegendForm> {
       } else if (item is LegendFormRow) {
         LegendFormRow row = item;
         widgets.add(getFormRow(row, context));
+      } else {
+        widgets.add(item);
       }
     }
     return widgets;
@@ -58,6 +69,8 @@ class _LegendFormState extends State<LegendForm> {
   Widget getFormfield(LegendFormField field, BuildContext context, bool isRow) {
     Widget formField = Container();
     double width = MediaQuery.of(context).size.width;
+
+    ThemeProvider theme = context.watch<ThemeProvider>();
 
     switch (field.type) {
       case LegendFormFieldType.BOOL:
@@ -97,14 +110,17 @@ class _LegendFormState extends State<LegendForm> {
               field.validator!(value);
             }
           },
+          style: theme.typography.h1.copyWith(
+            color: field.textField?.decoration.textColor,
+          ),
+
           decoration: field.textField?.decoration,
           initialValue: field.initalValue,
           //     autovalidateMode: AutovalidateMode.disabled,
-          onChanged: field.onChanged != null
-              ? (value) {
-                  field.onChanged!(value);
-                }
-              : null,
+          onChanged: (value) {
+            field.value = value;
+            if (field.onChanged != null) field.onChanged!(value);
+          },
           onSaved: field.onSave != null
               ? (value) {
                   field.onSave!(value);
@@ -143,6 +159,7 @@ class _LegendFormState extends State<LegendForm> {
           autovalidateMode: AutovalidateMode.disabled,
           onSaved: field.onSave != null
               ? (value) {
+                  field.value = value;
                   field.onSave!(value);
                 }
               : null,
@@ -163,11 +180,10 @@ class _LegendFormState extends State<LegendForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (field.title != null)
-            LegendText(
-              text: field.title!,
-              textStyle: context.watch<ThemeProvider>().typography.h3,
-            ),
+          LegendText(
+            text: field.title,
+            textStyle: context.watch<ThemeProvider>().typography.h2,
+          ),
           formField,
         ],
       ),
@@ -176,6 +192,16 @@ class _LegendFormState extends State<LegendForm> {
     if (isRow) w = Expanded(child: w);
 
     return w;
+  }
+
+  Map<String, dynamic> getValues() {
+    SplayTreeMap<String, dynamic> values = new SplayTreeMap();
+
+    widget.fields.forEach((field) {
+      values[field.title] = field.value;
+    });
+
+    return values;
   }
 
   @override
@@ -187,12 +213,16 @@ class _LegendFormState extends State<LegendForm> {
         child: Column(
           children: getFields(context) +
               [
-                LegendButton(
-                  text: LegendText(text: "Submit"),
-                  onPressed: () {
-                    _formKey.currentState?.validate();
-                  },
-                )
+                if (widget.showSubmitButton)
+                  LegendButton(
+                    text: LegendText(text: "Submit"),
+                    onPressed: () {
+                      print(getValues());
+                      _formKey.currentState?.validate();
+                    },
+                  ),
+                if (widget.buildSubmitButton != null)
+                  widget.buildSubmitButton!(_formKey)
               ],
         ),
         onChanged: () {

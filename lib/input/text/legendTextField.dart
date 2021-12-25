@@ -6,10 +6,12 @@ import 'package:provider/src/provider.dart';
 
 class LegendTextField extends StatefulWidget {
   final LegendInputDecoration decoration;
+  final bool obscureText;
 
   LegendTextField({
     required this.decoration,
     Key? key,
+    this.obscureText = false,
   }) : super(key: key);
 
   @override
@@ -29,19 +31,21 @@ class _LegendTextFieldState extends State<LegendTextField> {
   Widget build(BuildContext context) {
     ThemeProvider theme = context.watch<ThemeProvider>();
 
-    return Container(
-      child: TextField(
-        controller: ctrl,
-        decoration: widget.decoration,
-        cursorColor: widget.decoration.cursorColor,
-        textAlignVertical: TextAlignVertical.top,
-        onSubmitted: (value) {},
-        onChanged: (value) {},
-        style: theme.typography.h1.copyWith(
-          color: widget.decoration.textColor,
-        ),
-        toolbarOptions:
-            ToolbarOptions(copy: true, selectAll: true, paste: true, cut: true),
+    return TextField(
+      controller: ctrl,
+      decoration: widget.decoration,
+      cursorColor: widget.decoration.cursorColor,
+      textAlignVertical: TextAlignVertical.top,
+      onSubmitted: (value) {},
+      onChanged: (value) {},
+      style: theme.typography.h1.copyWith(
+        color: widget.decoration.textColor,
+      ),
+      toolbarOptions: ToolbarOptions(
+        copy: true,
+        selectAll: true,
+        paste: true,
+        cut: true,
       ),
     );
   }
