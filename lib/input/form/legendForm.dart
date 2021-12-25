@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_core/typography/typography.dart';
+import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormField.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
@@ -96,41 +97,9 @@ class _LegendFormState extends State<LegendForm> {
         break;
 
       case LegendFormFieldType.TEXT:
-        formField = TextFormField(
-          validator: (value) {
-            if (field.isRequired) {
-              if (field.validator != null) {
-                field.validator!(value);
-              } else {
-                if (value == null || value.length == 0) {
-                  return 'Field required';
-                }
-              }
-            } else if (field.validator != null) {
-              field.validator!(value);
-            }
-          },
-          style: theme.typography.h1.copyWith(
-            color: field.textField?.decoration.textColor,
-          ),
-
+        formField = LegendTextFormField(
+          field: field,
           decoration: field.textField?.decoration,
-          initialValue: field.initalValue,
-          //     autovalidateMode: AutovalidateMode.disabled,
-          onChanged: (value) {
-            field.value = value;
-            if (field.onChanged != null) field.onChanged!(value);
-          },
-          onSaved: field.onSave != null
-              ? (value) {
-                  field.onSave!(value);
-                }
-              : null,
-          onFieldSubmitted: field.onSave != null
-              ? (value) {
-                  field.onSave!(value);
-                }
-              : null,
         );
         break;
       case LegendFormFieldType.INT:
