@@ -8,11 +8,13 @@ import 'package:provider/src/provider.dart';
 class LegendTextFormField extends FormField<String> {
   final LegendFormField field;
   final LegendInputDecoration? decoration;
+  final void Function(String value) onChanged;
 
   LegendTextFormField({
     Key? key,
     required this.field,
     required this.decoration,
+    required this.onChanged,
   }) : super(
           validator: (value) {
             if (field.isRequired) {
@@ -29,15 +31,17 @@ class LegendTextFormField extends FormField<String> {
           },
           enabled: decoration?.enabled ?? true,
           initialValue: field.initalValue,
-          onSaved: (newValue) {
-            if (field.onSave != null) field.onSave!(newValue);
-          },
           builder: (state) {
             return LegendTextField(
               onChanged: (value) {
+                onChanged(value);
                 state.didChange(value);
                 state.validate();
+
                 if (field.onChanged != null) field.onChanged!(value);
+              },
+              onSubmitted: (value) {
+                print(value);
               },
               decoration: state.hasError
                   ? LegendInputDecoration(
