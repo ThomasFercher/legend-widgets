@@ -6,7 +6,7 @@ import 'package:legend_design_widgets/input/text/legendTextField.dart';
 
 class LegendSearchableList extends StatefulWidget {
   final List<LegendSearchable> items;
-  final List<Enum> filters;
+  final List<Searchable> filters;
   final Widget Function(BuildContext, int) itemBuilder;
   final int itemCount;
 
@@ -29,19 +29,148 @@ class LegendSearchableList extends StatefulWidget {
 }
 
 class _LegendSearchableListState extends State<LegendSearchableList> {
-  late final Map<Enum, dynamic> filterValues = {
-    Searchable.VALUE: <num?>[
-      null,
-      null,
-    ],
-    Searchable.TEXT: null,
+  late List<Widget> widgets;
+  late List<dynamic> filters;
+  late final Map<Searchable, dynamic> filterValues = {
+    Searchable.VALUE: Tween<num>(),
+    Searchable.TEXT: "",
   };
 
   @override
   void initState() {
     print(filterValues);
     print(widget.searchBar);
+    filters = [];
+    widgets = getWidgets();
+
     super.initState();
+  }
+
+  void filterWidgets(
+    Searchable filter,
+    dynamic value, {
+    bool? begin,
+  }) {
+    switch (filter) {
+      case Searchable.TEXT:
+        setState(() {
+          filterValues[Searchable.TEXT] = value;
+        });
+        break;
+      case Searchable.VALUE:
+        setState(() {
+          if (begin ?? false) {
+            filterValues[Searchable.VALUE].begin = value;
+          } else {
+            filterValues[Searchable.VALUE].end = value;
+          }
+        });
+        break;
+      default:
+    }
+
+    setState(() {
+      filters = filterValues.values.toList();
+      widgets = getWidgets(filters: filters);
+    });
+  }
+
+  bool filterEmpty() {
+    for (dynamic filterVal in filters) {
+      switch (filterVal.runtimeType) {
+        case String:
+          String? val = filterVal;
+          if (val != null && val.length != 0) return false;
+          break;
+        case Tween<num>:
+          Tween<num> val = filterVal;
+
+          if (val.begin != null || val.end != null) return false;
+          break;
+        default:
+      }
+    }
+
+    return true;
+  }
+
+  List<Widget> getWidgets({List<dynamic>? filters}) {
+    List<Widget> widgets = [];
+
+    for (var i = 0; i < widget.itemCount; i++) {
+      if (!filterEmpty()) {
+        print("a");
+        LegendSearchable item = widget.items[i];
+        Widget w = filterWidget(item, filters!, i);
+        widgets.add(w);
+      } else {
+        widgets.add(widget.itemBuilder(context, i));
+      }
+    }
+
+    return widgets;
+  }
+
+  Widget filterWidget(LegendSearchable item, List<dynamic> filters, int index) {
+    bool letThrough = false;
+    for (dynamic filter in filters) {
+      switch (filter.runtimeType) {
+        case String:
+          String? filterVal = filter;
+          filterVal = filterVal?.toLowerCase();
+
+          List<String> fieldValues = [];
+
+          for (LegendSearchableField field in item.fields) {
+            if (field is LegendSearchableString) {
+              fieldValues.add(field.value.toLowerCase());
+            }
+          }
+
+          if (filterVal?.length == 0 || filterVal == null) {
+            break;
+          } else {
+            for (String fieldValue in fieldValues) {
+              if (fieldValue.contains(filterVal)) {
+                letThrough = true;
+              }
+            }
+          }
+
+          break;
+        case Tween<num>:
+          Tween<num> filterVal = filter;
+
+          num? n;
+
+          for (LegendSearchableField field in item.fields) {
+            if (field is LegendSearchableNumber) {
+              n = field.value;
+            }
+          }
+
+          if (filterVal.begin == null && filterVal.end == null && n != null) {
+            break;
+          }
+
+          if (filterVal.begin != null && filterVal.end == null) {
+            if (n! > filterVal.begin!) letThrough = true;
+          } else if (filterVal.begin == null && filterVal.end != null) {
+            if (n! < filterVal.end!) letThrough = true;
+          } else {
+            if (n! > filterVal.begin! && n < filterVal.end!) letThrough = true;
+          }
+
+          break;
+        default:
+      }
+    }
+
+    print(letThrough);
+    if (letThrough)
+      return widget.itemBuilder(context, index);
+    else
+      return Container();
   }
 
   @override
@@ -53,9 +182,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
             LegendTextField(
               decoration: LegendInputDecoration(),
               onChanged: (value) {
-                setState(() {
-                  filterValues[Searchable.TEXT] = value;
-                });
+                filterWidgets(Searchable.TEXT, value);
               },
             ),
           if (widget.value)
@@ -68,10 +195,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
                     width: 200,
                     child: LegendNumberField(
                       onChanged: (value) {
-                        setState(() {
-                          filterValues[Searchable.VALUE][0] = value;
-                        });
-                        print(filterValues);
+                        filterWidgets(Searchable.VALUE, value, begin: true);
                       },
                     ),
                   ),
@@ -79,10 +203,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
                     width: 200,
                     child: LegendNumberField(
                       onChanged: (value) {
-                        setState(() {
-                          filterValues[Searchable.VALUE][1] = value;
-                        });
-                        print(filterValues);
+                        filterWidgets(Searchable.VALUE, value, begin: false);
                       },
                     ),
                   ),
@@ -93,52 +214,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
             child: ListView.builder(
               itemCount: widget.itemCount,
               itemBuilder: (context, index) {
-                LegendSearchable item = widget.items[index];
-
-                if (widget.searchBar) {
-                  String field = item.fields[Searchable.TEXT];
-                  String? filterValue = filterValues[Searchable.TEXT];
-
-                  if (filterValue == null || filterValue.length == 0)
-                    return widget.itemBuilder(context, index);
-
-                  filterValue = filterValue.toLowerCase();
-                  field = field.toLowerCase();
-
-                  if (field.contains(filterValue)) {
-                    return widget.itemBuilder(context, index);
-                  } else {
-                    return Container();
-                  }
-                } else if (widget.value) {
-                  num n = item.fields[Searchable.VALUE];
-                  num? lowerValue = filterValues[Searchable.VALUE][0];
-                  num? upperValue = filterValues[Searchable.VALUE][1];
-
-                  if (lowerValue == null && upperValue == null)
-                    return widget.itemBuilder(context, index);
-
-                  if (lowerValue != null && upperValue == null) {
-                    if (lowerValue > n)
-                      return widget.itemBuilder(context, index);
-                    else
-                      return Container();
-                  } else if (lowerValue == null && upperValue != null) {
-                    if (upperValue < n)
-                      return widget.itemBuilder(context, index);
-                    else
-                      return Container();
-                  } else if (lowerValue != null && upperValue != null) {
-                    if (upperValue > n && lowerValue < n)
-                      return widget.itemBuilder(context, index);
-                    else
-                      return Container();
-                  } else {
-                    return Container();
-                  }
-                } else {
-                  return widget.itemBuilder(context, index);
-                }
+                return widgets[index];
               },
               shrinkWrap: true,
             ),
