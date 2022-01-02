@@ -4,7 +4,7 @@ import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:legend_design_widgets/input/text/legendTextField.dart';
 
 class LegendNumberField extends StatelessWidget {
-  final void Function(num)? onChanged;
+  final void Function(num?)? onChanged;
   const LegendNumberField({
     Key? key,
     this.onChanged,
@@ -21,7 +21,7 @@ class LegendNumberField extends StatelessWidget {
           number = null;
         }
 
-        if (onChanged != null && number != null) onChanged!(number);
+        if (onChanged != null) onChanged!(number);
       },
       decoration: LegendInputDecoration(),
     );
