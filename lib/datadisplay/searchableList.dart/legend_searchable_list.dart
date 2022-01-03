@@ -103,66 +103,56 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
     return widgets;
   }
 
-  Widget filterWidget<T>(LegendSearchable item, int index) {
-    bool letThrough = false;
-    for (int i = 0; i < filterValues.keys.length; i++) {
-      switch (T) {
-        case LegendSearchableFilterString:
-          String? filterVal = filterValues[T];
-          filterVal = filterVal?.toLowerCase();
+  Widget filterWidget<T>(
+    LegendSearchable item,
+    int index,
+  ) {
+    List<bool> let = widget.filters.map((e) => false).toList();
+    int i = 0;
+    for (LegendSearchableFilter filter in widget.filters) {
+      if (filter is LegendSearchableFilterString) {
+        String? filterVal = filterValues[LegendSearchableFilterString];
+        filterVal = filterVal?.toLowerCase();
 
-          List<String> fieldValues = [];
+        List<String> fieldValues = [];
 
-          for (LegendSearchableField field in item.fields) {
-            if (field is LegendSearchableString) {
-              fieldValues.add(field.value.toLowerCase());
+        for (LegendSearchableField field in item.fields) {
+          if (field is LegendSearchableString) {
+            fieldValues.add(field.value.toLowerCase());
+          }
+        }
+
+        if (filterVal?.length != 0 && filterVal != null) {
+          for (String fieldValue in fieldValues) {
+            if (fieldValue.contains(filterVal)) {
+              let[i] = true;
             }
           }
+        } else {
+          let[i] = true;
+        }
+      } else if (filter is LegendSearchableFilterRange) {
+        Tween<num> filterVal = filterValues[LegendSearchableFilterRange];
 
-          if (filterVal?.length == 0 || filterVal == null) {
-            break;
-          } else {
-            for (String fieldValue in fieldValues) {
-              if (fieldValue.contains(filterVal)) {
-                letThrough = true;
-              }
-            }
-          }
+        num n = item.fields[filter.singleField].value;
 
-          break;
-        case LegendSearchableFilterRange:
-          Tween<num> filterVal = filterValues[T];
-
-          num? n;
-
-          for (LegendSearchableField field in item.fields) {
-            if (field is LegendSearchableNumber) {
-              n = field.value;
-            }
-          }
-
-          if (filterVal.begin == null && filterVal.end == null && n != null) {
-            break;
-          }
-
+        if (filterVal.begin != null || filterVal.end != null) {
           if (filterVal.begin != null && filterVal.end == null) {
-            if (n! > filterVal.begin!) letThrough = true;
+            if (n > filterVal.begin!) let[i] = true;
           } else if (filterVal.begin == null && filterVal.end != null) {
-            if (n! < filterVal.end!) letThrough = true;
+            if (n < filterVal.end!) let[i] = true;
           } else {
-            if (n! > filterVal.begin! && n < filterVal.end!) letThrough = true;
+            if (n > filterVal.begin! && n < filterVal.end!) let[i] = true;
           }
-
-          break;
-        default:
+        }
       }
+      i++;
     }
-
-    print(letThrough);
-    if (letThrough)
-      return widget.itemBuilder(context, index);
-    else
+    bool l = let.any((element) => element == false);
+    if (l)
       return Container();
+    else
+      return widget.itemBuilder(context, index);
   }
 
   Widget filterInputs(List<LegendSearchableFilter> filters) {
