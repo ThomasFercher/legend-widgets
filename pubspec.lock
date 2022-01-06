@@ -131,9 +131,11 @@ packages:
   legend_design_core:
     dependency: "direct main"
     description:
-      path: "../Legend-Design-Core"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: ee249531f576a0102ed3b14baeedd1dce344dbe0
+      url: "https://github.com/ThomasFercher/Legend-Design-Core"
+    source: git
     version: "0.0.1"
   lints:
     dependency: transitive
