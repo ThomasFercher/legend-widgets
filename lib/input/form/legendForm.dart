@@ -9,6 +9,7 @@ import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormF
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
+import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
 import 'package:provider/src/provider.dart';
 
 class LegendForm extends StatefulWidget {
@@ -18,7 +19,11 @@ class LegendForm extends StatefulWidget {
   final bool? autovalidate;
   final double? height;
   final bool showSubmitButton;
+
+  final String? submitText;
+  final LegendButtonStyle? buttonStyle;
   final void Function(Map<String, dynamic> values)? onSubmit;
+  final void Function(Map<String, dynamic> values)? onChanged;
   final Widget Function(GlobalKey<FormState> key)? buildSubmitButton;
 
   LegendForm({
@@ -28,6 +33,9 @@ class LegendForm extends StatefulWidget {
     this.onSubmit,
     this.showSubmitButton = true,
     this.buildSubmitButton,
+    this.submitText,
+    this.buttonStyle,
+    this.onChanged,
   }) {
     fields = children.whereType<LegendFormField>().toList();
     layouts = children.whereType<Widget>().toList();
@@ -39,6 +47,17 @@ class LegendForm extends StatefulWidget {
 
 class _LegendFormState extends State<LegendForm> {
   final _formKey = GlobalKey<FormState>();
+  late SplayTreeMap<String, dynamic> values;
+
+  @override
+  void initState() {
+    super.initState();
+    values = SplayTreeMap();
+
+    for (LegendFormField field in widget.fields) {
+      values[field.title] = null;
+    }
+  }
 
   List<Widget> getFields(BuildContext context) {
     List<Widget> widgets = [];
@@ -100,6 +119,11 @@ class _LegendFormState extends State<LegendForm> {
         formField = LegendTextFormField(
           field: field,
           decoration: field.textField?.decoration,
+          onChanged: (value) {
+            setState(() {
+              values[field.title] = value;
+            });
+          },
         );
         break;
       case LegendFormFieldType.INT:
@@ -184,18 +208,20 @@ class _LegendFormState extends State<LegendForm> {
               [
                 if (widget.showSubmitButton)
                   LegendButton(
-                    text: LegendText(text: "Submit"),
+                    text: LegendText(text: widget.submitText),
                     onPressed: () {
-                      print(getValues());
                       _formKey.currentState?.validate();
+                      _formKey.currentState?.save();
+                      if (widget.onSubmit != null) widget.onSubmit!(values);
                     },
+                    style: widget.buttonStyle,
                   ),
                 if (widget.buildSubmitButton != null)
                   widget.buildSubmitButton!(_formKey)
               ],
         ),
         onChanged: () {
-          print("test");
+          if (widget.onChanged != null) widget.onChanged!(values);
         },
       ),
     );
