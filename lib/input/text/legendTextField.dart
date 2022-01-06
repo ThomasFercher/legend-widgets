@@ -9,6 +9,8 @@ class LegendTextField extends StatefulWidget {
   final bool obscureText;
   final void Function(String value)? onSubmitted;
   final void Function(String value)? onChanged;
+  final String? value;
+  final bool? editable;
 
   LegendTextField({
     required this.decoration,
@@ -16,6 +18,8 @@ class LegendTextField extends StatefulWidget {
     this.obscureText = false,
     this.onSubmitted,
     this.onChanged,
+    this.value,
+    this.editable,
   }) : super(key: key);
 
   @override
@@ -28,7 +32,9 @@ class _LegendTextFieldState extends State<LegendTextField> {
   @override
   void initState() {
     super.initState();
-    ctrl = TextEditingController();
+    ctrl = TextEditingController(
+      text: widget.value,
+    );
   }
 
   @override

@@ -1,51 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:legend_design_core/icons/legend_animated_icon.dart';
 import 'package:legend_design_core/styles/theming/colors/legend_color_theme.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 
 import 'package:legend_design_widgets/input/dropdown.dart/legendDropdownOption.dart';
 import 'package:provider/provider.dart';
 
-class LegendDropdown extends StatefulWidget {
+class LegendDropdown extends StatelessWidget {
   final List<PopupMenuOption> options;
   final Function(PopupMenuOption selected) onSelected;
   final Color? color;
   final double? itemHeight;
-  final AnimatedIconData? buttonIcon;
+  final IconData icon;
 
   LegendDropdown({
     required this.options,
     required this.onSelected,
     this.color,
     this.itemHeight,
-    this.buttonIcon,
+    required this.icon,
   });
-
-  @override
-  _LegendDropdownState createState() => _LegendDropdownState();
-}
-
-class _LegendDropdownState extends State<LegendDropdown>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-
-  @override
-  initState() {
-    _animationController = new AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 250),
-      reverseDuration: Duration(milliseconds: 250),
-      lowerBound: 0.0,
-      upperBound: 1.0,
-      animationBehavior: AnimationBehavior.preserve,
-    );
-
-    super.initState();
-  }
 
   PopupMenuItem<String> getDropDownMenuItem(
       String option, IconData? icon, context, LegendColorTheme colors) {
     return PopupMenuItem<String>(
-      height: widget.itemHeight ?? 36,
+      height: itemHeight ?? 36,
       value: option,
       child: Row(
         children: [
@@ -61,12 +40,11 @@ class _LegendDropdownState extends State<LegendDropdown>
                   )
                 : null,
           ),
-          /*  Expanded(
+          Expanded(
             child: Text(
               option,
-              style: GoogleFonts.nunito(color: widget.theme.textColor),
             ),
-          ),*/
+          ),
         ],
       ),
     );
@@ -79,37 +57,29 @@ class _LegendDropdownState extends State<LegendDropdown>
     return Container(
       height: 40,
       child: PopupMenuButton(
-        icon: GestureDetector(
-          child: AnimatedIcon(
-            icon: widget.buttonIcon ?? AnimatedIcons.menu_close,
-            color: widget.color,
-            progress: _animationController,
-          ),
-        ),
+        child: Icon(icon),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(8),
           ),
         ),
         onSelected: (value) {
-          _animationController.reverse();
-          widget
-              .onSelected(widget.options.singleWhere((e) => e.value == value));
+          onSelected(
+            options.singleWhere((e) => e.value == value),
+          );
         },
-        //     color: colors.backgroundColor,
-        //   elevation: colors.elevation,
-        onCanceled: () {
-          _animationController.reverse();
-        },
+        tooltip: "",
         enableFeedback: true,
-        iconSize: 12,
         offset: Offset(0, (12 ?? 0) + 8.0),
         itemBuilder: (BuildContext context) {
-          _animationController.forward();
-          return widget.options
+          return options
               .map(
-                (opt) =>
-                    getDropDownMenuItem(opt.value, opt.icon, context, colors),
+                (opt) => getDropDownMenuItem(
+                  opt.value,
+                  opt.icon,
+                  context,
+                  colors,
+                ),
               )
               .toList();
         },

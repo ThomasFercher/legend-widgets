@@ -1,13 +1,19 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:legend_design_core/layout/layout_provider.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_widgets/datadisplay/searchableList.dart/legend_searchable.dart';
+import 'package:legend_design_widgets/input/dropdown.dart/legendDropdown.dart';
+import 'package:legend_design_widgets/input/dropdown.dart/legendDropdownOption.dart';
+import 'package:legend_design_widgets/input/dropdown.dart/legendInputDropdown.dart';
 import 'package:legend_design_widgets/input/numbers/legendNumberField.dart';
 import 'package:legend_design_widgets/input/slider/legendRangeSlider.dart';
 import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:legend_design_widgets/input/text/legendTextField.dart';
+import 'package:legend_design_widgets/layout/grid/legendGrid.dart';
+import 'package:legend_design_widgets/layout/grid/legendGridSize.dart';
 import 'package:provider/provider.dart';
 
 class LegendSearchableList extends StatefulWidget {
@@ -58,6 +64,11 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
         });
 
         break;
+      case LegendSearchableFilterCategory:
+        setState(() {
+          filterValues[T] = value;
+        });
+        break;
       default:
     }
     print(filterValues);
@@ -91,7 +102,6 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
 
     for (var i = 0; i < widget.itemCount; i++) {
       if (!filterEmpty()) {
-        print("a");
         LegendSearchable item = widget.items[i];
         Widget w = filterWidget<T>(item, i);
         widgets.add(w);
@@ -133,7 +143,6 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
         }
       } else if (filter is LegendSearchableFilterRange) {
         Tween<num> filterVal = filterValues[LegendSearchableFilterRange];
-
         num n = item.fields[filter.singleField].value;
 
         if (filterVal.begin != null || filterVal.end != null) {
@@ -144,11 +153,25 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
           } else {
             if (n > filterVal.begin! && n < filterVal.end!) let[i] = true;
           }
+        } else {
+          let[i] = true;
+        }
+      } else if (filter is LegendSearchableFilterCategory) {
+        String? filterVal = filterValues[LegendSearchableFilterCategory];
+        String fieldVal = item.fields[filter.singleField].value;
+        if (filterVal != null && filterVal.length != 0) {
+          if (filterVal == fieldVal) {
+            let[i] = true;
+          }
+        } else {
+          let[i] = true;
         }
       }
       i++;
     }
+
     bool l = let.any((element) => element == false);
+
     if (l)
       return Container();
     else
@@ -174,29 +197,9 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
               textStyle: theme.typography.h4,
             ),
             LegendTextField(
-              decoration: LegendInputDecoration(
-                filled: true,
-                fillColor: theme.colors.cardBackgroundColor,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 24,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: theme.colors.foreground[1],
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(24),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: theme.colors.selectionColor,
-                    width: 2.0,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(24),
-                  ),
-                ),
+              decoration: LegendInputDecoration.rounded(
+                backgroundColor: theme.colors.foreground[1],
+                focusColor: theme.colors.selectionColor,
               ),
               onChanged: (value) {
                 filterWidgets<LegendSearchableFilterString>(value);
@@ -227,6 +230,34 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
             ),
           ],
         );
+      } else if (filter is LegendSearchableFilterCategory) {
+        w = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LegendText(
+              text: filter.displayName,
+              padding: EdgeInsets.only(
+                top: 8,
+                bottom: 16,
+              ),
+              textStyle: theme.typography.h4,
+            ),
+            LegendInputDropdown(
+              options: filter.categories
+                  .map(
+                    (e) => PopupMenuOption(value: e),
+                  )
+                  .toList(),
+              onSelected: (value) {
+                filterWidgets<LegendSearchableFilterCategory>(value);
+              },
+              decoration: LegendInputDecoration.rounded(
+                backgroundColor: theme.colors.foreground[1],
+                focusColor: theme.colors.selectionColor,
+              ),
+            ),
+          ],
+        );
       } else {
         w = Container();
       }
@@ -236,8 +267,14 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
       );
     }
 
-    return Column(
+    return LegendGrid(
       children: widgets,
+      crossAxisSpacing: 16,
+      sizes: LegendGridSize(
+        large: LegendGridSizeInfo(2, 136),
+        small: LegendGridSizeInfo(1, 136),
+        layoutDirection: LegendGridSizeDirection.DOWN,
+      ),
     );
   }
 

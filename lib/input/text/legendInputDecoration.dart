@@ -194,6 +194,7 @@ class LegendInputDecoration extends InputDecoration {
     Color? textColor,
     Color? focusColor,
     Color? errorColor,
+    Color? backgroundColor,
     double? borderWidth,
   }) {
     if (borderColor == null) borderColor = Colors.grey;
@@ -204,26 +205,31 @@ class LegendInputDecoration extends InputDecoration {
     );
 
     return LegendInputDecoration(
+      filled: true,
+      fillColor: backgroundColor,
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 24,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: borderColor,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(24),
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: focusColor ?? Colors.blueAccent,
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(24),
+        ),
+      ),
       isCollapsed: false,
       enabled: true,
       border: border,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: radius ??
-            BorderRadius.all(
-              Radius.circular(8),
-            ),
-        //  gapPadding:
-        borderSide: BorderSide(
-          color: borderColor.shade400,
-          width: borderWidth ?? 1.0,
-        ),
-      ),
-      focusedBorder: border.copyWith(
-        borderSide: BorderSide(
-          color: focusColor ?? Colors.blueAccent,
-          width: borderWidth ?? 1.0,
-        ),
-      ),
       errorBorder: border.copyWith(
         borderSide: BorderSide(
           color: errorColor ?? Colors.redAccent,

@@ -8,12 +8,6 @@ class LegendSearchable {
   });
 }
 
-abstract class LegendSearchableField {
-  final dynamic value;
-
-  LegendSearchableField(this.value);
-}
-
 abstract class LegendSearchableFilter<T> {
   final T Function()? genValue;
   final int? singleField;
@@ -51,6 +45,22 @@ class LegendSearchableFilterString extends LegendSearchableFilter<String> {
         );
 }
 
+class LegendSearchableFilterCategory extends LegendSearchableFilter<String> {
+  final int singleField;
+  final String? displayName;
+  final List<String> categories;
+
+  LegendSearchableFilterCategory({
+    required this.singleField,
+    this.displayName,
+    required this.categories,
+  }) : super(
+          singleField: singleField,
+          genValue: () => "",
+          displayName: displayName,
+        );
+}
+
 class LegendSearchableFilterRange extends LegendSearchableFilter<Tween<num>> {
   final int singleField;
   final Tween<num>? range;
@@ -67,6 +77,11 @@ class LegendSearchableFilterRange extends LegendSearchableFilter<Tween<num>> {
         );
 }
 
+abstract class LegendSearchableField {
+  final dynamic value;
+  LegendSearchableField(this.value);
+}
+
 class LegendSearchableString extends LegendSearchableField {
   final String value;
   LegendSearchableString(this.value) : super(value);
@@ -77,7 +92,13 @@ class LegendSearchableNumber extends LegendSearchableField {
   LegendSearchableNumber(this.value) : super(value);
 }
 
+class LegendSearchableCategory extends LegendSearchableField {
+  final String value;
+  LegendSearchableCategory(this.value) : super(value);
+}
+
 enum Searchable {
   STRING,
   RANGE,
+  CATEGORY,
 }
