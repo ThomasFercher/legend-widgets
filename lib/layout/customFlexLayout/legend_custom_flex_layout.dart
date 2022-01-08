@@ -3,15 +3,13 @@ import 'package:flutter/material.dart';
 class LegendCustomFlexLayout extends StatelessWidget {
   final LegendFlexItem item;
   final List<Widget> widgets;
-
-  final double height;
-
+  final double? height;
   List<Widget> alignedWidgets = [];
 
   LegendCustomFlexLayout({
     required this.item,
     required this.widgets,
-    required this.height,
+    this.height,
   });
 
   Widget getChildren(
@@ -86,6 +84,15 @@ class LegendCustomFlexLayout extends StatelessWidget {
           }
         }
 
+        for (var i = 1; i < rowWidgets.length; i += 2) {
+          rowWidgets.insert(
+            i,
+            SizedBox(
+              width: item.spacing,
+            ),
+          );
+        }
+
         widget = Container(
           height: height,
           child: Row(
@@ -101,12 +108,15 @@ class LegendCustomFlexLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: getChildren(
-        item,
-        height: height,
-      ),
-    );
+    return LayoutBuilder(builder: (context, snapshot) {
+      print(snapshot);
+      return Container(
+        child: getChildren(
+          item,
+          height: height ?? 300,
+        ),
+      );
+    });
   }
 }
 
@@ -120,6 +130,7 @@ class LegendFlexItem {
   final List<int>? childrenIndex;
   final List<int>? childrenFlex;
   final int? flex;
+  final double? spacing;
   late final LegendFlexLayoutType type;
 
   bool get hasChildren => children != null;
@@ -130,6 +141,7 @@ class LegendFlexItem {
     this.childrenIndex,
     this.childrenFlex,
     this.flex,
+    this.spacing,
   });
 
   factory LegendFlexItem.column({
@@ -137,6 +149,7 @@ class LegendFlexItem {
     List<int>? childrenIndex,
     List<int>? childrenFlex,
     int? flex,
+    double? spacing,
   }) {
     return LegendFlexItem(
       children: children,
@@ -144,6 +157,7 @@ class LegendFlexItem {
       type: LegendFlexLayoutType.COLUMN,
       childrenFlex: childrenFlex,
       flex: flex,
+      spacing: spacing,
     );
   }
 
@@ -152,6 +166,7 @@ class LegendFlexItem {
     List<int>? childrenIndex,
     List<int>? childrenFlex,
     int? flex,
+    double? spacing,
   }) {
     return LegendFlexItem(
       children: children,
@@ -159,6 +174,7 @@ class LegendFlexItem {
       type: LegendFlexLayoutType.ROW,
       childrenFlex: childrenFlex,
       flex: flex,
+      spacing: spacing,
     );
   }
 }

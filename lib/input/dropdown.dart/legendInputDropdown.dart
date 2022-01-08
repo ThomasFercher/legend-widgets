@@ -12,12 +12,17 @@ class LegendInputDropdown extends StatefulWidget {
   final void Function(String value)? onSelected;
   late final LegendInputDecoration? decoration;
   final String? initalValue;
+  final double? popupWidth;
+  final Offset? offset;
+
   LegendInputDropdown({
     Key? key,
     this.onSelected,
     this.initalValue,
+    this.popupWidth,
     required this.options,
     LegendInputDecoration? decoration,
+    this.offset,
   }) : super(key: key) {
     this.decoration = decoration ?? LegendInputDecoration();
   }
@@ -47,7 +52,9 @@ class _LegendInputDropdownState extends State<LegendInputDropdown> {
       ),
       decoration: widget.decoration?.copyWith(
         suffixIcon: LegendDropdown(
+          popupWidth: widget.popupWidth,
           options: widget.options,
+          offset: widget.offset,
           onSelected: (selected) {
             _controller.text = selected.value;
 

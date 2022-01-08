@@ -190,7 +190,7 @@ class LegendInputDecoration extends InputDecoration {
     Widget? leading,
     Widget? trailling,
     BorderRadius? radius,
-    MaterialColor? borderColor,
+    Color? borderColor,
     Color? textColor,
     Color? focusColor,
     Color? errorColor,

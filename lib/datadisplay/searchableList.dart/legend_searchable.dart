@@ -1,4 +1,5 @@
 import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 
 class LegendSearchable {
   final List<LegendSearchableField> fields;
@@ -45,10 +46,20 @@ class LegendSearchableFilterString extends LegendSearchableFilter<String> {
         );
 }
 
+class FilterCategoryData {
+  final String value;
+  final IconData? icon;
+
+  FilterCategoryData({
+    required this.value,
+    this.icon,
+  });
+}
+
 class LegendSearchableFilterCategory extends LegendSearchableFilter<String> {
   final int singleField;
   final String? displayName;
-  final List<String> categories;
+  final List<FilterCategoryData> categories;
 
   LegendSearchableFilterCategory({
     required this.singleField,
