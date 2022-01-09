@@ -1,6 +1,6 @@
 import 'dart:core';
-
 import 'package:flutter/material.dart';
+import 'package:legend_design_core/icons/legend_animated_icon.dart';
 import 'package:legend_design_core/layout/layout_provider.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
@@ -20,20 +20,29 @@ import 'package:provider/provider.dart';
 class LegendSearchableList extends StatefulWidget {
   final List<LegendSearchable> items;
   final List<LegendSearchableFilter> filters;
-  final Widget Function(BuildContext, int) itemBuilder;
+  final List<Widget> itemWidgets;
+  final List<SortableField>? sortableFields;
   final int itemCount;
   final LegendFlexItem? customFilterLayout;
   final double? filterHeight;
+  final Widget Function(
+      void Function(SortableField field, SortStatus status) sort) buildHeader;
 
   LegendSearchableList({
     Key? key,
     required this.items,
     required this.filters,
-    required this.itemBuilder,
+    required this.itemWidgets,
     required this.itemCount,
+    this.sortableFields,
     this.customFilterLayout,
     this.filterHeight,
-  }) : super(key: key);
+    required this.buildHeader,
+  }) : super(key: key) {
+    for (LegendSearchable item in items) {
+      print(item.fields[0].value);
+    }
+  }
 
   @override
   _LegendSearchableListState createState() => _LegendSearchableListState();
@@ -42,15 +51,27 @@ class LegendSearchableList extends StatefulWidget {
 class _LegendSearchableListState extends State<LegendSearchableList> {
   late List<Widget> widgets;
   late Map<Type, dynamic> filterValues;
+  late Map<SortableField, SortStatus> sortStatus;
+  late List<Widget> allWidgets;
+  late List<LegendSearchable> allItems;
 
   @override
   void initState() {
     filterValues = {};
+    sortStatus = {};
 
     for (LegendSearchableFilter filter in widget.filters) {
       filterValues[filter.runtimeType] =
           filter.genValue != null ? filter.genValue!() : null;
     }
+
+    if (widget.sortableFields != null)
+      for (SortableField field in widget.sortableFields!) {
+        sortStatus[field] = SortStatus.None;
+      }
+
+    allItems = List.from(widget.items);
+    allWidgets = List.from(widget.itemWidgets);
     widgets = getWidgets();
     super.initState();
   }
@@ -79,7 +100,76 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
     print(filterValues);
 
     setState(() {
-      widgets = getWidgets<T>();
+      widgets = getWidgets();
+    });
+  }
+
+  void sortWidgets(SortableField field, SortStatus status) {
+    int i = field.index;
+    bool setOld = status == SortStatus.None;
+    List<Widget> new_widgets;
+
+    if (setOld) {
+      new_widgets = List.from(widget.itemWidgets);
+      allItems = List.from(widget.items);
+      sortStatus[field] = SortStatus.None;
+    } else {
+      Comparator<LegendSearchable>? comparator;
+      switch (field.type) {
+        case double:
+          comparator = (a, b) {
+            double val_a = a.fields[i].value as double;
+            double val_b = b.fields[i].value as double;
+
+            switch (status) {
+              case SortStatus.Ascending:
+                return (val_a - val_b).toInt();
+
+              case SortStatus.Descending:
+                return (val_b - val_a).toInt();
+
+              case SortStatus.None:
+                return 0;
+            }
+          };
+          break;
+        case String:
+          comparator = (a, b) {
+            String val_a = a.fields[i].value as String;
+            String val_b = b.fields[i].value as String;
+
+            switch (status) {
+              case SortStatus.Ascending:
+                return val_a.compareTo(val_b);
+
+              case SortStatus.Descending:
+                return val_b.compareTo(val_a);
+
+              case SortStatus.None:
+                return 0;
+            }
+          };
+          break;
+      }
+
+      List<int> order = allItems.map((e) => e.hashCode).toList();
+      allItems.sort(comparator);
+      List<int> orderAfter = allItems.map((e) => e.hashCode).toList();
+
+      new_widgets = new List.generate(
+        allWidgets.length,
+        (index) => Container(),
+      );
+
+      for (var i = 0; i < allWidgets.length; i++) {
+        int new_index = orderAfter.indexOf(order[i]);
+        new_widgets[new_index] = allWidgets[i];
+      }
+    }
+
+    setState(() {
+      allWidgets = new_widgets;
+      widgets = getWidgets();
     });
   }
 
@@ -102,23 +192,23 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
     return true;
   }
 
-  List<Widget> getWidgets<T>() {
+  List<Widget> getWidgets() {
     List<Widget> widgets = [];
 
     for (var i = 0; i < widget.itemCount; i++) {
       if (!filterEmpty()) {
-        LegendSearchable item = widget.items[i];
-        Widget w = filterWidget<T>(item, i);
+        LegendSearchable item = allItems[i];
+        Widget w = filterWidget(item, i);
         widgets.add(w);
       } else {
-        widgets.add(widget.itemBuilder(context, i));
+        widgets.add(allWidgets[i]);
       }
     }
 
     return widgets;
   }
 
-  Widget filterWidget<T>(
+  Widget filterWidget(
     LegendSearchable item,
     int index,
   ) {
@@ -180,7 +270,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
     if (l)
       return Container();
     else
-      return widget.itemBuilder(context, index);
+      return allWidgets[index];
   }
 
   List<Widget> getFilterInputs(List<LegendSearchableFilter> filters) {
@@ -286,6 +376,12 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
     return widgets;
   }
 
+  List<Widget> headerInputs() {
+    List<Widget> widgets = [];
+
+    return widgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -301,6 +397,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
             Column(
               children: getFilterInputs(widget.filters),
             ),
+          widget.buildHeader(sortWidgets),
           Expanded(
             child: ListView.builder(
               itemCount: widget.itemCount,

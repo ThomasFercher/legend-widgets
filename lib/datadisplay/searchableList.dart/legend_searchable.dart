@@ -113,3 +113,18 @@ enum Searchable {
   RANGE,
   CATEGORY,
 }
+
+enum SortStatus {
+  Ascending,
+  Descending,
+  None,
+}
+
+class SortableField<T> {
+  final int index;
+  final Type type = T;
+
+  SortableField({
+    required this.index,
+  });
+}
