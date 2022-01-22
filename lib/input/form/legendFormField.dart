@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:legend_design_core/typography/typography.dart';
 import 'package:legend_design_widgets/input/text/legendTextField.dart';
 
 enum LegendFormFieldType {
@@ -27,6 +28,7 @@ class LegendFormField<T> {
   final Function(T value)? onChanged;
   final Function(T value)? onSave;
   final String title;
+  final TextStyle? textStyle;
   final Function(T? val)? validator;
   late bool isRequired;
   late T? value;
@@ -38,6 +40,7 @@ class LegendFormField<T> {
     this.onChanged,
     this.onSave,
     required this.title,
+    this.textStyle,
     this.validator,
     bool? isRequired,
   }) {
@@ -50,6 +53,7 @@ class LegendFormField<T> {
     Function(T value)? onChanged,
     Function(T value)? onSave,
     bool? isRequired,
+    TextStyle? textStyle,
   }) {
     return LegendFormField<T>(
       type: LegendFormFieldType.TEXT,
@@ -58,6 +62,7 @@ class LegendFormField<T> {
       onSave: onSave,
       isRequired: isRequired,
       title: title,
+      textStyle: textStyle,
     );
   }
 
