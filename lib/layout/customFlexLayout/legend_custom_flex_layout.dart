@@ -12,7 +12,7 @@ class LegendCustomFlexLayout extends StatelessWidget {
     this.height,
   });
 
-  Widget getChildren(
+  Widget getChildrenExpanded(
     LegendFlexItem item, {
     double? height,
     double? width,
@@ -41,7 +41,7 @@ class LegendCustomFlexLayout extends StatelessWidget {
           for (LegendFlexItem item in item.children!) {
             columnWidgets.add(
               Expanded(
-                child: getChildren(item),
+                child: getChildrenExpanded(item),
                 flex: item.flex ?? 1,
               ),
             );
@@ -77,7 +77,7 @@ class LegendCustomFlexLayout extends StatelessWidget {
             print(item.flex);
             rowWidgets.add(
               Flexible(
-                child: getChildren(item),
+                child: getChildrenExpanded(item),
                 flex: item.flex ?? 1,
               ),
             );
@@ -106,17 +106,106 @@ class LegendCustomFlexLayout extends StatelessWidget {
     return widget;
   }
 
+  Widget getChildren(
+    LegendFlexItem item, {
+    double? height,
+    double? width,
+  }) {
+    Widget widget;
+
+    switch (item.type) {
+      case LegendFlexLayoutType.COLUMN:
+        List<Widget> columnWidgets = [];
+
+        if (item.childrenIndex != null) {
+          int i = 0;
+          for (int index in item.childrenIndex!) {
+            columnWidgets.add(
+              widgets[index],
+            );
+
+            i++;
+          }
+        }
+
+        if (item.hasChildren) {
+          for (LegendFlexItem item in item.children!) {
+            columnWidgets.add(
+              getChildren(item),
+            );
+          }
+        }
+
+        widget = Container(
+          height: height,
+          child: Column(
+            children: columnWidgets,
+          ),
+        );
+
+        break;
+      case LegendFlexLayoutType.ROW:
+        List<Widget> rowWidgets = [];
+
+        if (item.childrenIndex != null) {
+          int i = 0;
+          for (int index in item.childrenIndex!) {
+            rowWidgets.add(
+              widgets[index],
+            );
+            i++;
+          }
+        }
+
+        if (item.hasChildren) {
+          for (LegendFlexItem item in item.children!) {
+            print(item.flex);
+            rowWidgets.add(
+              getChildren(item),
+            );
+          }
+        }
+
+        for (var i = 1; i < rowWidgets.length; i += 2) {
+          rowWidgets.insert(
+            i,
+            SizedBox(
+              width: item.spacing,
+            ),
+          );
+        }
+
+        widget = Container(
+          height: height,
+          child: Row(
+            children: rowWidgets,
+          ),
+        );
+
+        break;
+    }
+
+    return widget;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, snapshot) {
-      print(snapshot);
-      return Container(
-        child: getChildren(
-          item,
-          height: height ?? 300,
-        ),
-      );
-    });
+    return LayoutBuilder(
+      builder: (context, snapshot) {
+        print(snapshot);
+        bool heightInfinity =
+            snapshot.maxHeight == double.infinity && height == null;
+
+        print(heightInfinity);
+
+        return heightInfinity
+            ? getChildren(item)
+            : getChildrenExpanded(
+                item,
+                height: height ?? 300,
+              );
+      },
+    );
   }
 }
 

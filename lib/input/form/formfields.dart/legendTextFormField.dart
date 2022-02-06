@@ -43,16 +43,8 @@ class LegendTextFormField extends FormField<String> {
               onSubmitted: (value) {
                 print(value);
               },
-              decoration: state.hasError
-                  ? LegendInputDecoration(
-                      errorText: "Field required",
-                      prefixIcon: decoration?.prefixIcon,
-                    )
-                  : /* decoration ??*/ LegendInputDecoration(
-                      prefixIcon: Icon(
-                        Icons.yard,
-                      ),
-                    ),
+              decoration:
+                  field.textField?.decoration ?? LegendInputDecoration(),
             );
           },
         );

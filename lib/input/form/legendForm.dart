@@ -24,14 +24,15 @@ class LegendForm extends StatefulWidget {
   final LegendButtonStyle? buttonStyle;
   final void Function(Map<String, dynamic> values)? onSubmit;
   final void Function(Map<String, dynamic> values)? onChanged;
-  final Widget Function(GlobalKey<FormState> key)? buildSubmitButton;
+  final Widget Function(GlobalKey<FormState> key, SplayTreeMap values)?
+      buildSubmitButton;
 
   LegendForm({
     required this.children,
     this.autovalidate,
     this.height,
     this.onSubmit,
-    this.showSubmitButton = true,
+    this.showSubmitButton = false,
     this.buildSubmitButton,
     this.submitText,
     this.buttonStyle,
@@ -168,14 +169,17 @@ class _LegendFormState extends State<LegendForm> {
     }
 
     Widget w = Container(
-      padding: EdgeInsets.only(bottom: 12),
       width: isRow ? null : width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           LegendText(
             text: field.title,
-            textStyle: context.watch<ThemeProvider>().typography.h2,
+            textStyle:
+                field.textStyle ?? context.watch<ThemeProvider>().typography.h2,
+          ),
+          SizedBox(
+            height: 8,
           ),
           formField,
         ],
@@ -217,7 +221,7 @@ class _LegendFormState extends State<LegendForm> {
                     style: widget.buttonStyle,
                   ),
                 if (widget.buildSubmitButton != null)
-                  widget.buildSubmitButton!(_formKey)
+                  widget.buildSubmitButton!(_formKey, values)
               ],
         ),
         onChanged: () {
