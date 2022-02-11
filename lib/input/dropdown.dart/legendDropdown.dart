@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/icons/legend_animated_icon.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_theme.dart';
+import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
-
 import 'package:legend_design_widgets/input/dropdown.dart/legendDropdownOption.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +25,7 @@ class LegendDropdown extends StatelessWidget {
   });
 
   PopupMenuItem<String> getDropDownMenuItem(String option, IconData? icon,
-      context, LegendColorTheme colors, ThemeProvider theme) {
+      context, LegendColorPalette colors, ThemeProvider theme) {
     return PopupMenuItem<String>(
       height: itemHeight ?? 36,
       value: option,

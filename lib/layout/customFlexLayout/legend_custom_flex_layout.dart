@@ -135,6 +135,14 @@ class LegendCustomFlexLayout extends StatelessWidget {
             );
           }
         }
+        for (var i = 1; i < columnWidgets.length; i += 2) {
+          columnWidgets.insert(
+            i,
+            SizedBox(
+              height: item.spacing,
+            ),
+          );
+        }
 
         widget = Container(
           height: height,

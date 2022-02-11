@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:legend_design_core/icons/legend_animated_icon.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
-import 'package:legend_design_core/typography/typography.dart';
 import 'package:provider/provider.dart';
 
 class ImageCard extends StatelessWidget {

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
-
 import 'package:legend_design_core/typography/legend_text.dart';
-import 'package:legend_design_core/typography/typography.dart';
-
 import 'package:provider/provider.dart';
 
 class LegendCard extends StatelessWidget {
@@ -18,6 +15,8 @@ class LegendCard extends StatelessWidget {
     this.children,
     this.iconColor,
     this.image,
+    this.backgroundColor,
+    this.borderRadiusGeometry,
   });
 
   final double? height;
@@ -29,13 +28,18 @@ class LegendCard extends StatelessWidget {
   final Color? iconColor;
   final List<Widget>? children;
   final Widget? image;
+  final Color? backgroundColor;
+  final BorderRadiusGeometry? borderRadiusGeometry;
 
   @override
   Widget build(BuildContext context) {
     ThemeProvider theme = Provider.of<ThemeProvider>(context);
 
     return Card(
-      color: theme.colors.cardBackgroundColor,
+      color: backgroundColor ?? theme.colors.cardBackgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadiusGeometry ?? theme.sizing.borderRadius[0],
+      ),
       child: LayoutBuilder(
         builder: (context, constraints) {
           return SizedBox(

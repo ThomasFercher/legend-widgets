@@ -1,10 +1,8 @@
 import 'dart:collection';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
-import 'package:legend_design_core/typography/typography.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormField.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';

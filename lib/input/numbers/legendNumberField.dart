@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:legend_design_widgets/input/text/legendTextField.dart';
 

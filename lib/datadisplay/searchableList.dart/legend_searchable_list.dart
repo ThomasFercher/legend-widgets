@@ -1,20 +1,15 @@
 import 'dart:core';
+
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/icons/legend_animated_icon.dart';
-import 'package:legend_design_core/layout/layout_provider.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_widgets/datadisplay/searchableList.dart/legend_searchable.dart';
-import 'package:legend_design_widgets/input/dropdown.dart/legendDropdown.dart';
 import 'package:legend_design_widgets/input/dropdown.dart/legendDropdownOption.dart';
 import 'package:legend_design_widgets/input/dropdown.dart/legendInputDropdown.dart';
-import 'package:legend_design_widgets/input/numbers/legendNumberField.dart';
 import 'package:legend_design_widgets/input/slider/legendRangeSlider.dart';
 import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:legend_design_widgets/input/text/legendTextField.dart';
 import 'package:legend_design_widgets/layout/customFlexLayout/legend_custom_flex_layout.dart';
-import 'package:legend_design_widgets/layout/grid/legendGrid.dart';
-import 'package:legend_design_widgets/layout/grid/legendGridSize.dart';
 import 'package:provider/provider.dart';
 
 class LegendSearchableList extends StatefulWidget {
@@ -277,17 +272,18 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
     ThemeProvider theme = context.watch<ThemeProvider>();
     List<Widget> widgets = [];
 
-    for (LegendSearchableFilter filter in filters) {
+    for (int i = 0; i < filters.length; i++) {
+      LegendSearchableFilter filter = filters[i];
       Widget w;
       if (filter is LegendSearchableFilterString) {
         w = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             LegendText(
               text: filter.displayName,
               padding: EdgeInsets.only(
-                top: 8,
-                bottom: 16,
+                bottom: 8,
               ),
               textStyle: theme.typography.h4,
             ),
@@ -307,12 +303,12 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
       } else if (filter is LegendSearchableFilterRange) {
         w = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             LegendText(
               text: filter.displayName,
               padding: EdgeInsets.only(
-                top: 8,
-                bottom: 16,
+                bottom: 8,
               ),
               textStyle: theme.typography.h4,
             ),
@@ -332,12 +328,12 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
           print(constraints);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               LegendText(
                 text: filter.displayName,
                 padding: EdgeInsets.only(
-                  top: 8,
-                  bottom: 16,
+                  bottom: 8,
                 ),
                 textStyle: theme.typography.h4,
               ),
@@ -369,7 +365,17 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
       }
 
       widgets.add(
-        Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: w),
+        Container(
+          color: Colors.green,
+          padding: EdgeInsets.only(
+            top: 4,
+            bottom: (i == filters.length - 1) ? 4 : 0,
+          ),
+          child: Container(
+            child: w,
+            color: Colors.red,
+          ),
+        ),
       );
     }
 

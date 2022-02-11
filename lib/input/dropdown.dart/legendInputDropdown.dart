@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/icons/legend_animated_icon.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_widgets/input/dropdown.dart/legendDropdown.dart';
 import 'package:legend_design_widgets/input/dropdown.dart/legendDropdownOption.dart';
 import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
-import 'package:legend_design_widgets/input/text/legendTextField.dart';
 import 'package:provider/src/provider.dart';
 
 class LegendInputDropdown extends StatefulWidget {

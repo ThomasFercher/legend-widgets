@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:legend_design_widgets/input/text/legendTextField.dart';
-import 'package:provider/src/provider.dart';
 
 class LegendTextFormField extends FormField<String> {
   final LegendFormField field;

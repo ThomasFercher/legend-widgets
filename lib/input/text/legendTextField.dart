@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
-import 'package:legend_design_core/typography/typography.dart';
 import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:provider/src/provider.dart';
 
