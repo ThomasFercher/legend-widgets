@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
+import 'package:legend_design_widgets/input/color/legend_color_input.dart';
+import 'package:legend_design_widgets/input/form/formfields.dart/legendColorFormField.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormField.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';
@@ -140,6 +142,7 @@ class _LegendFormState extends State<LegendForm> {
             } else if (field.validator != null) {
               field.validator!(value);
             }
+            return null;
           },
           builder: (f) {
             return SizedBox(
@@ -161,6 +164,13 @@ class _LegendFormState extends State<LegendForm> {
       case LegendFormFieldType.FLOAT:
         break;
       case LegendFormFieldType.COLOR:
+        formField = LegendColorFormField(
+          onChanged: (color) {},
+          inital: Colors.red,
+          builder: (FormFieldState<Color> s) {
+            return LegendColorInput();
+          },
+        );
         break;
       default:
         break;
