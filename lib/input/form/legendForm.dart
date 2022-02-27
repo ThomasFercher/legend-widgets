@@ -8,13 +8,14 @@ import 'package:legend_design_widgets/input/form/formfields.dart/legendColorForm
 import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormField.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';
+import 'package:legend_design_widgets/layout/customFlexLayout/legend_custom_flex_layout.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
 import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
 import 'package:provider/src/provider.dart';
 
 class LegendForm extends StatefulWidget {
   final List<dynamic> children;
-  late List<LegendFormField> fields;
+
   late List<Widget> layouts;
   final bool? autovalidate;
   final double? height;
@@ -38,7 +39,6 @@ class LegendForm extends StatefulWidget {
     this.buttonStyle,
     this.onChanged,
   }) {
-    fields = children.whereType<LegendFormField>().toList();
     layouts = children.whereType<Widget>().toList();
   }
 
@@ -54,10 +54,6 @@ class _LegendFormState extends State<LegendForm> {
   void initState() {
     super.initState();
     values = SplayTreeMap();
-
-    for (LegendFormField field in widget.fields) {
-      values[field.title] = null;
-    }
   }
 
   List<Widget> getFields(BuildContext context) {
@@ -71,11 +67,31 @@ class _LegendFormState extends State<LegendForm> {
       } else if (item is LegendFormRow) {
         LegendFormRow row = item;
         widgets.add(getFormRow(row, context));
+      } else if (item is LegendCustomFlexFormLayout) {
+        LegendCustomFlexFormLayout layout = item;
+        widgets.add(getCustomFlexLayout(layout, context));
       } else {
         widgets.add(item);
       }
     }
     return widgets;
+  }
+
+  Widget getCustomFlexLayout(
+      LegendCustomFlexFormLayout layout, BuildContext context) {
+    List<Widget> formfields = [];
+    for (var i = 0; i < layout.fields.length; i++) {
+      LegendFormField field = layout.fields[i];
+
+      formfields.add(getFormfield(field, context, true));
+    }
+
+    return LegendCustomFlexLayout(
+      height: layout.height,
+      item: layout.item,
+      widgets: formfields,
+      dynamicItem: layout.dynamicItem,
+    );
   }
 
   Widget getFormRow(LegendFormRow row, BuildContext context) {
@@ -165,10 +181,20 @@ class _LegendFormState extends State<LegendForm> {
         break;
       case LegendFormFieldType.COLOR:
         formField = LegendColorFormField(
-          onChanged: (color) {},
           inital: Colors.red,
           builder: (FormFieldState<Color> s) {
-            return LegendColorInput();
+            return LegendColorInput(
+              s: s,
+              onChanged: (color) {
+                setState(() {
+                  values[field.title] = color;
+                });
+                if (field.onSave != null) {
+                  field.onSave!(color);
+                }
+                s.didChange(color);
+              },
+            );
           },
         );
         break;
@@ -190,23 +216,12 @@ class _LegendFormState extends State<LegendForm> {
             height: 8,
           ),
           formField,
+          Expanded(child: Container()),
         ],
       ),
     );
 
-    if (isRow) w = Expanded(child: w);
-
     return w;
-  }
-
-  Map<String, dynamic> getValues() {
-    SplayTreeMap<String, dynamic> values = new SplayTreeMap();
-
-    widget.fields.forEach((field) {
-      values[field.title] = field.value;
-    });
-
-    return values;
   }
 
   @override

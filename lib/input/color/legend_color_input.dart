@@ -1,13 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:legend_design_core/styles/theming/colors/legend_colors.dart';
+import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../text/legendInputDecoration.dart';
 import '../text/legendTextField.dart';
 
 class LegendColorInput extends StatefulWidget {
-  const LegendColorInput({Key? key}) : super(key: key);
+  const LegendColorInput({
+    Key? key,
+    required this.s,
+    required this.onChanged,
+  }) : super(key: key);
+  final FormFieldState<Color> s;
+  final Function(Color) onChanged;
 
   @override
   _LegendColorInputState createState() => _LegendColorInputState();
@@ -15,24 +22,25 @@ class LegendColorInput extends StatefulWidget {
 
 class _LegendColorInputState extends State<LegendColorInput> {
   late Color value;
-  late String hexString = "#FF774420";
+  late String hexString;
   late int r, g, b, a;
 
   late TextEditingController r_c, g_c, b_c, a_c, hex_c;
 
   @override
   void initState() {
-    value = Colors.transparent;
+    value = Colors.white;
 
-    r = 0;
-    g = 0;
-    b = 0;
-    a = 0;
-
+    r = value.red;
+    g = value.green;
+    b = value.blue;
+    a = value.alpha;
     r_c = TextEditingController(text: formatInt(r));
     g_c = TextEditingController(text: formatInt(g));
     b_c = TextEditingController(text: formatInt(b));
     a_c = TextEditingController(text: formatInt(a));
+
+    hexString = colorToHex(value);
     hex_c = TextEditingController(text: "$hexString");
     super.initState();
   }
@@ -46,6 +54,18 @@ class _LegendColorInputState extends State<LegendColorInput> {
     g_c.text = formatInt(g);
     b_c.text = formatInt(b);
     a_c.text = formatInt(a);
+    Color c = Color.fromARGB(a, r, g, b);
+    setState(() {
+      value = c;
+    });
+
+    widget.onChanged(c);
+  }
+
+  String colorToHex(Color color) {
+    String hex = color.toString();
+    hex = hex.substring(6, hex.length - 1).replaceAll("0x", "#").toUpperCase();
+    return hex;
   }
 
   void updateHex() {
@@ -53,10 +73,18 @@ class _LegendColorInputState extends State<LegendColorInput> {
     String s = c.toString();
     s = s.substring(6, s.length - 1).replaceAll("0x", "#").toUpperCase();
     hex_c.text = s;
+
+    setState(() {
+      value = c;
+    });
+
+    widget.onChanged(c);
   }
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider theme = context.watch<ThemeProvider>();
+
     return Container(
       height: 52,
       child: Row(
@@ -92,7 +120,7 @@ class _LegendColorInputState extends State<LegendColorInput> {
                 ),
               ],
               decoration: LegendInputDecoration.rounded(
-                focusColor: Colors.red,
+                focusColor: theme.colors.selectionColor,
               ),
               onChanged: (string) {
                 String colorstring = string;
@@ -141,7 +169,7 @@ class _LegendColorInputState extends State<LegendColorInput> {
                     decoration: BoxDecoration(
                       borderRadius:
                           BorderRadius.horizontal(left: Radius.circular(24)),
-                      color: Colors.red,
+                      color: theme.colors.selectionColor,
                     ),
                     padding: EdgeInsets.only(
                       left: 1,
@@ -196,8 +224,14 @@ class _LegendColorInputState extends State<LegendColorInput> {
                     decoration: BoxDecoration(
                       color: LegendColors.gray8,
                       border: Border(
-                        top: BorderSide(width: 2, color: Colors.red),
-                        bottom: BorderSide(width: 2, color: Colors.red),
+                        top: BorderSide(
+                          width: 2,
+                          color: theme.colors.selectionColor,
+                        ),
+                        bottom: BorderSide(
+                          width: 2,
+                          color: theme.colors.selectionColor,
+                        ),
                       ),
                     ),
                     alignment: Alignment.center,
@@ -240,8 +274,14 @@ class _LegendColorInputState extends State<LegendColorInput> {
                     decoration: BoxDecoration(
                       color: LegendColors.gray8,
                       border: Border(
-                        top: BorderSide(width: 2, color: Colors.red),
-                        bottom: BorderSide(width: 2, color: Colors.red),
+                        top: BorderSide(
+                          width: 2,
+                          color: theme.colors.selectionColor,
+                        ),
+                        bottom: BorderSide(
+                          width: 2,
+                          color: theme.colors.selectionColor,
+                        ),
                       ),
                     ),
                     alignment: Alignment.center,
@@ -284,7 +324,7 @@ class _LegendColorInputState extends State<LegendColorInput> {
                     decoration: BoxDecoration(
                       borderRadius:
                           BorderRadius.horizontal(right: Radius.circular(24)),
-                      color: Colors.red,
+                      color: theme.colors.selectionColor,
                     ),
                     padding: EdgeInsets.only(
                       right: 1,

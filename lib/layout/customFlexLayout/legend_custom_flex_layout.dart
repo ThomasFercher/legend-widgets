@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:legend_design_widgets/input/form/legendFormField.dart';
+
+class LegendCustomFlexFormLayout {
+  final LegendFlexItem? item;
+  final double? height;
+  final List<LegendFormField> fields;
+  final DynamicFlexItem? dynamicItem;
+
+  LegendCustomFlexFormLayout({
+    this.item,
+    this.height,
+    required this.fields,
+    this.dynamicItem,
+  });
+}
 
 class LegendCustomFlexLayout extends StatelessWidget {
-  final LegendFlexItem item;
+  LegendFlexItem? item;
+  final DynamicFlexItem? dynamicItem;
   final List<Widget> widgets;
   final double? height;
   List<Widget> alignedWidgets = [];
 
   LegendCustomFlexLayout({
-    required this.item,
+    this.item,
     required this.widgets,
+    this.dynamicItem,
     this.height,
   });
 
@@ -206,12 +223,19 @@ class LegendCustomFlexLayout extends StatelessWidget {
 
         print(heightInfinity);
 
-        return heightInfinity
-            ? getChildren(item)
-            : getChildrenExpanded(
-                item,
-                height: height ?? 300,
-              );
+        if (dynamicItem != null) {
+          item = dynamicItem!.getItem(snapshot.maxWidth);
+        }
+        if (item != null) {
+          return heightInfinity
+              ? getChildren(item!)
+              : getChildrenExpanded(
+                  item!,
+                  height: height ?? 300,
+                );
+        } else {
+          throw Exception("Flex layout item is null");
+        }
       },
     );
   }
@@ -220,6 +244,31 @@ class LegendCustomFlexLayout extends StatelessWidget {
 enum LegendFlexLayoutType {
   COLUMN,
   ROW,
+}
+
+class DynamicFlexItem {
+  final List<int> splits;
+  final List<LegendFlexItem> items;
+
+  DynamicFlexItem({
+    required this.splits,
+    required this.items,
+  });
+  LegendFlexItem getItem(double w) {
+    for (var i = 0; i < splits.length; i++) {
+      int split = splits[i];
+      int p_split = 0;
+
+      if (i > 0) splits[i - 1];
+
+      if (w < split) {
+        if (w > p_split) {
+          return items[i];
+        }
+      }
+    }
+    return items.first;
+  }
 }
 
 class LegendFlexItem {
