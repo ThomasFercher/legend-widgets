@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:legend_design_core/objects/asset_info.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
-
-import 'package:legend_design_core/typography/typography.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
 import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
-
 import 'package:provider/provider.dart';
 
 class LegendAlert extends StatelessWidget {

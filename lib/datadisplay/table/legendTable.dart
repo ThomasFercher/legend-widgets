@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_theme.dart';
+import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_core/typography/typography.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendRowValue.dart';
@@ -46,7 +46,7 @@ class LegendTable extends StatelessWidget {
             Container(
               width: w,
               height: rowHeight ?? 48,
-              color: LegendColorTheme.darken(
+              color: LegendColorPalette.darken(
                 Colors.white,
                 0.16,
               ),
@@ -132,7 +132,7 @@ class LegendTable extends StatelessWidget {
           border: j % 2 == 0
               ? Border.symmetric(
                   horizontal: BorderSide(
-                    color: LegendColorTheme.darken(
+                    color: LegendColorPalette.darken(
                       Colors.white,
                       0.24,
                     ),

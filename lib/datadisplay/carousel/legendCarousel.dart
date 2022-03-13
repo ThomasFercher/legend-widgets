@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/icons/legend_animated_icon.dart';
+import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_widgets/datadisplay/carousel/legendCarouselItem.dart';
+import 'package:provider/provider.dart';
 
 const Duration duration = const Duration(milliseconds: 360);
 Curve curve = Curves.easeInOutSine;
@@ -11,6 +15,7 @@ class LegendCarousel extends StatefulWidget {
   final Duration? animationDuration;
   final EdgeInsetsGeometry? padding;
   late bool isInfinite;
+  final Duration? intervall;
 
   LegendCarousel({
     required this.items,
@@ -18,6 +23,7 @@ class LegendCarousel extends StatefulWidget {
     this.animationDuration,
     this.padding,
     bool? isInfinite,
+    this.intervall,
   }) {
     this.isInfinite = isInfinite ?? false;
   }
@@ -26,26 +32,44 @@ class LegendCarousel extends StatefulWidget {
   _LegendCarouselState createState() => _LegendCarouselState();
 }
 
-class _LegendCarouselState extends State<LegendCarousel> {
+class _LegendCarouselState extends State<LegendCarousel>
+    with SingleTickerProviderStateMixin {
   late int selected;
-  late PageController _scrollController;
+  late PageController _pageController;
+  late Timer? timer;
+  late bool isAnimating;
+  late double scrollStart;
+  late double scrollEnd;
+  bool isScrolling = false;
+  int inital = 4000;
 
   @override
   void initState() {
     super.initState();
-    selected = widget.items.indexOf(widget.items.first);
+    scrollStart = 0.0;
+    scrollEnd = 0.0;
+    selected = inital;
+    isAnimating = false;
 
-    _scrollController = PageController(initialPage: selected, keepPage: true)
-      ..addListener(_onScroll);
+    _pageController = PageController(initialPage: 4000, keepPage: true)
+      ..addListener(() {
+        //   print(_pageController.offset);
+      });
+
+    if (widget.intervall != null) {
+      timer = new Timer.periodic(widget.intervall!, (timer) async {
+        await changedSelected(1);
+      });
+    } else {
+      timer = null;
+    }
   }
 
-  void _onScroll() {
-    int page = _scrollController.page?.toInt() ?? -1;
-    print(page);
-  }
-
-  void selectPage(int page) {
-    _scrollController.animateToPage(page, duration: duration, curve: curve);
+  @override
+  void dispose() {
+    _pageController.dispose();
+    if (timer != null) timer!.cancel();
+    super.dispose();
   }
 
   List<Widget> getItems(double width) {
@@ -62,71 +86,175 @@ class _LegendCarouselState extends State<LegendCarousel> {
     return items;
   }
 
-  void changedSelected(bool right) {
-    int toSelect = selected + (right ? 1 : -1);
+  List<Widget> getSelectors(ThemeProvider theme) {
+    List<Widget> selectors = [];
+    for (int i = 0; i < widget.items.length; i++) {
+      int distance = -(inital - selected);
 
-    if (toSelect >= 0 && toSelect < widget.items.length) {
+      double div = (distance / widget.items.length);
+      int full = div.floor();
+      double dec = div - full;
+
+      double number = dec * widget.items.length;
+
+      bool sel = false;
+      if (number > i - 0.1 && number < i + 0.1) {
+        sel = true;
+      }
+
+      int index = inital - (full * widget.items.length) + (number).floor() + 1;
+
+      selectors.add(
+        GestureDetector(
+          onTap: () async {
+            if (!isAnimating) {
+              isAnimating = true;
+              setState(() {
+                selected = index;
+              });
+              await _pageController.animateToPage(selected,
+                  duration: duration, curve: curve);
+
+              isAnimating = false;
+            }
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            height: 8,
+            width: 8,
+            margin: EdgeInsets.symmetric(horizontal: 2),
+            decoration: BoxDecoration(
+              color: sel
+                  ? theme.colors.selectionColor
+                  : theme.colors.disabledColor,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return selectors;
+  }
+
+  Future<void> changedSelected(int dir) async {
+    print(isAnimating);
+    if (!isAnimating) {
+      int toSelect = selected + dir;
+      isAnimating = true;
+
       setState(() {
         selected = toSelect;
       });
+      await _pageController.animateToPage(selected,
+          duration: duration, curve: curve);
 
-      selectPage(toSelect);
+      isAnimating = false;
+    }
+  }
+
+  void _onScroll(double offset) async {
+    if (isScrolling == false) {
+      isScrolling = true;
+      if (offset > 0) {
+        await changedSelected(-1);
+
+        isScrolling = false;
+      } else {
+        await changedSelected(1);
+        isScrolling = false;
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, c) {
-      double width = MediaQuery.of(context).size.width;
-      List<Widget> items = getItems(width);
-      return Container(
-        height: widget.height,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.transparent,
-        padding: widget.padding,
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: PageView(
+    ThemeProvider theme = context.watch<ThemeProvider>();
+    double width = MediaQuery.of(context).size.width;
+    List<Widget> items = getItems(width);
+
+    return Container(
+      height: widget.height,
+      width: width,
+      color: Colors.transparent,
+      padding: widget.padding,
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: GestureDetector(
+              onHorizontalDragStart: (details) {
+                scrollStart = details.globalPosition.dx;
+                scrollEnd = scrollStart;
+              },
+              onHorizontalDragUpdate: (details) {
+                scrollEnd = details.globalPosition.dx;
+              },
+              onHorizontalDragEnd: (details) {
+                double scrollDiff = scrollEnd - scrollStart;
+
+                _onScroll(scrollDiff);
+              },
+              child: PageView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
-                children: items,
-                pageSnapping: true,
-                controller: _scrollController,
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: LegendAnimatedIcon(
-                icon: Icons.arrow_forward_ios,
-                theme: LegendAnimtedIconTheme(
-                  enabled: Colors.black87,
-                  disabled: Colors.black38,
-                ),
-                padding: EdgeInsets.all(32.0),
-                onPressed: () {
-                  changedSelected(true);
+
+                itemBuilder: (context, page) {
+                  final index =
+                      items.length - (4000 - page - 1) % items.length - 1;
+
+                  selected = page;
+                  return items[index];
                 },
+
+                //  pageSnapping: true,
+                controller: _pageController,
+                allowImplicitScrolling: false,
               ),
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: LegendAnimatedIcon(
-                icon: Icons.arrow_back_ios,
-                theme: LegendAnimtedIconTheme(
-                  enabled: Colors.black87,
-                  disabled: Colors.black38,
-                ),
-                padding: EdgeInsets.all(32.0),
-                onPressed: () {
-                  changedSelected(false);
-                },
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: LegendAnimatedIcon(
+              icon: Icons.arrow_forward_ios,
+              theme: LegendAnimtedIconTheme(
+                enabled: theme.colors.selectionColor,
+                disabled: theme.colors.disabledColor,
+              ),
+              padding: EdgeInsets.all(32.0),
+              onPressed: () async {
+                await changedSelected(1);
+              },
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: LegendAnimatedIcon(
+              icon: Icons.arrow_back_ios,
+              theme: LegendAnimtedIconTheme(
+                enabled: theme.colors.selectionColor,
+                disabled: theme.colors.disabledColor,
+              ),
+              padding: EdgeInsets.all(32.0),
+              onPressed: () async {
+                await changedSelected(-1);
+              },
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                bottom: 16,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: getSelectors(theme),
               ),
             ),
-          ],
-        ),
-      );
-    });
+          )
+        ],
+      ),
+    );
   }
 }

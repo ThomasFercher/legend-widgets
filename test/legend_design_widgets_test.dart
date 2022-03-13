@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:legend_design_widgets/legend_design_widgets.dart';
 
 void main() {

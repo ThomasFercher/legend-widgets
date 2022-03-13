@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_theme.dart';
+import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
 
 class LegendInputDecoration extends InputDecoration {
   final Widget? icon;
@@ -238,13 +238,13 @@ class LegendInputDecoration extends InputDecoration {
       ),
       focusedErrorBorder: border.copyWith(
         borderSide: BorderSide(
-          color: errorColor ?? LegendColorTheme.darken(Colors.redAccent, 0.2),
+          color: errorColor ?? LegendColorPalette.darken(Colors.redAccent, 0.2),
           width: borderWidth ?? 1.2,
         ),
       ),
       errorText: error,
       focusColor: focusColor,
-      cursorColor: LegendColorTheme.lighten(textColor.withOpacity(1), 0.1),
+      cursorColor: LegendColorPalette.lighten(textColor.withOpacity(1), 0.1),
       textColor: textColor,
       hintText: hint,
       prefixIcon: leading != null

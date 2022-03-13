@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
-import 'package:legend_design_core/typography/typography.dart';
 import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:provider/src/provider.dart';
 
-class LegendTextField extends StatefulWidget {
+class LegendTextField extends StatelessWidget {
   final LegendInputDecoration decoration;
   final bool obscureText;
   final void Function(String value)? onSubmitted;
   final void Function(String value)? onChanged;
-  final String? value;
+
   final bool? editable;
+  final List<TextInputFormatter>? formatter;
+  final TextEditingController? ctrl;
+  final TextAlign textAlign;
 
   LegendTextField({
     required this.decoration,
@@ -18,24 +21,11 @@ class LegendTextField extends StatefulWidget {
     this.obscureText = false,
     this.onSubmitted,
     this.onChanged,
-    this.value,
     this.editable,
+    this.formatter,
+    this.ctrl,
+    this.textAlign = TextAlign.start,
   }) : super(key: key);
-
-  @override
-  _LegendTextFieldState createState() => _LegendTextFieldState();
-}
-
-class _LegendTextFieldState extends State<LegendTextField> {
-  late TextEditingController ctrl;
-
-  @override
-  void initState() {
-    super.initState();
-    ctrl = TextEditingController(
-      text: widget.value,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +33,19 @@ class _LegendTextFieldState extends State<LegendTextField> {
 
     return TextField(
       controller: ctrl,
-      decoration: widget.decoration,
-      cursorColor: widget.decoration.cursorColor,
+      decoration: decoration,
+      cursorColor: decoration.cursorColor,
       textAlignVertical: TextAlignVertical.top,
+      textAlign: textAlign,
+      inputFormatters: formatter,
       onSubmitted: (value) {
-        if (widget.onSubmitted != null) widget.onSubmitted!(value);
+        if (onSubmitted != null) onSubmitted!(value);
       },
       onChanged: (value) {
-        if (widget.onChanged != null) widget.onChanged!(value);
+        if (onChanged != null) onChanged!(value);
       },
       style: theme.typography.h1.copyWith(
-        color: widget.decoration.textColor,
+        color: decoration.textColor,
       ),
       toolbarOptions: ToolbarOptions(
         copy: true,

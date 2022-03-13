@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/typography/typography.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
+import 'package:legend_design_core/typography/typography.dart';
 
 class BadgeContainer extends StatelessWidget {
   final int? count;

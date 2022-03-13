@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_theme.dart';
+import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
 
 import 'legendTableCell.dart';
 
@@ -25,7 +25,7 @@ class _LegendTableRowState extends State<LegendTableRow>
   @override
   void initState() {
     super.initState();
-    color = LegendColorTheme.darken(Colors.white, 0.06);
+    color = LegendColorPalette.darken(Colors.white, 0.06);
     _controller = AnimationController(
       vsync: this,
       duration: Duration(
@@ -38,8 +38,8 @@ class _LegendTableRowState extends State<LegendTableRow>
       });
 
     _animation = ColorTween(
-      begin: LegendColorTheme.darken(Colors.white, 0.06),
-      end: LegendColorTheme.darken(Colors.white, 0.12),
+      begin: LegendColorPalette.darken(Colors.white, 0.06),
+      end: LegendColorPalette.darken(Colors.white, 0.12),
     ).animate(_controller);
   }
 

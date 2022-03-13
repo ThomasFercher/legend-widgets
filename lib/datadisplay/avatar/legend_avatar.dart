@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
 
 class LegendAvatar extends StatelessWidget {
   const LegendAvatar({

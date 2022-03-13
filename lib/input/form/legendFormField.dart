@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/typography/typography.dart';
 import 'package:legend_design_widgets/input/text/legendTextField.dart';
 
 enum LegendFormFieldType {

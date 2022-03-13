@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
 import 'package:legend_design_core/styles/theming/theme_provider.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
-import 'package:legend_design_core/typography/typography.dart';
+import 'package:legend_design_core/utils/legend_utils.dart';
 import 'package:provider/src/provider.dart';
 
 class LegendTag extends StatelessWidget {
@@ -26,7 +26,7 @@ class LegendTag extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
-        color: LegendColorTheme.lighten(color, 0.25),
+        color: LegendColorPalette.lighten(color, 0.25),
         borderRadius: BorderRadius.all(
           Radius.circular(4.0),
         ),
@@ -41,6 +41,170 @@ class LegendTag extends StatelessWidget {
         textStyle: theme.typography.h1.copyWith(
           color: color,
           fontSize: 16,
+        ),
+      ),
+    );
+  }
+}
+
+class LegendAnimatedTagTheme {
+  final Color disabledBackgroundColor;
+  final Color disabledForegroundColor;
+  final BorderRadiusGeometry borderRadius;
+  final BoxBorder border;
+  final double height;
+
+  LegendAnimatedTagTheme({
+    required this.disabledBackgroundColor,
+    required this.disabledForegroundColor,
+    required this.borderRadius,
+    required this.border,
+    required this.height,
+  });
+}
+
+class LegendAnimatedTag extends StatefulWidget {
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final IconData? icon;
+  final String text;
+  final bool? dissmissable;
+  final LegendAnimatedTagTheme theme;
+  final bool? selected;
+  final void Function()? onTap;
+
+  LegendAnimatedTag({
+    required this.backgroundColor,
+    required this.foregroundColor,
+    required this.theme,
+    required this.text,
+    this.selected,
+    this.onTap,
+    this.icon,
+    this.dissmissable,
+  }) {
+    print(selected);
+  }
+
+  double getWidth(BuildContext context) {
+    return (theme.height / 2 - 4) * 2 +
+        LegendUtils.calcTextSize(
+                text, context.watch<ThemeProvider>().typography.h0)
+            .width;
+  }
+
+  @override
+  State<LegendAnimatedTag> createState() => _LegendAnimatedTagState();
+}
+
+class _LegendAnimatedTagState extends State<LegendAnimatedTag>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+  late Animation<Color?> foreground;
+  late Animation<Color?> background;
+  late Animation<double?> sizing;
+  late double? progress;
+  late Color? foregroundColor;
+  late Color? backgroundColor;
+
+  @override
+  void initState() {
+    progress = 0;
+    foregroundColor = widget.theme.disabledForegroundColor;
+    backgroundColor = widget.theme.disabledBackgroundColor;
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(
+        milliseconds: 200,
+      ),
+    );
+    sizing = Tween<double?>(
+      begin: 0,
+      end: 1,
+    ).animate(controller)
+      ..addListener(
+        () {
+          setState(() {
+            progress = sizing.value;
+          });
+        },
+      );
+
+    background = ColorTween(
+      begin: widget.theme.disabledBackgroundColor,
+      end: widget.backgroundColor,
+    ).animate(controller)
+      ..addListener(() {
+        setState(() {
+          backgroundColor = background.value;
+        });
+      });
+
+    foreground = ColorTween(
+      begin: widget.theme.disabledForegroundColor,
+      end: widget.foregroundColor,
+    ).animate(controller)
+      ..addListener(() {
+        setState(() {
+          foregroundColor = foreground.value;
+        });
+      });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.selected != null) {
+      if (widget.selected!) {
+        controller.forward();
+      } else {
+        controller.reverse();
+      }
+    }
+    ThemeProvider t = context.watch<ThemeProvider>();
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        if (widget.selected == null) {
+          if (controller.isCompleted && !controller.isAnimating) {
+            controller.reverse();
+          } else if (!controller.isAnimating) {
+            controller.forward();
+          }
+        }
+        if (widget.onTap != null) widget.onTap!();
+      },
+      child: Container(
+        height: widget.theme.height,
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: widget.theme.borderRadius,
+          border: Border.all(
+            color: foregroundColor ?? Colors.transparent,
+          ),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: widget.theme.height / 2 - 4,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            LegendText(
+              text: widget.text,
+              textStyle: t.typography.h0.copyWith(
+                color: foregroundColor,
+              ),
+            ),
+            SizedBox(
+              width: (progress ?? 1) * 4,
+            ),
+            Icon(
+              widget.icon,
+              size: (progress ?? 1) * 22,
+              color: foregroundColor,
+            ),
+          ],
         ),
       ),
     );
