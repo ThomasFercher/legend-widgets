@@ -8,21 +8,51 @@ import 'package:legend_design_widgets/datadisplay/table/legendTableRow.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
 import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
 
+class LegendTableStyle {
+  final Color backgroundColor;
+  final BorderRadiusGeometry borderRadiusGeometry;
+  final Color selectionColor;
+  final TextStyle textStyle;
+  final EdgeInsets? rowPadding;
+  final Color? headerColor;
+  final TextStyle? headerTextStyle;
+
+  const LegendTableStyle({
+    this.rowPadding,
+    this.headerTextStyle,
+    this.headerColor,
+    required this.textStyle,
+    required this.backgroundColor,
+    required this.selectionColor,
+    required this.borderRadiusGeometry,
+  });
+}
+
 class LegendTable extends StatelessWidget {
   final double? height;
   final double? width;
   final List<LegendTableValueType> columnTypes;
+  final List<String>? columnNames;
+  final List<int>? flexValues;
   final List<LegendRowValue> values;
+
   final String? header;
   final double? rowHeight;
+  final bool showHeader;
+
+  final LegendTableStyle? style;
 
   const LegendTable({
+    this.columnNames,
+    this.showHeader = false,
+    this.style,
     Key? key,
     this.height,
     this.width,
     this.header,
     required this.columnTypes,
     required this.values,
+    this.flexValues,
     this.rowHeight,
   }) : super(key: key);
 
@@ -34,11 +64,6 @@ class LegendTable extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(6.0),
-        ),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -59,11 +84,6 @@ class LegendTable extends StatelessWidget {
             ),
           Table(
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            columnWidths: {
-              1: FlexColumnWidth(0.2),
-              2: FlexColumnWidth(0.4),
-              3: FlexColumnWidth(0.4),
-            },
             children: getRows(),
           ),
         ],
@@ -72,11 +92,39 @@ class LegendTable extends StatelessWidget {
   }
 
   List<TableRow> getRows() {
-    List<TableRow> rows = [];
+    List<TableRow> rows = [
+      if (showHeader)
+        TableRow(
+          children: [
+            LegendTableRow(
+              flexValues: flexValues,
+              columnsCells: columnNames
+                      ?.map((name) => LegendTableCell.text(
+                            typography:
+                                style?.headerTextStyle ?? LegendTextStyle(),
+                            text: name,
+                          ))
+                      .toList() ??
+                  [],
+              borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+              height: rowHeight ?? 48,
+              avtiveColor: style?.selectionColor,
+              backgroundColor: style?.headerColor,
+              padding: style?.rowPadding,
+            ),
+          ],
+        ),
+    ];
 
     // Row
     TableRow row;
     for (var j = 0; j < values.length; j++) {
+      BorderRadius? radius = j == 0 && !showHeader
+          ? BorderRadius.vertical(top: Radius.circular(8))
+          : j == values.length - 1
+              ? BorderRadius.vertical(bottom: Radius.circular(8))
+              : null;
+
       var value = values[j];
       // Columns
       List<LegendTableCell> columnsCells = [];
@@ -89,7 +137,7 @@ class LegendTable extends StatelessWidget {
         switch (type) {
           case LegendTableValueType.TEXT:
             cell = LegendTableCell.text(
-              typography: LegendTextStyle(), // LegendTextStyle.h1(),
+              typography: style?.textStyle ?? LegendTextStyle(),
               text: val.toString(),
             );
             break;
@@ -107,13 +155,14 @@ class LegendTable extends StatelessWidget {
             break;
           case LegendTableValueType.TAG:
             cell = LegendTableCell.tag(
+              // typography: style?.textStyle,
               color: Colors.red,
               tags: val,
             );
             break;
           default:
             cell = LegendTableCell.text(
-              typography: LegendTextStyle(), // theme.typography.h1,
+              typography: style?.textStyle ?? LegendTextStyle(),
               text: val.toString(),
             );
             break;
@@ -124,8 +173,13 @@ class LegendTable extends StatelessWidget {
       row = new TableRow(
         children: [
           LegendTableRow(
+            flexValues: flexValues,
             columnsCells: columnsCells,
+            borderRadius: radius,
             height: rowHeight ?? 48,
+            avtiveColor: style?.selectionColor,
+            backgroundColor: style?.backgroundColor,
+            padding: style?.rowPadding,
           ),
         ],
         decoration: BoxDecoration(
@@ -133,7 +187,7 @@ class LegendTable extends StatelessWidget {
               ? Border.symmetric(
                   horizontal: BorderSide(
                     color: LegendColorPalette.darken(
-                      Colors.white,
+                      style?.backgroundColor ?? Colors.white,
                       0.24,
                     ),
                     width: 2,

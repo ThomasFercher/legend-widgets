@@ -8,11 +8,13 @@ import 'package:provider/src/provider.dart';
 class LegendTag extends StatelessWidget {
   final Color color;
   final String text;
+  final TextStyle? textStyle;
   final bool? dissmissable;
 
   const LegendTag({
     required this.color,
     required this.text,
+    this.textStyle,
     this.dissmissable,
   });
 
@@ -26,7 +28,7 @@ class LegendTag extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
-        color: LegendColorPalette.lighten(color, 0.25),
+        color: LegendColorPalette.lighten(color, 0.2),
         borderRadius: BorderRadius.all(
           Radius.circular(4.0),
         ),
@@ -38,10 +40,11 @@ class LegendTag extends StatelessWidget {
       alignment: Alignment.center,
       child: LegendText(
         text: text,
-        textStyle: theme.typography.h1.copyWith(
-          color: color,
-          fontSize: 16,
-        ),
+        textStyle: textStyle ??
+            theme.typography.h1.copyWith(
+              color: LegendColorPalette.darken(color, 0.05),
+              fontSize: 16,
+            ),
       ),
     );
   }

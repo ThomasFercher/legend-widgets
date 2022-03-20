@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
-import 'package:legend_design_core/typography/typography.dart';
 import 'package:legend_design_widgets/datadisplay/tag/legendTag.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
 
@@ -15,7 +14,7 @@ enum LegendTableValueType {
 class LegendTableCell extends StatelessWidget {
   late String? text;
   late LegendTableValueType type;
-  late LegendTextStyle typography;
+  late TextStyle? typography;
   LegendButton? button;
   late Color color;
   late List<List<dynamic>> tags;
@@ -37,6 +36,7 @@ class LegendTableCell extends StatelessWidget {
   LegendTableCell.tag({
     required this.tags,
     required this.color,
+    this.typography,
   }) {
     type = LegendTableValueType.TAG;
   }
@@ -46,8 +46,10 @@ class LegendTableCell extends StatelessWidget {
       case LegendTableValueType.TEXT:
         return Container(
           padding: EdgeInsets.all(8.0),
-          color: Colors.red,
-          child: LegendText(text: text ?? ""),
+          child: LegendText(
+            text: text ?? "",
+            textStyle: typography,
+          ),
         );
       case LegendTableValueType.ACTION:
         return button!;
@@ -57,8 +59,9 @@ class LegendTableCell extends StatelessWidget {
             children: List.of(
               tags.map(
                 (t) => LegendTag(
+                  textStyle: typography,
                   text: t[0],
-                  color: t[1] ?? Colors.red,
+                  color: t[1] ?? Colors.transparent,
                 ),
               ),
             ),

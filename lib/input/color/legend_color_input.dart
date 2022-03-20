@@ -89,16 +89,15 @@ class _LegendColorInputState extends State<LegendColorInput> {
       height: 52,
       child: Row(
         children: [
-          Expanded(
-            child: Container(
-              height: 48,
-              decoration: BoxDecoration(
-                color: value,
-                borderRadius: const BorderRadius.all(Radius.circular(24)),
-                border: Border.all(
-                  color: Colors.white60,
-                  width: 1,
-                ),
+          Container(
+            height: 48,
+            width: 64,
+            decoration: BoxDecoration(
+              color: value,
+              borderRadius: const BorderRadius.all(Radius.circular(24)),
+              border: Border.all(
+                color: Colors.white60,
+                width: 1,
               ),
             ),
           ),

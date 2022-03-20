@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
 
 import 'legendTableCell.dart';
 
 class LegendTableRow extends StatefulWidget {
   final List<LegendTableCell> columnsCells;
+  final List<int>? flexValues;
+  final Color? avtiveColor;
+  final Color? backgroundColor;
   final double height;
+  final BorderRadius? borderRadius;
+  final EdgeInsets? padding;
   LegendTableRow({
     Key? key,
     required this.columnsCells,
     required this.height,
+    this.padding,
+    this.avtiveColor,
+    this.backgroundColor,
+    this.flexValues,
+    this.borderRadius,
   }) : super(key: key);
 
   @override
@@ -25,7 +34,7 @@ class _LegendTableRowState extends State<LegendTableRow>
   @override
   void initState() {
     super.initState();
-    color = LegendColorPalette.darken(Colors.white, 0.06);
+    color = widget.backgroundColor ?? Colors.white;
     _controller = AnimationController(
       vsync: this,
       duration: Duration(
@@ -38,33 +47,43 @@ class _LegendTableRowState extends State<LegendTableRow>
       });
 
     _animation = ColorTween(
-      begin: LegendColorPalette.darken(Colors.white, 0.06),
-      end: LegendColorPalette.darken(Colors.white, 0.12),
+      begin: widget.backgroundColor,
+      end: widget.avtiveColor,
     ).animate(_controller);
+  }
+
+  List<Widget> getColumnItems() {
+    List<Widget> items = [];
+    for (int i = 0; i < widget.columnsCells.length; i++) {
+      int flex = widget.flexValues?[i] ?? 1;
+      print(flex);
+      items.add(Expanded(flex: flex, child: widget.columnsCells[i]));
+    }
+    return items;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.height,
-      decoration: BoxDecoration(
-        color: color,
-        border: Border(
-          bottom: BorderSide(color: Colors.black12),
+    return ClipRRect(
+      borderRadius: widget.borderRadius ?? BorderRadius.zero,
+      child: Container(
+        height: widget.height,
+        decoration: BoxDecoration(
+          color: color,
+          border: Border(
+            bottom: BorderSide(color: Colors.black12),
+          ),
         ),
-      ),
-      child: MouseRegion(
-        onEnter: (event) {
-          _controller.forward();
-        },
-        onExit: (event) {
-          _controller.reverse();
-        },
-        child: Row(
-          children: List.of(
-            widget.columnsCells.map(
-              (e) => Expanded(child: OverflowBox(child: e)),
-            ),
+        padding: widget.padding,
+        child: MouseRegion(
+          onEnter: (event) {
+            _controller.forward();
+          },
+          onExit: (event) {
+            _controller.reverse();
+          },
+          child: Row(
+            children: getColumnItems(),
           ),
         ),
       ),

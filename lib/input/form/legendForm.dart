@@ -6,9 +6,9 @@ import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_widgets/input/color/legend_color_input.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendColorFormField.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormField.dart';
+import 'package:legend_design_widgets/input/form/layout/grid/legendFormGrid.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';
-import 'package:legend_design_widgets/layout/customFlexLayout/legend_custom_flex_layout.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
 import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
 import 'package:provider/src/provider.dart';
@@ -67,9 +67,9 @@ class _LegendFormState extends State<LegendForm> {
       } else if (item is LegendFormRow) {
         LegendFormRow row = item;
         widgets.add(getFormRow(row, context));
-      } else if (item is LegendCustomFlexFormLayout) {
-        LegendCustomFlexFormLayout layout = item;
-        widgets.add(getCustomFlexLayout(layout, context));
+      } else if (item is LegendFormGrid) {
+        LegendFormGrid grid = item;
+        widgets.add(getGridLayout(grid, context));
       } else {
         widgets.add(item);
       }
@@ -77,29 +77,32 @@ class _LegendFormState extends State<LegendForm> {
     return widgets;
   }
 
-  Widget getCustomFlexLayout(
-      LegendCustomFlexFormLayout layout, BuildContext context) {
+  Widget getGridLayout(LegendFormGrid layout, BuildContext context) {
     List<Widget> formfields = [];
-    for (var i = 0; i < layout.fields.length; i++) {
-      LegendFormField field = layout.fields[i];
+    for (var i = 0; i < layout.children.length; i++) {
+      LegendFormField field = layout.children[i];
 
       formfields.add(getFormfield(field, context, true));
     }
 
-    return LegendCustomFlexLayout(
-      height: layout.height,
-      item: layout.item,
-      widgets: formfields,
-      dynamicItem: layout.dynamicItem,
+    return LegendGrid(
+      children: formfields,
+      crossAxisCount: layout.crossAxisCount,
+      horizontalSpacing: layout.horizontalSpacing,
+      rowHeight: layout.rowHeight,
+      rowHeights: layout.rowHeights,
+      verticalSpacing: layout.verticalSpacing,
     );
   }
 
   Widget getFormRow(LegendFormRow row, BuildContext context) {
     List<Widget> children =
         row.children.map((e) => getFormfield(e, context, true)).toList();
-    return Row(
-      children: children,
-      mainAxisAlignment: row.alignment ?? MainAxisAlignment.start,
+    return Expanded(
+      child: Row(
+        children: children,
+        mainAxisAlignment: row.alignment ?? MainAxisAlignment.start,
+      ),
     );
   }
 
