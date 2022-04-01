@@ -1,7 +1,7 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_widgets/datadisplay/searchableList.dart/legend_searchable.dart';
 import 'package:legend_design_widgets/input/dropdown.dart/legendDropdownOption.dart';
@@ -9,7 +9,8 @@ import 'package:legend_design_widgets/input/dropdown.dart/legendInputDropdown.da
 import 'package:legend_design_widgets/input/slider/legendRangeSlider.dart';
 import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:legend_design_widgets/input/text/legendTextField.dart';
-import 'package:legend_design_widgets/layout/customFlexLayout/legend_custom_flex_layout.dart';
+import 'package:legend_design_widgets/layout/dynamic/flex/legend_custom_flex_layout.dart';
+import 'package:legend_design_widgets/layout/dynamic/flex/legend_dynamic_flex_layout.dart';
 import 'package:provider/provider.dart';
 
 class LegendSearchableList extends StatefulWidget {
@@ -18,7 +19,7 @@ class LegendSearchableList extends StatefulWidget {
   final List<Widget> itemWidgets;
   final List<SortableField>? sortableFields;
   final int itemCount;
-  final LegendFlexItem? customFilterLayout;
+  final LegendDynamicFlexLayout? customLayout;
   final double? filterHeight;
   final Widget Function(
       void Function(SortableField field, SortStatus status) sort) buildHeader;
@@ -30,7 +31,7 @@ class LegendSearchableList extends StatefulWidget {
     required this.itemWidgets,
     required this.itemCount,
     this.sortableFields,
-    this.customFilterLayout,
+    this.customLayout,
     this.filterHeight,
     required this.buildHeader,
   }) : super(key: key) {
@@ -269,7 +270,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
   }
 
   List<Widget> getFilterInputs(List<LegendSearchableFilter> filters) {
-    ThemeProvider theme = context.watch<ThemeProvider>();
+    LegendTheme theme = context.watch<LegendTheme>();
     List<Widget> widgets = [];
 
     for (int i = 0; i < filters.length; i++) {
@@ -290,9 +291,9 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
             LegendTextField(
               decoration: LegendInputDecoration.rounded(
                 backgroundColor: theme.colors.foreground[1],
-                focusColor: theme.colors.selectionColor,
-                borderColor: theme.colors.disabledColor,
-                textColor: theme.colors.textColorLight,
+                focusColor: theme.colors.selection,
+                borderColor: theme.colors.disabled,
+                textColor: theme.colors.textOnDark,
               ),
               onChanged: (value) {
                 filterWidgets<LegendSearchableFilterString>(value);
@@ -352,9 +353,9 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
                 offset: Offset(0, constraints.maxHeight / 2 - 2),
                 decoration: LegendInputDecoration.rounded(
                   backgroundColor: theme.colors.foreground[1],
-                  focusColor: theme.colors.selectionColor,
-                  borderColor: theme.colors.disabledColor,
-                  textColor: theme.colors.textColorLight,
+                  focusColor: theme.colors.selection,
+                  borderColor: theme.colors.disabled,
+                  textColor: theme.colors.textOnDark,
                 ),
               ),
             ],
@@ -393,13 +394,15 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
     return Container(
       child: Column(
         children: [
-          if (widget.customFilterLayout != null)
-            LegendCustomFlexLayout(
-              item: widget.customFilterLayout!,
-              widgets: getFilterInputs(widget.filters),
-              height: widget.filterHeight ?? 400,
+          if (widget.customLayout != null)
+            LegendDynamicFlexLayout(
+              dynamicLayout: widget.customLayout!.dynamicLayout,
+              heights: [widget.filterHeight ?? 400],
+              layout: LegendCustomFlexLayout.dyna(
+                children: getFilterInputs(widget.filters),
+              ),
             ),
-          if (widget.customFilterLayout == null)
+          if (widget.customLayout == null)
             Column(
               children: getFilterInputs(widget.filters),
             ),

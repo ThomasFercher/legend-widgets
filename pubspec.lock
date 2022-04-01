@@ -107,13 +107,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  graphs:
-    dependency: transitive
-    description:
-      name: graphs
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
   http:
     dependency: transitive
     description:
@@ -138,11 +131,9 @@ packages:
   legend_design_core:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "1e99e84182fdda393bba13d81ca5a17ccaffa61a"
-      url: "https://github.com/ThomasFercher/Legend-Design-Core"
-    source: git
+      path: "../Legend-Design-Core"
+      relative: true
+    source: path
     version: "0.0.1"
   lints:
     dependency: transitive
@@ -249,13 +240,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.1"
-  rive:
-    dependency: transitive
-    description:
-      name: rive
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.1"
   sky_engine:
     dependency: transitive
     description: flutter

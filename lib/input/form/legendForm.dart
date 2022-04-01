@@ -1,17 +1,21 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_widgets/input/color/legend_color_input.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendColorFormField.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormField.dart';
-import 'package:legend_design_widgets/input/form/layout/grid/legendFormGrid.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';
+import 'package:legend_design_widgets/layout/dynamic/flex/legend_custom_flex_layout.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
 import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
 import 'package:provider/src/provider.dart';
+
+import '../../layout/dynamic/flex/form/legendCustomFormLayout.dart';
+import '../../layout/dynamic/flex/form/legendDynamicFormLayout.dart';
+import '../../layout/dynamic/flex/legend_dynamic_flex_layout.dart';
 
 class LegendForm extends StatefulWidget {
   final List<dynamic> children;
@@ -67,9 +71,12 @@ class _LegendFormState extends State<LegendForm> {
       } else if (item is LegendFormRow) {
         LegendFormRow row = item;
         widgets.add(getFormRow(row, context));
-      } else if (item is LegendFormGrid) {
-        LegendFormGrid grid = item;
-        widgets.add(getGridLayout(grid, context));
+      } else if (item is LegendCustomFormLayout) {
+        LegendCustomFormLayout layout = item;
+        widgets.add(getCustomLayout(layout, context));
+      } else if (item is LegendDynamicFormLayout) {
+        LegendDynamicFormLayout layout = item;
+        widgets.add(getDynamicCustomLayout(layout, context));
       } else {
         widgets.add(item);
       }
@@ -77,21 +84,36 @@ class _LegendFormState extends State<LegendForm> {
     return widgets;
   }
 
-  Widget getGridLayout(LegendFormGrid layout, BuildContext context) {
+  Widget getDynamicCustomLayout(
+      LegendDynamicFormLayout layout, BuildContext context) {
     List<Widget> formfields = [];
-    for (var i = 0; i < layout.children.length; i++) {
-      LegendFormField field = layout.children[i];
+    for (var i = 0; i < layout.layout.fields.length; i++) {
+      LegendFormField field = layout.layout.fields[i];
 
       formfields.add(getFormfield(field, context, true));
     }
 
-    return LegendGrid(
+    return LegendDynamicFlexLayout(
+      dynamicLayout: layout.dynamicLayout,
+      heights: layout.heights,
+      layout: LegendCustomFlexLayout.dyna(
+        children: formfields,
+      ),
+    );
+  }
+
+  Widget getCustomLayout(LegendCustomFormLayout layout, BuildContext context) {
+    List<Widget> formfields = [];
+    for (var i = 0; i < layout.fields.length; i++) {
+      LegendFormField field = layout.fields[i];
+
+      formfields.add(getFormfield(field, context, true));
+    }
+
+    return LegendCustomFlexLayout(
       children: formfields,
-      crossAxisCount: layout.crossAxisCount,
-      horizontalSpacing: layout.horizontalSpacing,
-      rowHeight: layout.rowHeight,
-      rowHeights: layout.rowHeights,
-      verticalSpacing: layout.verticalSpacing,
+      height: layout.height,
+      item: layout.item,
     );
   }
 
@@ -110,7 +132,7 @@ class _LegendFormState extends State<LegendForm> {
     Widget formField = Container();
     double width = MediaQuery.of(context).size.width;
 
-    ThemeProvider theme = context.watch<ThemeProvider>();
+    LegendTheme theme = context.watch<LegendTheme>();
 
     switch (field.type) {
       case LegendFormFieldType.BOOL:
@@ -213,7 +235,7 @@ class _LegendFormState extends State<LegendForm> {
           LegendText(
             text: field.title,
             textStyle:
-                field.textStyle ?? context.watch<ThemeProvider>().typography.h2,
+                field.textStyle ?? context.watch<LegendTheme>().typography.h2,
           ),
           SizedBox(
             height: 8,

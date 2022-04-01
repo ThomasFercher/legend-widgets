@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'legendButtonStyle.dart';
 
+export 'legendButtonStyle.dart';
+
 class LegendButton extends StatelessWidget {
   final LegendButtonStyle? style;
   final Widget text;

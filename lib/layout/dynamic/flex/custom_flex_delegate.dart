@@ -3,10 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'items/legendFlexItem.dart';
 import 'items/legendLayoutItem.dart';
 
-class LegendCustomFlexDelegate extends MultiChildLayoutDelegate {
+class CustomFlexDelegate extends MultiChildLayoutDelegate {
   final LegendLayoutItem item;
+  final int? id;
 
-  LegendCustomFlexDelegate(this.item);
+  CustomFlexDelegate(this.item, this.id);
 
   @override
   void performLayout(Size size) {
@@ -118,7 +119,7 @@ class LegendCustomFlexDelegate extends MultiChildLayoutDelegate {
   }
 
   @override
-  bool shouldRelayout(covariant MultiChildLayoutDelegate oldDelegate) {
-    return oldDelegate != this;
+  bool shouldRelayout(covariant CustomFlexDelegate oldDelegate) {
+    return oldDelegate.id != this.id;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
+import 'package:legend_design_core/utils/extensions.dart';
 import 'package:legend_design_core/utils/legend_utils.dart';
 import 'package:provider/src/provider.dart';
 
@@ -20,7 +20,7 @@ class LegendTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider theme = context.watch<ThemeProvider>();
+    LegendTheme theme = context.watch<LegendTheme>();
     return Container(
       height: 32,
       padding: EdgeInsets.symmetric(
@@ -28,7 +28,7 @@ class LegendTag extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(horizontal: 4.0),
       decoration: BoxDecoration(
-        color: LegendColorPalette.lighten(color, 0.2),
+        color: color.lighten(0.2),
         borderRadius: BorderRadius.all(
           Radius.circular(4.0),
         ),
@@ -42,7 +42,7 @@ class LegendTag extends StatelessWidget {
         text: text,
         textStyle: textStyle ??
             theme.typography.h1.copyWith(
-              color: LegendColorPalette.darken(color, 0.05),
+              color: color.darken(0.05),
               fontSize: 16,
             ),
       ),
@@ -92,7 +92,7 @@ class LegendAnimatedTag extends StatefulWidget {
   double getWidth(BuildContext context) {
     return (theme.height / 2 - 4) * 2 +
         LegendUtils.calcTextSize(
-                text, context.watch<ThemeProvider>().typography.h0)
+                text, context.watch<LegendTheme>().typography.h0)
             .width;
   }
 
@@ -165,7 +165,7 @@ class _LegendAnimatedTagState extends State<LegendAnimatedTag>
         controller.reverse();
       }
     }
-    ThemeProvider t = context.watch<ThemeProvider>();
+    LegendTheme t = context.watch<LegendTheme>();
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {

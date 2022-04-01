@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:legend_design_core/styles/layouts/layout_type.dart';
-import 'package:legend_design_core/styles/theming/sizing/size_provider.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
 import 'package:provider/provider.dart';
@@ -27,17 +24,12 @@ class Modal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider theme = Provider.of<ThemeProvider>(context);
+    LegendTheme theme = Provider.of<LegendTheme>(context);
     double maxWidth = MediaQuery.of(context).size.width;
     double padding = 0;
 
     if (width != null) {
       if (maxWidth - 24 <= width!) {
-        padding = 24;
-      }
-    } else {
-      ScreenSize ss = SizeProvider.getScreenSizeFromWidth(maxWidth);
-      if (ss == ScreenSize.Small) {
         padding = 24;
       }
     }

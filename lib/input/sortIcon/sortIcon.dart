@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:legend_design_core/icons/legend_animated_icon.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_widgets/datadisplay/searchableList.dart/legend_searchable.dart';
 import 'package:provider/src/provider.dart';
 
@@ -59,13 +58,13 @@ class _LegendSortIconState extends State<LegendSortIcon> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider theme = context.watch<ThemeProvider>();
+    LegendTheme theme = context.watch<LegendTheme>();
 
     return LegendAnimatedIcon(
       icon: getIcon(),
       theme: LegendAnimtedIconTheme(
-        enabled: theme.colors.selectionColor,
-        disabled: theme.colors.disabledColor,
+        enabled: theme.colors.selection,
+        disabled: theme.colors.disabled,
       ),
       disableShadow: true,
       iconSize: 20,
