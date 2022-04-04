@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:provider/provider.dart';
 
@@ -25,14 +24,14 @@ class ImageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider theme = Provider.of<ThemeProvider>(context);
+    LegendTheme theme = Provider.of<LegendTheme>(context);
     return InkWell(
       onTap: () {
         print("ye");
         onClick();
       },
       child: Card(
-        color: theme.colors.cardBackgroundColor,
+        color: theme.colors.background[1],
         shape: RoundedRectangleBorder(
           borderRadius: theme.sizing.borderRadius[0],
         ),
@@ -73,7 +72,7 @@ class ImageCard extends StatelessWidget {
     );
   }
 
-  Widget getTitle(ThemeProvider theme) {
+  Widget getTitle(LegendTheme theme) {
     return LegendText(
       padding: EdgeInsets.only(
         left: 16,
@@ -85,7 +84,7 @@ class ImageCard extends StatelessWidget {
     );
   }
 
-  Widget getImage(ThemeProvider theme, double width) {
+  Widget getImage(LegendTheme theme, double width) {
     return heroKey != null
         ? Hero(
             tag: heroKey!,

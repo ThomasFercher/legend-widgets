@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/icons/legend_animated_icon.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
-import 'package:legend_design_widgets/datadisplay/carousel/legendCarouselItem.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
+import 'package:legend_design_widgets/datadisplay/carousel/legend_carousel_item.dart';
 import 'package:provider/provider.dart';
 
 const Duration duration = const Duration(milliseconds: 360);
@@ -86,7 +86,7 @@ class _LegendCarouselState extends State<LegendCarousel>
     return items;
   }
 
-  List<Widget> getSelectors(ThemeProvider theme) {
+  List<Widget> getSelectors(LegendTheme theme) {
     List<Widget> selectors = [];
     for (int i = 0; i < widget.items.length; i++) {
       int distance = -(inital - selected);
@@ -124,9 +124,7 @@ class _LegendCarouselState extends State<LegendCarousel>
             width: 8,
             margin: EdgeInsets.symmetric(horizontal: 2),
             decoration: BoxDecoration(
-              color: sel
-                  ? theme.colors.selectionColor
-                  : theme.colors.disabledColor,
+              color: sel ? theme.colors.selection : theme.colors.disabled,
               shape: BoxShape.circle,
             ),
           ),
@@ -169,7 +167,7 @@ class _LegendCarouselState extends State<LegendCarousel>
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider theme = context.watch<ThemeProvider>();
+    LegendTheme theme = context.watch<LegendTheme>();
     double width = MediaQuery.of(context).size.width;
     List<Widget> items = getItems(width);
 
@@ -218,8 +216,8 @@ class _LegendCarouselState extends State<LegendCarousel>
             child: LegendAnimatedIcon(
               icon: Icons.arrow_forward_ios,
               theme: LegendAnimtedIconTheme(
-                enabled: theme.colors.selectionColor,
-                disabled: theme.colors.disabledColor,
+                enabled: theme.colors.selection,
+                disabled: theme.colors.disabled,
               ),
               padding: EdgeInsets.all(32.0),
               onPressed: () async {
@@ -232,8 +230,8 @@ class _LegendCarouselState extends State<LegendCarousel>
             child: LegendAnimatedIcon(
               icon: Icons.arrow_back_ios,
               theme: LegendAnimtedIconTheme(
-                enabled: theme.colors.selectionColor,
-                disabled: theme.colors.disabledColor,
+                enabled: theme.colors.selection,
+                disabled: theme.colors.disabled,
               ),
               padding: EdgeInsets.all(32.0),
               onPressed: () async {

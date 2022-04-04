@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/icons/legend_gradient_icon.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
+import 'package:legend_design_core/utils/extensions.dart';
 import 'package:legend_design_widgets/input/selectBar/selectProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -22,10 +22,7 @@ class LegendSelectButton extends StatefulWidget {
     required this.onClick,
   }) {
     hoverColor = option.color ?? Colors.red;
-    backgroundColor = LegendColorPalette.lighten(
-      hoverColor,
-      0.1,
-    ).withOpacity(0.4);
+    backgroundColor = hoverColor.lighten().withOpacity(0.4);
     gradient = option.gradient;
 
     if (gradient != null) {

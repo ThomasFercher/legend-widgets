@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_core/typography/typography.dart';
+import 'package:legend_design_core/utils/extensions.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendRowValue.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendTableCell.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendTableRow.dart';
@@ -71,10 +71,7 @@ class LegendTable extends StatelessWidget {
             Container(
               width: w,
               height: rowHeight ?? 48,
-              color: LegendColorPalette.darken(
-                Colors.white,
-                0.16,
-              ),
+              color: Colors.white.darken(0.16),
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               alignment: Alignment.centerLeft,
               child: LegendText(
@@ -186,10 +183,8 @@ class LegendTable extends StatelessWidget {
           border: j % 2 == 0
               ? Border.symmetric(
                   horizontal: BorderSide(
-                    color: LegendColorPalette.darken(
-                      style?.backgroundColor ?? Colors.white,
-                      0.24,
-                    ),
+                    color: style?.backgroundColor.darken(0.24) ??
+                        Colors.white.darken(0.24),
                     width: 2,
                   ),
                 )

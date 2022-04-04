@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_color_palette.dart';
-import 'package:legend_design_core/styles/theming/sizing/legend_sizing.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/colors/legend_palette.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
+import 'package:legend_design_core/styles/sizing/legend_sizing.dart';
 import 'package:legend_design_widgets/input/selectBar/selectProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -54,8 +54,8 @@ class LegendSelectBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LegendColorPalette theme = Provider.of<ThemeProvider>(context).colors;
-    LegendSizing sizing = Provider.of<ThemeProvider>(context).sizing;
+    LegendPalette theme = Provider.of<LegendTheme>(context).colors;
+    LegendSizing sizing = Provider.of<LegendTheme>(context).sizing;
 
     return ListenableProvider<LegendSelectProvider>(
       create: (c) => new LegendSelectProvider(options.first),
