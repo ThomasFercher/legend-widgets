@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/colors/legend_palette.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
-import 'package:legend_design_widgets/input/dropdown.dart/legendDropdownOption.dart';
 import 'package:provider/provider.dart';
+
+import 'legendDropdownOption.dart';
 
 class LegendDropdown extends StatelessWidget {
   final List<PopupMenuOption> options;

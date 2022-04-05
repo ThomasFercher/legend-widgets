@@ -17,8 +17,8 @@ class LegendCustomColumn extends LegendCustomLayout {
   final CrossAxisAlignment? crossAxisAlignment;
   final bool? expandCrossAxis;
 
-  LegendCustomColumn(
-    this.children, {
+  LegendCustomColumn({
+    required this.children,
     this.spacing,
     this.crossAxisAlignment,
     this.mainAxisAlignment,
@@ -34,8 +34,8 @@ class LegendCustomRow extends LegendCustomLayout {
   final CrossAxisAlignment? crossAxisAlignment;
   final bool? expandCrossAxis;
 
-  LegendCustomRow(
-    this.children, {
+  LegendCustomRow({
+    required this.children,
     this.spacing,
     this.crossAxisAlignment,
     this.mainAxisAlignment,
