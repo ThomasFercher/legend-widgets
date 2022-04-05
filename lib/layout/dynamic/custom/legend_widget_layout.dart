@@ -10,6 +10,7 @@ class LegendWidgetLayout extends RenderObjectWidget
     with SlottedMultiChildRenderObjectWidgetMixin<int> {
   final List<Widget> children;
   final LegendCustomLayout layout;
+  final Color? background;
 
   /// Custom Multi Child Layout Widget
   /// The [children] represent the [List<Widgets>] which will be layouted.
@@ -27,6 +28,7 @@ class LegendWidgetLayout extends RenderObjectWidget
     Key? key,
     required this.children,
     required this.layout,
+    this.background,
   }) : super(key: ValueKey(layout.hashCode + children.hashCode));
 
   /// Instead of one fixed [LegendCustomLayout], we can have different
@@ -42,6 +44,7 @@ class LegendWidgetLayout extends RenderObjectWidget
     required List<Widget> children,
     required Map<double, LegendCustomLayout> layouts,
     required double width,
+    Color? background,
   }) {
     LegendCustomLayout? selected_layout;
     LayoutEntry layout;
@@ -56,7 +59,8 @@ class LegendWidgetLayout extends RenderObjectWidget
 
     selected_layout ??= layouts.values.last;
 
-    return LegendWidgetLayout(children: children, layout: selected_layout);
+    return LegendWidgetLayout(
+        children: children, layout: selected_layout, background: background);
   }
 
   @override
@@ -72,7 +76,8 @@ class LegendWidgetLayout extends RenderObjectWidget
   SlottedContainerRenderObjectMixin<int> createRenderObject(
     BuildContext context,
   ) {
-    return CustomLayoutRenderBox(customLayout: layout, indexes: slots.toList());
+    return CustomLayoutRenderBox(
+        customLayout: layout, indexes: slots.toList(), background: background);
   }
 
   @override

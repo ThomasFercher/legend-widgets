@@ -6,10 +6,12 @@ class CustomLayoutRenderBox extends RenderBox
     with SlottedContainerRenderObjectMixin<int>, DebugOverflowIndicatorMixin {
   final LegendCustomLayout customLayout;
   final List<int> indexes;
+  final Color? background;
 
   CustomLayoutRenderBox({
     required this.customLayout,
     required this.indexes,
+    this.background,
   });
 
   List<RenderBox>? _children;
@@ -39,7 +41,7 @@ class CustomLayoutRenderBox extends RenderBox
       if (layout is LegendCustomWidget) {
         final RenderBox? child = childForSlot(layout.id);
         if (child != null) {
-          double m_width = child.getMinIntrinsicWidth(100);
+          double m_width = child.getMinIntrinsicWidth(0);
           if (m_width == 0) {
             print("");
             noWidthSpecified[i] = child;
@@ -49,23 +51,37 @@ class CustomLayoutRenderBox extends RenderBox
           child.layout(childConstraints, parentUsesSize: true);
           sizes.add(child.size);
           childConstraints = childConstraints.copyWith(
-              maxWidth: childConstraints.maxWidth - child.size.width);
+            maxWidth: childConstraints.maxWidth - child.size.width,
+          );
         }
       } else if (layout is LegendCustomRow) {
         List<Size> rowSizes =
             getIterableSizesRow(layout.children, childConstraints);
+        Size maxSize = Size.zero;
+        double w = 0;
+        for (Size s in rowSizes) {
+          if (s.height > maxSize.height) {
+            maxSize = s;
+          }
+
+          w += s.width;
+        }
+        sizes.add(Size(w, maxSize.height));
         print(rowSizes);
       } else if (layout is LegendCustomColumn) {
         List<Size> columnSizes =
             getIterableSizesRow(layout.children, childConstraints);
         print(columnSizes);
         Size maxSize = Size.zero;
+        double h = 0;
         for (Size s in columnSizes) {
           if (s.width > maxSize.width) {
             maxSize = s;
           }
+
+          h += s.height;
         }
-        sizes.add(maxSize);
+        sizes.add(Size(maxSize.width, h));
         // childConstraints = childConstraints.copyWith(
         //   maxWidth: childConstraints.maxWidth - maxSize.width);
       }
@@ -123,7 +139,7 @@ class CustomLayoutRenderBox extends RenderBox
       BoxConstraints childConstraints) {
     if (layout is LegendCustomWidget) {
       final RenderBox? child = childForSlot(layout.id);
-
+      print(childConstraints);
       if (child != null) {
         child.layout(childConstraints, parentUsesSize: true);
         BoxParentData childParentData = child.parentData as BoxParentData;
@@ -143,6 +159,7 @@ class CustomLayoutRenderBox extends RenderBox
       double width =
           isNotInfinite(constraints.maxWidth) ? constraints.maxWidth : 0;
       double mWidth = constraints.maxWidth;
+      double mHeight = constraints.maxHeight;
 
       //
       List<Size> childSizes =
@@ -178,6 +195,66 @@ class CustomLayoutRenderBox extends RenderBox
         });
       }
 
+      // Main Axis Aligment
+      MainAxisAlignment? mainAxisAligment = layout.mainAxisAlignment;
+      List<double> mainAxisSpacing = [];
+      if (mainAxisAligment != null) {
+        double filledSpace = 0;
+
+        childSizes.forEach((s) {
+          filledSpace += s.height;
+        });
+
+        switch (mainAxisAligment) {
+          case MainAxisAlignment.center:
+            double indent = (mHeight - filledSpace) / 2;
+
+            for (var i = 0; i < childSizes.length; i++) {
+              if (i == 0) {
+                mainAxisSpacing.add(indent);
+              } else {
+                mainAxisSpacing.add(0);
+              }
+            }
+            break;
+          case MainAxisAlignment.end:
+            double indent = mHeight - filledSpace;
+
+            for (var i = 0; i < childSizes.length; i++) {
+              if (i == 0) {
+                mainAxisSpacing.add(indent);
+              } else {
+                mainAxisSpacing.add(0);
+              }
+            }
+            break;
+          case MainAxisAlignment.spaceBetween:
+            double indent = (mHeight - filledSpace) / (childSizes.length - 1);
+
+            for (var i = 0; i < childSizes.length; i++) {
+              if (i != 0) {
+                mainAxisSpacing.add(indent);
+              } else {
+                mainAxisSpacing.add(0);
+              }
+            }
+            break;
+          case MainAxisAlignment.spaceEvenly:
+            double indent = (mHeight - filledSpace) / (childSizes.length + 1);
+            for (var i = 0; i < childSizes.length; i++) {
+              mainAxisSpacing.add(indent);
+            }
+            break;
+          case MainAxisAlignment.start:
+            for (var i = 0; i < childSizes.length; i++) {
+              mainAxisSpacing.add(0);
+            }
+            break;
+
+          default:
+        }
+      }
+
       // Max Vertical Extent
       double mColWidth = 0;
 
@@ -191,6 +268,13 @@ class CustomLayoutRenderBox extends RenderBox
           crossAxisSpace = crossAxisSpacing[i];
         }
 
+        double mainAxisSpace = 0;
+        if (mainAxisAligment != null) {
+          mainAxisSpace = mainAxisSpacing[i];
+          columnOffset =
+              Offset(columnOffset.dx, columnOffset.dy + mainAxisSpace);
+        }
+
         Size childSize = layoutItem(
           layout.children[i],
           Offset(columnOffset.dx + crossAxisSpace, columnOffset.dy),
@@ -198,7 +282,7 @@ class CustomLayoutRenderBox extends RenderBox
         );
 
         // Add to rowWidth
-        height += childSize.height;
+        height += childSize.height + mainAxisSpace;
 
         // Max
         if (childSize.height > mColWidth) mColWidth = childSize.height;
@@ -281,12 +365,10 @@ class CustomLayoutRenderBox extends RenderBox
       bool childHasFlex =
           layout.children.any((element) => element.flex != null);
 
+      // Get Sizes
+      List<Size> itemsSizes = getIterableSizesRow(layout.children, constraints);
       if (childHasFlex) {
         List<LegendCustomLayout> flexItems = [];
-
-        // Get Sizes
-        List<Size> itemsSizes =
-            getIterableSizesRow(layout.children, constraints);
 
         List<Size> noFlexItemsSizes = [];
 
@@ -371,8 +453,8 @@ class CustomLayoutRenderBox extends RenderBox
             for (Size s in childSizes) {
               filledSpace += s.width;
             }
-
-            filledSpace += spacing! * (childSizes.length - 1);
+            if (spacing != null)
+              filledSpace += spacing * (childSizes.length - 1);
 
             double rem = mWidth - filledSpace;
 
@@ -386,8 +468,8 @@ class CustomLayoutRenderBox extends RenderBox
             for (Size s in childSizes) {
               filledSpace += s.width;
             }
-
-            filledSpace += spacing! * (childSizes.length - 1);
+            if (spacing != null)
+              filledSpace += spacing * (childSizes.length - 1);
 
             double rem = mWidth - filledSpace;
 
@@ -419,10 +501,15 @@ class CustomLayoutRenderBox extends RenderBox
       // Layout
       double c_width = 0;
       mRowHeight = 0;
+      itemsSizes.forEach((element) {
+        if (element.height > mRowHeight) mRowHeight = element.height;
+      });
+
       for (var i = 0; i < layout.children.length; i++) {
         // Update Constraints
         constraints = constraints.copyWith(
-          minHeight: height,
+          //  minHeight: height,
+          maxHeight: mRowHeight,
           maxWidth: constraints.maxWidth - c_width, // - rowOffset.dx,
         );
 
@@ -431,6 +518,11 @@ class CustomLayoutRenderBox extends RenderBox
           constraints = constraints.copyWith(
             minWidth: flexWidth,
             maxWidth: flexWidth,
+          );
+        } else {
+          constraints = constraints.copyWith(
+            minWidth: childSizes[i].width,
+            maxWidth: childSizes[i].width,
           );
         }
 
@@ -464,10 +556,6 @@ class CustomLayoutRenderBox extends RenderBox
 
         // Update Offset
         rowOffset = Offset(rowOffset.dx + c_width, rowOffset.dy);
-
-        if (mRowHeight < childSize.height) {
-          mRowHeight = childSize.height;
-        }
       }
 
       return Size(mWidth, mRowHeight);
@@ -518,7 +606,7 @@ class CustomLayoutRenderBox extends RenderBox
 
     context.canvas.drawRect(
       offset & size,
-      Paint()..color = Colors.red,
+      Paint()..color = background ?? Colors.transparent,
     );
 
     void paintChild(RenderBox child, PaintingContext context, Offset offset) {
