@@ -25,7 +25,7 @@ class LegendBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeInfo ss = SizeInfo.of(context);
     LegendTheme theme = Provider.of<LegendTheme>(context);
-    double width = theme.sizeIsRange(0, 2) ? ss.width : ss.width / 3;
+    double width = theme.sizingTheme.sizeIsMax(1000) ? ss.width : ss.width / 3;
 
     return Container(
       alignment: Alignment.bottomCenter,
