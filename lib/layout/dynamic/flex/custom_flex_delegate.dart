@@ -104,7 +104,6 @@ class CustomFlexDelegate extends MultiChildLayoutDelegate {
         flexWidths.add(flex.value as double);
       }
     }
-    ;
 
     double split = (maxWidth - filledSpace) / flexMaxVal;
 
