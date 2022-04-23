@@ -83,7 +83,7 @@ class CustomLayoutRenderBox extends RenderBox
 
           List<Size> columnSizes =
               getIterableSizesRow(col.children, childConstraints);
-          print(columnSizes);
+
           Size maxSize = Size.zero;
           double h = 0;
           for (Size s in columnSizes) {
@@ -427,7 +427,6 @@ class CustomLayoutRenderBox extends RenderBox
           childSizes.add(itemsSizes[i]);
         }
       }
-      print(childSizes);
     } else if (mainAxisAlignment != null) {
       // Set Spacing null as we don't need it
       spacing = null;
