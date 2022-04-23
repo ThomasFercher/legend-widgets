@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:legend_design_core/styles/layouts/layout_type.dart';
-import 'package:legend_design_core/styles/theming/sizing/size_provider.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
+import 'package:legend_design_core/styles/sizing/size_info.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
 import 'package:provider/provider.dart';
@@ -25,17 +23,9 @@ class LegendBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeProvider ss = SizeProvider.of(context);
-    ThemeProvider theme = Provider.of<ThemeProvider>(context);
-
-    double width;
-
-    if (ss.screenSize == ScreenSize.Medium ||
-        ss.screenSize == ScreenSize.Small) {
-      width = ss.width;
-    } else {
-      width = ss.width / 3;
-    }
+    SizeInfo ss = SizeInfo.of(context);
+    LegendTheme theme = Provider.of<LegendTheme>(context);
+    double width = theme.sizingTheme.sizeIsMax(1000) ? ss.width : ss.width / 3;
 
     return Container(
       alignment: Alignment.bottomCenter,

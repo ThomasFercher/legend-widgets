@@ -1,32 +1,39 @@
 import 'items/legendLayoutItem.dart';
 
-class DynamicLayout {
+class DynamicFlexLayout {
   final List<double> splits;
   final List<LegendLayoutItem> items;
-  int lastIndex = -1;
+  late int _index;
+  final double width;
 
-  DynamicLayout({
+  DynamicFlexLayout({
     required this.splits,
     required this.items,
+    required this.width,
   }) {
-    assert(splits.length == items.length);
+    assert(
+        splits.length == items.length && splits.isNotEmpty && items.isNotEmpty);
+
+    _index = getIndex();
   }
 
-  LegendLayoutItem getItem(double width) {
+  int get index => _index;
+
+  int getIndex() {
     double lsplit = 0;
     for (var i = 0; i < splits.length; i++) {
       if (width < splits[i] && width >= lsplit) {
-        lastIndex = i;
-        return items[i];
+        return i;
       }
       if (i == splits.length - 1) {
-        lastIndex = i;
-        return items[i];
+        return i;
       }
 
       lsplit = splits[i];
     }
-    lastIndex = 0;
-    return items[0];
+
+    return 0;
   }
+
+  LegendLayoutItem get item => items[_index];
 }

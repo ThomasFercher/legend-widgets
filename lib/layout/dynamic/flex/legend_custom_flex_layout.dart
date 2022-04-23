@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
 
+import 'custom_flex_delegate.dart';
 import 'items/legendLayoutItem.dart';
-import 'legendCustomFlexDelegate.dart';
 
-class LegendCustomLayout extends StatelessWidget {
+export 'items/legendLayoutItem.dart';
+
+class LegendCustomFlexLayout extends StatelessWidget {
   final LegendLayoutItem item;
   final List<Widget> children;
   late final List<LayoutId> layout;
   final double? height;
+  final int? id;
 
-  LegendCustomLayout({
+  LegendCustomFlexLayout({
     required this.item,
     required this.children,
     this.height,
+    this.id,
   }) {
     layout = getLayoutsList();
   }
 
-  factory LegendCustomLayout.dyna({
+  factory LegendCustomFlexLayout.dyna({
     required List<Widget> children,
   }) {
-    return LegendCustomLayout(
+    return LegendCustomFlexLayout(
       item: LegendLayoutNone(),
       children: children,
     );
@@ -56,7 +60,7 @@ class LegendCustomLayout extends StatelessWidget {
           maxHeight: mHeight,
         ),
         child: CustomMultiChildLayout(
-          delegate: LegendCustomFlexDelegate(item),
+          delegate: CustomFlexDelegate(item, id),
           children: layout,
         ),
       );

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_widgets/datadisplay/stepper/legendStepperItem.dart';
+import 'package:legend_design_widgets/datadisplay/stepper/legend_stepper_item.dart';
 
 class LegendStepper extends StatefulWidget {
   int index;
   final List<LegendStepperItem> stepperItems;
   StepperType? type;
   Function(int, int)? stepState;
-  //controlsBuilder isn't adjustable right now 
+  //controlsBuilder isn't adjustable right now
   Widget Function(BuildContext, ControlsDetails)? controlsBuilder;
 
   LegendStepper({
@@ -49,9 +49,6 @@ class _LegendStepperState extends State<LegendStepper> {
     }
   }
 
- 
-
-  
   List<Step> getSteps() {
     List<Step> steps = [];
     steps = widget.stepperItems
@@ -79,7 +76,6 @@ class _LegendStepperState extends State<LegendStepper> {
   Widget build(BuildContext context) {
     return Stepper(
       type: _getType(widget.type),
-      
       controlsBuilder: (context, details) {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -101,7 +97,6 @@ class _LegendStepperState extends State<LegendStepper> {
           ),
         );
       },
- 
       currentStep: legendindex,
       onStepCancel: () {
         if (legendindex > 0) {

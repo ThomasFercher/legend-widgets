@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:legend_design_core/styles/theming/colors/legend_colors.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/colors/legend_colors.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../text/legendInputDecoration.dart';
@@ -83,297 +83,324 @@ class _LegendColorInputState extends State<LegendColorInput> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider theme = context.watch<ThemeProvider>();
+    LegendTheme theme = context.watch<LegendTheme>();
+    double width = MediaQuery.of(context).size.width;
 
     return Container(
-      height: 52,
-      child: Row(
+      width: MediaQuery.of(context).size.width,
+      height: width < 480 ? 120 : 52,
+      child: Column(
         children: [
-          Container(
-            height: 48,
-            width: 64,
-            decoration: BoxDecoration(
-              color: value,
-              borderRadius: const BorderRadius.all(Radius.circular(24)),
-              border: Border.all(
-                color: Colors.white60,
-                width: 1,
+          if (width < 480)
+            Container(
+              height: 32,
+              width: width,
+              margin: EdgeInsets.only(
+                bottom: 4,
+              ),
+              decoration: BoxDecoration(
+                color: value,
+                borderRadius: const BorderRadius.all(Radius.circular(24)),
+                border: Border.all(
+                  color: Colors.white60,
+                  width: 1,
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            width: 24,
-          ),
-          SizedBox(
-            width: 120,
-            child: LegendTextField(
-              ctrl: hex_c,
-              textAlign: TextAlign.center,
-              formatter: [
-                FilteringTextInputFormatter(
-                  RegExp(
-                    r'^[0-9a-fA-F#]{1,9}$',
+          Row(
+            children: [
+              if (width > 480)
+                Expanded(
+                  child: Container(
+                    height: 48,
+                    width: 64,
+                    decoration: BoxDecoration(
+                      color: value,
+                      borderRadius: const BorderRadius.all(Radius.circular(24)),
+                      border: Border.all(
+                        color: Colors.white60,
+                        width: 1,
+                      ),
+                    ),
                   ),
-                  allow: true,
-                  replacementString: hexString,
                 ),
-              ],
-              decoration: LegendInputDecoration.rounded(
-                focusColor: theme.colors.selectionColor,
+              if (width > 480)
+                const SizedBox(
+                  width: 24,
+                ),
+              SizedBox(
+                width: 116,
+                child: LegendTextField(
+                  ctrl: hex_c,
+                  textAlign: TextAlign.center,
+                  formatter: [
+                    FilteringTextInputFormatter(
+                      RegExp(
+                        r'^[0-9a-fA-F#]{1,9}$',
+                      ),
+                      allow: true,
+                      replacementString: hexString,
+                    ),
+                  ],
+                  decoration: LegendInputDecoration.rounded(
+                    focusColor: theme.colors.selection,
+                  ),
+                  onChanged: (string) {
+                    String colorstring = string;
+                    setState(() {
+                      hexString = colorstring;
+                    });
+                    Color c = value;
+
+                    if (colorstring.startsWith('#')) {
+                      colorstring = colorstring.substring(1);
+                    }
+
+                    if (colorstring.length >= 6 && colorstring.length <= 8) {
+                      final buffer = StringBuffer();
+                      if (colorstring.length == 6) {
+                        buffer.write("ff");
+                      }
+
+                      buffer.write(colorstring);
+
+                      c = Color(int.parse(buffer.toString(), radix: 16));
+
+                      setState(() {
+                        r = c.red;
+                        g = c.green;
+                        b = c.blue;
+                        a = c.alpha;
+                        value = c;
+                        hexString = string;
+                      });
+                      updateRGB();
+                    }
+                  },
+                ),
               ),
-              onChanged: (string) {
-                String colorstring = string;
-                setState(() {
-                  hexString = colorstring;
-                });
-                Color c = value;
-
-                if (colorstring.startsWith('#')) {
-                  colorstring = colorstring.substring(1);
-                }
-
-                if (colorstring.length >= 6 && colorstring.length <= 8) {
-                  final buffer = StringBuffer();
-                  if (colorstring.length == 6) {
-                    buffer.write("ff");
-                  }
-
-                  buffer.write(colorstring);
-
-                  c = Color(int.parse(buffer.toString(), radix: 16));
-
-                  setState(() {
-                    r = c.red;
-                    g = c.green;
-                    b = c.blue;
-                    a = c.alpha;
-                    value = c;
-                    hexString = string;
-                  });
-                  updateRGB();
-                }
-              },
-            ),
-          ),
-          const SizedBox(
-            width: 24,
-          ),
-          SizedBox(
-            width: 240,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    transform: Matrix4.translationValues(2, 0, 0),
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.horizontal(left: Radius.circular(24)),
-                      color: theme.colors.selectionColor,
-                    ),
-                    padding: EdgeInsets.only(
-                      left: 1,
-                      top: 2,
-                      bottom: 2,
-                    ),
-                    child: Container(
-                      transform: Matrix4.translationValues(1, 0, 0),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.horizontal(left: Radius.circular(22)),
-                        color: LegendColors.gray8,
-                      ),
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(
-                        left: 24,
-                      ),
-                      child: SizedBox(
-                        width: 24,
-                        child: LegendTextField(
-                          textAlign: TextAlign.center,
-                          formatter: [
-                            FilteringTextInputFormatter(
-                              RegExp(
-                                r'^([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$',
+              const SizedBox(
+                width: 12,
+              ),
+              SizedBox(
+                width: 190,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        transform: Matrix4.translationValues(2, 0, 0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.horizontal(
+                              left: Radius.circular(24)),
+                          color: theme.colors.selection,
+                        ),
+                        padding: EdgeInsets.only(
+                          left: 1,
+                          top: 2,
+                          bottom: 2,
+                        ),
+                        child: Container(
+                          transform: Matrix4.translationValues(1, 0, 0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.horizontal(
+                                left: Radius.circular(22)),
+                            color: LegendColors.gray8,
+                          ),
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(
+                            left: 24,
+                          ),
+                          child: SizedBox(
+                            width: 24,
+                            child: LegendTextField(
+                              textAlign: TextAlign.center,
+                              formatter: [
+                                FilteringTextInputFormatter(
+                                  RegExp(
+                                    r'^([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$',
+                                  ),
+                                  allow: true,
+                                  replacementString: "$r",
+                                ),
+                              ],
+                              decoration: LegendInputDecoration(
+                                border: InputBorder.none,
                               ),
-                              allow: true,
-                              replacementString: "$r",
+                              ctrl: r_c,
+                              onChanged: (string) {
+                                if (string.isNotEmpty) {
+                                  setState(() {
+                                    r = int.parse(string);
+                                    value = Color.fromARGB(a, r, g, b);
+                                  });
+                                  updateHex();
+                                }
+                              },
                             ),
-                          ],
-                          decoration: LegendInputDecoration(
-                            border: InputBorder.none,
                           ),
-                          ctrl: r_c,
-                          onChanged: (string) {
-                            if (string.isNotEmpty) {
-                              setState(() {
-                                r = int.parse(string);
-                                value = Color.fromARGB(a, r, g, b);
-                              });
-                              updateHex();
-                            }
-                          },
                         ),
                       ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    transform: Matrix4.translationValues(1, 0, 0),
-                    decoration: BoxDecoration(
-                      color: LegendColors.gray8,
-                      border: Border(
-                        top: BorderSide(
-                          width: 2,
-                          color: theme.colors.selectionColor,
-                        ),
-                        bottom: BorderSide(
-                          width: 2,
-                          color: theme.colors.selectionColor,
-                        ),
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        left: 8,
-                      ),
-                      width: 24,
-                      child: LegendTextField(
-                        textAlign: TextAlign.center,
-                        formatter: [
-                          FilteringTextInputFormatter(
-                            RegExp(
-                              r'^([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$',
+                    Expanded(
+                      child: Container(
+                        transform: Matrix4.translationValues(1, 0, 0),
+                        decoration: BoxDecoration(
+                          color: LegendColors.gray8,
+                          border: Border(
+                            top: BorderSide(
+                              width: 2,
+                              color: theme.colors.selection,
                             ),
-                            allow: true,
-                            replacementString: "$g",
-                          ),
-                        ],
-                        decoration: LegendInputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        ctrl: g_c,
-                        onChanged: (string) {
-                          if (string.isNotEmpty) {
-                            setState(() {
-                              g = int.parse(string);
-                              value = Color.fromARGB(a, r, g, b);
-                            });
-                            updateHex();
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    transform: Matrix4.translationValues(-1, 0, 0),
-                    decoration: BoxDecoration(
-                      color: LegendColors.gray8,
-                      border: Border(
-                        top: BorderSide(
-                          width: 2,
-                          color: theme.colors.selectionColor,
-                        ),
-                        bottom: BorderSide(
-                          width: 2,
-                          color: theme.colors.selectionColor,
-                        ),
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 24,
-                      margin: EdgeInsets.only(
-                        right: 8,
-                      ),
-                      child: LegendTextField(
-                        textAlign: TextAlign.center,
-                        formatter: [
-                          FilteringTextInputFormatter(
-                            RegExp(
-                              r'^([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$',
+                            bottom: BorderSide(
+                              width: 2,
+                              color: theme.colors.selection,
                             ),
-                            allow: true,
-                            replacementString: "$b",
                           ),
-                        ],
-                        decoration: LegendInputDecoration(
-                          border: InputBorder.none,
                         ),
-                        ctrl: b_c,
-                        onChanged: (string) {
-                          if (string.isNotEmpty) {
-                            setState(() {
-                              b = int.parse(string);
-                              value = Color.fromARGB(a, r, g, b);
-                            });
-                            updateHex();
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    transform: Matrix4.translationValues(-2, 0, 0),
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.horizontal(right: Radius.circular(24)),
-                      color: theme.colors.selectionColor,
-                    ),
-                    padding: EdgeInsets.only(
-                      right: 1,
-                      top: 2,
-                      bottom: 2,
-                    ),
-                    child: Container(
-                      transform: Matrix4.translationValues(-1, 0, 0),
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.horizontal(right: Radius.circular(22)),
-                        color: LegendColors.gray8,
-                      ),
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(
-                        right: 24,
-                      ),
-                      child: SizedBox(
-                        width: 24,
-                        child: LegendTextField(
-                          textAlign: TextAlign.center,
-                          formatter: [
-                            FilteringTextInputFormatter(
-                              RegExp(
-                                r'^([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$',
+                        alignment: Alignment.center,
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            left: 8,
+                          ),
+                          width: 24,
+                          child: LegendTextField(
+                            textAlign: TextAlign.center,
+                            formatter: [
+                              FilteringTextInputFormatter(
+                                RegExp(
+                                  r'^([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$',
+                                ),
+                                allow: true,
+                                replacementString: "$g",
                               ),
-                              allow: true,
-                              replacementString: "$a",
+                            ],
+                            decoration: LegendInputDecoration(
+                              border: InputBorder.none,
                             ),
-                          ],
-                          decoration: LegendInputDecoration(
-                            border: InputBorder.none,
+                            ctrl: g_c,
+                            onChanged: (string) {
+                              if (string.isNotEmpty) {
+                                setState(() {
+                                  g = int.parse(string);
+                                  value = Color.fromARGB(a, r, g, b);
+                                });
+                                updateHex();
+                              }
+                            },
                           ),
-                          ctrl: a_c,
-                          onChanged: (string) {
-                            if (string.isNotEmpty) {
-                              setState(() {
-                                a = int.parse(string);
-                                value = Color.fromARGB(a, r, g, b);
-                              });
-                              updateHex();
-                            }
-                          },
                         ),
                       ),
                     ),
-                  ),
+                    Expanded(
+                      child: Container(
+                        transform: Matrix4.translationValues(-1, 0, 0),
+                        decoration: BoxDecoration(
+                          color: LegendColors.gray8,
+                          border: Border(
+                            top: BorderSide(
+                              width: 2,
+                              color: theme.colors.selection,
+                            ),
+                            bottom: BorderSide(
+                              width: 2,
+                              color: theme.colors.selection,
+                            ),
+                          ),
+                        ),
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 24,
+                          margin: EdgeInsets.only(
+                            right: 8,
+                          ),
+                          child: LegendTextField(
+                            textAlign: TextAlign.center,
+                            formatter: [
+                              FilteringTextInputFormatter(
+                                RegExp(
+                                  r'^([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$',
+                                ),
+                                allow: true,
+                                replacementString: "$b",
+                              ),
+                            ],
+                            decoration: LegendInputDecoration(
+                              border: InputBorder.none,
+                            ),
+                            ctrl: b_c,
+                            onChanged: (string) {
+                              if (string.isNotEmpty) {
+                                setState(() {
+                                  b = int.parse(string);
+                                  value = Color.fromARGB(a, r, g, b);
+                                });
+                                updateHex();
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        transform: Matrix4.translationValues(-2, 0, 0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(24),
+                          ),
+                          color: theme.colors.selection,
+                        ),
+                        padding: EdgeInsets.only(
+                          right: 1,
+                          top: 2,
+                          bottom: 2,
+                        ),
+                        child: Container(
+                          transform: Matrix4.translationValues(-1, 0, 0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.horizontal(
+                                right: Radius.circular(22)),
+                            color: LegendColors.gray8,
+                          ),
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(
+                            right: 24,
+                          ),
+                          child: SizedBox(
+                            width: 24,
+                            child: LegendTextField(
+                              textAlign: TextAlign.center,
+                              formatter: [
+                                FilteringTextInputFormatter(
+                                  RegExp(
+                                    r'^([01]?[0-9][0-9]?|2[0-4][0-9]|25[0-5])$',
+                                  ),
+                                  allow: true,
+                                  replacementString: "$a",
+                                ),
+                              ],
+                              decoration: LegendInputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              ctrl: a_c,
+                              onChanged: (string) {
+                                if (string.isNotEmpty) {
+                                  setState(() {
+                                    a = int.parse(string);
+                                    value = Color.fromARGB(a, r, g, b);
+                                  });
+                                  updateHex();
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

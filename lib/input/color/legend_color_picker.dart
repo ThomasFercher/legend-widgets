@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:provider/provider.dart';
 
 class LegendColorPicker extends StatefulWidget {
@@ -12,7 +12,7 @@ class LegendColorPicker extends StatefulWidget {
 class _LegendColorPickerState extends State<LegendColorPicker> {
   @override
   Widget build(BuildContext context) {
-    ThemeProvider theme = context.watch<ThemeProvider>();
+    LegendTheme theme = context.watch<LegendTheme>();
     return Container(
       alignment: Alignment.center,
       width: 200,

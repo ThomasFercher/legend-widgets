@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:legend_design_core/styles/theming/theme_provider.dart';
+import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:provider/provider.dart';
 
@@ -33,10 +32,10 @@ class LegendCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider theme = Provider.of<ThemeProvider>(context);
+    LegendTheme theme = Provider.of<LegendTheme>(context);
 
     return Card(
-      color: backgroundColor ?? theme.colors.cardBackgroundColor,
+      color: backgroundColor ?? theme.colors.background[1],
       shape: RoundedRectangleBorder(
         borderRadius: borderRadiusGeometry ?? theme.sizing.borderRadius[0],
       ),
@@ -55,7 +54,7 @@ class LegendCard extends StatelessWidget {
   }
 
   List<Widget> getContent(height, width, context) {
-    ThemeProvider theme = Provider.of<ThemeProvider>(context);
+    LegendTheme theme = Provider.of<LegendTheme>(context);
 
     if (children != null) {
       return children!;
@@ -91,7 +90,7 @@ class LegendCard extends StatelessWidget {
                   Icon(
                     icon,
                     size: 64,
-                    color: iconColor ?? theme.colors.primaryColor,
+                    color: iconColor ?? theme.colors.primary,
                   ),
                   Expanded(
                     child: Align(
