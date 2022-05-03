@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:legend_design_core/gestures/detector.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/typography/legend_text.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class ImageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LegendTheme theme = Provider.of<LegendTheme>(context);
-    return InkWell(
+    return LegendDetector(
       onTap: () {
         print("ye");
         onClick();

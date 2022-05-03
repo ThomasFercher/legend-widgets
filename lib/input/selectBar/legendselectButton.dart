@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:legend_design_core/gestures/detector.dart';
 import 'package:legend_design_core/icons/legend_gradient_icon.dart';
 import 'package:legend_design_core/utils/extensions.dart';
 import 'package:legend_design_widgets/input/selectBar/selectProvider.dart';
@@ -123,11 +124,7 @@ class _LegendSelectButtonState extends State<LegendSelectButton>
         controller.reverse();
         selected = false;
       }
-      return InkWell(
-        splashFactory: NoSplash.splashFactory,
-        splashColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        highlightColor: Colors.transparent,
+      return LegendDetector(
         onTap: () {
           widget.onClick(widget.option);
         },
