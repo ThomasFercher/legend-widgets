@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/typography/legend_text.dart';
-import 'package:legend_design_core/typography/typography.dart';
-import 'package:legend_design_core/utils/extensions.dart';
+import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/typography.dart';
+
+import 'package:legend_utils/extensions/extensions.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendRowValue.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendTableCell.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendTableRow.dart';

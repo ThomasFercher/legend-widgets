@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/legend_text.dart';
 import 'package:legend_design_widgets/datadisplay/searchableList.dart/legend_searchable.dart';
 import 'package:legend_design_widgets/input/dropdown.dart/legendDropdownOption.dart';
 import 'package:legend_design_widgets/input/dropdown.dart/legendInputDropdown.dart';
@@ -341,7 +341,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
               LegendInputDropdown(
                 options: filter.categories
                     .map(
-                      (e) => PopupMenuOption(
+                      (e) => PopupRouteDisplay(
                         value: e.value,
                         icon: e.icon,
                       ),

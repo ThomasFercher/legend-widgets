@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/objects/asset_info.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/legend_text.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
-import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
+
 import 'package:provider/provider.dart';
 
 class LegendAlert extends StatelessWidget {
@@ -22,24 +21,6 @@ class LegendAlert extends StatelessWidget {
     this.onConfirm,
     this.buttonStyle,
   });
-
-  LegendAlert.success({this.message}) {
-    icon = flareIcon(AssetInfo.successAlert);
-    buttonStyle = LegendButtonStyle.confirm(
-      activeColor: Colors.redAccent,
-      color: Colors.red,
-    );
-  }
-
-  LegendAlert.info({this.message}) {
-    icon = flareIcon(AssetInfo.successAlert);
-    buttonStyle = LegendButtonStyle.normal();
-  }
-
-  LegendAlert.danger({this.message}) {
-    icon = flareIcon(AssetInfo.successAlert);
-    buttonStyle = LegendButtonStyle.danger();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/icons/legend_animated_icon.dart';
+import 'package:legend_design_core/widgets/icons/legend_animated_icon.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_widgets/datadisplay/carousel/legend_carousel_item.dart';
 import 'package:provider/provider.dart';

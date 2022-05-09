@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class PopupMenuOption {
+class PopupRouteDisplay {
   final String value;
   final IconData? icon;
 
-  PopupMenuOption({required this.value, this.icon});
+  PopupRouteDisplay({required this.value, this.icon});
 }
