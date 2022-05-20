@@ -255,26 +255,27 @@ class LegendButtonStyle extends ButtonStyle {
   }
 
   @override
-  LegendButtonStyle copyWith({
-    AlignmentGeometry? alignment,
-    Duration? animationDuration,
-    MaterialStateProperty<Color?>? backgroundColor,
-    MaterialStateProperty<double?>? elevation,
-    bool? enableFeedback,
-    MaterialStateProperty<Size?>? fixedSize,
-    MaterialStateProperty<Color?>? foregroundColor,
-    MaterialStateProperty<Size?>? minimumSize,
-    MaterialStateProperty<MouseCursor?>? mouseCursor,
-    MaterialStateProperty<Color?>? overlayColor,
-    MaterialStateProperty<EdgeInsetsGeometry?>? padding,
-    MaterialStateProperty<Color?>? shadowColor,
-    MaterialStateProperty<OutlinedBorder?>? shape,
-    MaterialStateProperty<BorderSide?>? side,
-    InteractiveInkFeatureFactory? splashFactory,
-    MaterialTapTargetSize? tapTargetSize,
+  ButtonStyle copyWith({
     MaterialStateProperty<TextStyle?>? textStyle,
+    MaterialStateProperty<Color?>? backgroundColor,
+    MaterialStateProperty<Color?>? foregroundColor,
+    MaterialStateProperty<Color?>? overlayColor,
+    MaterialStateProperty<Color?>? shadowColor,
+    MaterialStateProperty<Color?>? surfaceTintColor, //
+    MaterialStateProperty<double?>? elevation,
+    MaterialStateProperty<EdgeInsetsGeometry?>? padding,
+    MaterialStateProperty<Size?>? minimumSize,
+    MaterialStateProperty<Size?>? fixedSize,
+    MaterialStateProperty<Size?>? maximumSize, //
+    MaterialStateProperty<BorderSide?>? side,
+    MaterialStateProperty<OutlinedBorder?>? shape, // We not have
+    MaterialStateProperty<MouseCursor?>? mouseCursor,
     VisualDensity? visualDensity,
-    MaterialStateProperty<Size?>? maximumSize,
+    MaterialTapTargetSize? tapTargetSize,
+    Duration? animationDuration,
+    bool? enableFeedback,
+    AlignmentGeometry? alignment,
+    InteractiveInkFeatureFactory? splashFactory,
   }) {
     return LegendButtonStyle(
       alignment: alignment,
