@@ -77,7 +77,7 @@ class LegendDropdown extends StatelessWidget {
         tooltip: "",
         enableFeedback: true,
         offset: offset ?? Offset(0, 0),
-        color: theme.colors.foreground[1],
+        color: theme.colors.foreground2,
         itemBuilder: (BuildContext context) {
           return options
               .map(

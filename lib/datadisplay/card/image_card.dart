@@ -32,7 +32,7 @@ class ImageCard extends StatelessWidget {
         onClick();
       },
       child: Card(
-        color: theme.colors.background[1],
+        color: theme.colors.background2,
         shape: RoundedRectangleBorder(
           borderRadius: theme.sizing.borderRadius[0],
         ),

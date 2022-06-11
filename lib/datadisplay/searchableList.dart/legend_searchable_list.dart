@@ -290,10 +290,10 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
             ),
             LegendTextField(
               decoration: LegendInputDecoration.rounded(
-                backgroundColor: theme.colors.foreground[1],
+                backgroundColor: theme.colors.background1,
                 focusColor: theme.colors.selection,
                 borderColor: theme.colors.disabled,
-                textColor: theme.colors.textOnDark,
+                textColor: theme.colors.foreground1,
               ),
               onChanged: (value) {
                 filterWidgets<LegendSearchableFilterString>(value);
@@ -352,10 +352,10 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
                 },
                 offset: Offset(0, constraints.maxHeight / 2 - 2),
                 decoration: LegendInputDecoration.rounded(
-                  backgroundColor: theme.colors.foreground[1],
+                  backgroundColor: theme.colors.background1,
                   focusColor: theme.colors.selection,
                   borderColor: theme.colors.disabled,
-                  textColor: theme.colors.textOnDark,
+                  textColor: theme.colors.foreground1,
                 ),
               ),
             ],

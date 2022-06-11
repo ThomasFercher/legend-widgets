@@ -35,7 +35,7 @@ class LegendCard extends StatelessWidget {
     LegendTheme theme = Provider.of<LegendTheme>(context);
 
     return Card(
-      color: backgroundColor ?? theme.colors.background[1],
+      color: backgroundColor ?? theme.colors.background2,
       shape: RoundedRectangleBorder(
         borderRadius: borderRadiusGeometry ?? theme.sizing.borderRadius[0],
       ),
@@ -70,7 +70,7 @@ class LegendCard extends StatelessWidget {
                     child: LegendText(
                       text: title ?? "",
                       textStyle: theme.typography.h3.copyWith(
-                        color: theme.colors.foreground[3],
+                        color: theme.colors.foreground4,
                       ),
                     ),
                   ),
@@ -98,7 +98,7 @@ class LegendCard extends StatelessWidget {
                       child: LegendText(
                         text: value ?? "",
                         textStyle: theme.typography.h3.copyWith(
-                          color: theme.colors.foreground[3],
+                          color: theme.colors.foreground4,
                           fontSize: 26,
                         ),
                       ),
