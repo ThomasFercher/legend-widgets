@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/legend_text.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
+import 'package:legend_utils/extensions/extensions.dart';
 
 import 'package:provider/provider.dart';
 
@@ -34,13 +35,13 @@ class LegendAlert extends StatelessWidget {
           child: Card(
             color: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: theme.sizing.borderRadius[0],
+              borderRadius: theme.sizing.radius1.asRadius(),
             ),
             child: Container(
               height: height,
               width: height * 18 / 9,
               padding: EdgeInsets.all(
-                theme.sizing.borderInset[0] / 2,
+                theme.sizing.radius1 / 2,
               ),
               child: Row(
                 children: [

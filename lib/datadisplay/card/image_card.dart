@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:legend_design_core/widgets/gestures/detector.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_utils/legend_utils.dart';
 import 'package:provider/provider.dart';
 
 class ImageCard extends StatelessWidget {
@@ -34,7 +35,7 @@ class ImageCard extends StatelessWidget {
       child: Card(
         color: theme.colors.background2,
         shape: RoundedRectangleBorder(
-          borderRadius: theme.sizing.borderRadius[0],
+          borderRadius: theme.sizing.radius1.asRadius(),
         ),
         child: LayoutBuilder(builder: (context, constraints) {
           double width = constraints.maxWidth;
@@ -55,7 +56,7 @@ class ImageCard extends StatelessWidget {
                     padding: EdgeInsets.only(
                       left: 16,
                       right: 16,
-                      bottom: theme.sizing.borderInset[0],
+                      bottom: theme.sizing.radius1,
                     ),
                     child: LegendText(
                       text: description,
@@ -77,7 +78,7 @@ class ImageCard extends StatelessWidget {
     return LegendText(
       padding: EdgeInsets.only(
         left: 16,
-        top: theme.sizing.borderInset[0],
+        top: theme.sizing.radius1,
         bottom: 4,
       ),
       text: title,
@@ -90,10 +91,10 @@ class ImageCard extends StatelessWidget {
         ? Hero(
             tag: heroKey!,
             child: ClipRRect(
-              borderRadius: theme.sizing.borderRadius[0].copyWith(
-                bottomLeft: Radius.zero,
-                bottomRight: Radius.zero,
-              ),
+              borderRadius: theme.sizing.radius1.asRadius().copyWith(
+                    bottomLeft: Radius.zero,
+                    bottomRight: Radius.zero,
+                  ),
               child: Image.asset(
                 imagePath,
                 fit: BoxFit.cover,

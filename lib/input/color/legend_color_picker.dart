@@ -24,7 +24,7 @@ class _LegendColorPickerState extends State<LegendColorPicker> {
         displayThumbColor: false,
         portraitOnly: true,
         colorPickerWidth: 200,
-        pickerAreaBorderRadius: theme.sizing.borderRadius[0],
+        pickerAreaBorderRadius: theme.sizing.radius1.asRadius(),
       ),*/
     );
   }

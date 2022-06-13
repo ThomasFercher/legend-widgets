@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_utils/legend_utils.dart';
 
 import 'package:provider/provider.dart';
 
@@ -67,7 +68,7 @@ class LegendDropdown extends StatelessWidget {
       child: PopupMenuButton(
         child: Icon(icon),
         shape: RoundedRectangleBorder(
-          borderRadius: theme.sizing.borderRadius[0],
+          borderRadius: theme.sizing.radius1.asRadius(),
         ),
         onSelected: (value) {
           onSelected(

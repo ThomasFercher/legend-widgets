@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_utils/legend_utils.dart';
 import 'package:provider/provider.dart';
 
 class LegendCard extends StatelessWidget {
@@ -37,7 +38,7 @@ class LegendCard extends StatelessWidget {
     return Card(
       color: backgroundColor ?? theme.colors.background2,
       shape: RoundedRectangleBorder(
-        borderRadius: borderRadiusGeometry ?? theme.sizing.borderRadius[0],
+        borderRadius: borderRadiusGeometry ?? theme.sizing.radius1.asRadius(),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
