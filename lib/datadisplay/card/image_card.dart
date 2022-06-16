@@ -29,7 +29,6 @@ class ImageCard extends StatelessWidget {
     LegendTheme theme = Provider.of<LegendTheme>(context);
     return LegendDetector(
       onTap: () {
-        print("ye");
         onClick();
       },
       child: Card(
