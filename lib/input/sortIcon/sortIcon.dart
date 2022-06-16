@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/icons/legend_animated_icon.dart';
+import 'package:legend_design_core/widgets/icons/legend_animated_icon.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_widgets/datadisplay/searchableList.dart/legend_searchable.dart';
 import 'package:provider/src/provider.dart';

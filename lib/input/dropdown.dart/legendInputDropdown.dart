@@ -6,7 +6,7 @@ import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:provider/src/provider.dart';
 
 class LegendInputDropdown extends StatefulWidget {
-  final List<PopupMenuOption> options;
+  final List<PopupRouteDisplay> options;
   final void Function(String value)? onSelected;
   late final LegendInputDecoration? decoration;
   final String? initalValue;

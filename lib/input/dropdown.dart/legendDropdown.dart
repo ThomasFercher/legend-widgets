@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_utils/legend_utils.dart';
+
 import 'package:provider/provider.dart';
 
 import 'legendDropdownOption.dart';
 
 class LegendDropdown extends StatelessWidget {
-  final List<PopupMenuOption> options;
-  final Function(PopupMenuOption selected) onSelected;
+  final List<PopupRouteDisplay> options;
+  final Function(PopupRouteDisplay selected) onSelected;
   final Color? color;
   final double? itemHeight;
   final IconData icon;
@@ -66,7 +68,7 @@ class LegendDropdown extends StatelessWidget {
       child: PopupMenuButton(
         child: Icon(icon),
         shape: RoundedRectangleBorder(
-          borderRadius: theme.sizing.borderRadius[0],
+          borderRadius: theme.sizing.radius1.asRadius(),
         ),
         onSelected: (value) {
           onSelected(
@@ -76,7 +78,7 @@ class LegendDropdown extends StatelessWidget {
         tooltip: "",
         enableFeedback: true,
         offset: offset ?? Offset(0, 0),
-        color: theme.colors.foreground[1],
+        color: theme.colors.foreground2,
         itemBuilder: (BuildContext context) {
           return options
               .map(

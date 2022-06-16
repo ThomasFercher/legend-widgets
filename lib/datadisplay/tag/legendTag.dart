@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/typography/legend_text.dart';
-import 'package:legend_design_core/utils/extensions.dart';
-import 'package:legend_design_core/utils/legend_utils.dart';
+import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_utils/extensions/extensions.dart';
+import 'package:legend_utils/functions/functions.dart';
 import 'package:provider/src/provider.dart';
 
 class LegendTag extends StatelessWidget {
@@ -91,7 +91,7 @@ class LegendAnimatedTag extends StatefulWidget {
 
   double getWidth(BuildContext context) {
     return (theme.height / 2 - 4) * 2 +
-        LegendUtils.calcTextSize(
+        LegendFunctions.calcTextSize(
                 text, context.watch<LegendTheme>().typography.h0)
             .width;
   }

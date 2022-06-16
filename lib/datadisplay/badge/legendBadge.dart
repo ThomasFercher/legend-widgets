@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/typography/typography.dart';
+import 'package:legend_design_core/styles/typography/typography.dart';
+
 import 'package:legend_design_widgets/datadisplay/badge/badgeContainer.dart';
 
 enum LegendBadgeValues { Text, Count, Dot }

@@ -2,15 +2,14 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/legend_text.dart';
+
 import 'package:legend_design_widgets/input/color/legend_color_input.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendColorFormField.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormField.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';
-import 'package:legend_design_widgets/layout/dynamic/flex/legend_custom_flex_layout.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
-import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
 import 'package:provider/src/provider.dart';
 
 import '../../layout/dynamic/flex/form/legendCustomFormLayout.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/typography/legend_text.dart';
-import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
+import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_utils/extensions/edge_insets.dart';
+import 'package:legend_utils/extensions/extensions.dart';
 import 'package:provider/provider.dart';
-
 import '../legendButton/legendButton.dart';
 
 class Modal extends StatelessWidget {
@@ -41,7 +41,7 @@ class Modal extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: padding),
             child: Material(
-              borderRadius: theme.sizing.borderRadius[0],
+              borderRadius: theme.sizing.radius1.asRadius(),
               color: Colors.white,
               child: Container(
                 height: height,
@@ -49,11 +49,9 @@ class Modal extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.only(
-                        top: theme.sizing.borderInset[0] / 2,
-                        bottom: theme.sizing.borderInset[0] / 2,
-                        right: theme.sizing.borderInset[0] / 2,
-                        left: theme.sizing.borderInset[0],
+                      padding: theme.sizing.radius2.asPaddingAllBut(
+                        theme.sizing.radius1,
+                        left: true,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,11 +79,9 @@ class Modal extends StatelessWidget {
                       color: Colors.grey[300],
                     ),
                     Container(
-                      padding: EdgeInsets.only(
-                        top: theme.sizing.borderInset[0] / 2,
-                        bottom: theme.sizing.borderInset[0] / 2,
-                        right: theme.sizing.borderInset[0] / 2,
-                        left: theme.sizing.borderInset[0],
+                      padding: theme.sizing.radius2.asPaddingAllBut(
+                        theme.sizing.radius1,
+                        left: true,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,

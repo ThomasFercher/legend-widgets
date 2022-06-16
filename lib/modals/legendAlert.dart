@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/objects/asset_info.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/legend_text.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
-import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
+import 'package:legend_utils/legend_utils.dart';
 import 'package:provider/provider.dart';
 
 class LegendAlert extends StatelessWidget {
@@ -23,24 +22,6 @@ class LegendAlert extends StatelessWidget {
     this.buttonStyle,
   });
 
-  LegendAlert.success({this.message}) {
-    icon = flareIcon(AssetInfo.successAlert);
-    buttonStyle = LegendButtonStyle.confirm(
-      activeColor: Colors.redAccent,
-      color: Colors.red,
-    );
-  }
-
-  LegendAlert.info({this.message}) {
-    icon = flareIcon(AssetInfo.successAlert);
-    buttonStyle = LegendButtonStyle.normal();
-  }
-
-  LegendAlert.danger({this.message}) {
-    icon = flareIcon(AssetInfo.successAlert);
-    buttonStyle = LegendButtonStyle.danger();
-  }
-
   @override
   Widget build(BuildContext context) {
     LegendTheme theme = Provider.of<LegendTheme>(context);
@@ -53,13 +34,13 @@ class LegendAlert extends StatelessWidget {
           child: Card(
             color: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: theme.sizing.borderRadius[0],
+              borderRadius: theme.sizing.radius1.asRadius(),
             ),
             child: Container(
               height: height,
               width: height * 18 / 9,
               padding: EdgeInsets.all(
-                theme.sizing.borderInset[0] / 2,
+                theme.sizing.radius1 / 2,
               ),
               child: Row(
                 children: [

@@ -3,6 +3,7 @@ import 'package:legend_design_core/styles/colors/legend_palette.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/sizing/legend_sizing.dart';
 import 'package:legend_design_widgets/input/selectBar/selectProvider.dart';
+import 'package:legend_utils/extensions/extensions.dart';
 import 'package:provider/provider.dart';
 
 import 'legendSelectOption.dart';
@@ -65,10 +66,10 @@ class LegendSelectBar extends StatelessWidget {
           child: Container(
             width: width,
             height: height,
-            padding: EdgeInsets.all(sizing.borderInset[0] / 2),
+            padding: EdgeInsets.all(sizing.radius1 / 2),
             decoration: isCard ?? false
                 ? BoxDecoration(
-                    borderRadius: borderRadius ?? sizing.borderRadius[0],
+                    borderRadius: borderRadius ?? sizing.radius1.asRadius(),
                     color: color ?? Colors.white,
                     boxShadow: [
                       BoxShadow(
