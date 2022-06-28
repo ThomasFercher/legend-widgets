@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/styles/sizing/size_info.dart';
 import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/widgets/size_info.dart';
 import 'package:legend_utils/extensions/extensions.dart';
 
 import 'package:provider/provider.dart';
