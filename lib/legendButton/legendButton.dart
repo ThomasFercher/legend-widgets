@@ -26,23 +26,14 @@ class LegendButton extends StatelessWidget {
       double? height = style?.height;
       double? width = style?.width;
 
-      bool vertical = constraints.maxHeight == double.infinity;
-      bool horizontal = constraints.maxWidth == double.infinity;
-
-      if (style?.height == null ||
-          (style?.height ?? 0) > constraints.maxHeight) {
-        height = vertical ? 48 : constraints.maxHeight;
-      }
-
-      if (style?.width == null || (style?.width ?? 0) > constraints.maxWidth) {
-        width = horizontal ? 64 : constraints.maxWidth;
-      }
-
       return Container(
         padding: margin,
-        constraints: BoxConstraints(
-          minHeight: height ?? 48,
-        ),
+        constraints: height != null
+            ? BoxConstraints(
+                minHeight: height,
+                maxHeight: height,
+              )
+            : null,
         child: TextButton(
           onPressed: () => onPressed(),
           child: Container(
