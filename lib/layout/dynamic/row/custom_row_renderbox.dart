@@ -75,11 +75,9 @@ class CustomRowRenderBox extends RenderBox
 
         child.layout(childConstraints, parentUsesSize: true);
         BoxParentData childParentData = child.parentData as BoxParentData;
-
-        childParentData.offset = offset;
-
         childSize = child.size;
 
+        childParentData.offset = offset;
         double dx = childSize.width;
 
         if (spacing != null && i != indexes.length - 1) {
@@ -111,7 +109,7 @@ class CustomRowRenderBox extends RenderBox
     return maxWidth != double.infinity;
   }
 
-  late Size contentSize;
+  Size contentSize = Size.zero;
 
   @override
   void performLayout() {

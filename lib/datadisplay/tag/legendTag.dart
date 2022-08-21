@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_utils/extensions/extensions.dart';
 import 'package:legend_utils/functions/functions.dart';
 import 'package:provider/src/provider.dart';
@@ -39,7 +39,7 @@ class LegendTag extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: LegendText(
-        text: text,
+        text,
         textStyle: textStyle ??
             theme.typography.h1.copyWith(
               color: color.darken(0.05),
@@ -194,7 +194,7 @@ class _LegendAnimatedTagState extends State<LegendAnimatedTag>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             LegendText(
-              text: widget.text,
+              widget.text,
               textStyle: t.typography.h0.copyWith(
                 color: foregroundColor,
               ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_design_widgets/datadisplay/tag/legendTag.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
 
@@ -47,7 +47,7 @@ class LegendTableCell extends StatelessWidget {
         return Container(
           padding: EdgeInsets.all(8.0),
           child: LegendText(
-            text: text ?? "",
+            text ?? "",
             textStyle: typography,
           ),
         );
@@ -70,7 +70,7 @@ class LegendTableCell extends StatelessWidget {
       default:
         return Container(
           padding: EdgeInsets.all(8.0),
-          child: LegendText(text: text ?? ""),
+          child: LegendText(text ?? ""),
         );
     }
   }
