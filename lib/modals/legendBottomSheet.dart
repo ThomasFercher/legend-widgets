@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/styles/sizing/size_info.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
+import 'package:legend_design_core/widgets/size_info.dart';
 import 'package:legend_utils/extensions/extensions.dart';
 
 import 'package:provider/provider.dart';
@@ -101,7 +101,7 @@ class LegendBottomSheet extends StatelessWidget {
                           onCancel();
                         },
                         text: LegendText(
-                          text: "Cancel",
+                          "Cancel",
                           selectable: false,
                         ),
                         style: LegendButtonStyle.danger(),
@@ -111,7 +111,7 @@ class LegendBottomSheet extends StatelessWidget {
                           onConfirm();
                         },
                         text: LegendText(
-                          text: "Confirm",
+                          "Confirm",
                           selectable: false,
                         ),
                         style: LegendButtonStyle.confirm(

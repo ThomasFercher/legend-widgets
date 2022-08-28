@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 
 class ParagraphType {
   final TextStyle textStyle;
@@ -49,7 +49,7 @@ class LegendParagraph extends StatelessWidget {
         Column(
           children: [
             LegendText(
-              text: val,
+              val,
               textStyle: type.textStyle,
               padding: (type.bottomW != null)
                   ? EdgeInsets.zero

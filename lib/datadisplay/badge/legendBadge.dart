@@ -7,7 +7,7 @@ enum LegendBadgeValues { Text, Count, Dot }
 
 class LegendBadge extends StatelessWidget {
   late final LegendBadgeValues value;
-  LegendTextStyle? typography;
+  TextStyle? typography;
   String? text;
   int? count;
   final Widget badgeWidget;
