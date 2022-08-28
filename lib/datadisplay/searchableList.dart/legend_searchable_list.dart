@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_design_widgets/datadisplay/searchableList.dart/legend_searchable.dart';
 import 'package:legend_design_widgets/input/dropdown.dart/legendDropdownOption.dart';
 import 'package:legend_design_widgets/input/dropdown.dart/legendInputDropdown.dart';
@@ -282,7 +282,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             LegendText(
-              text: filter.displayName,
+              filter.displayName,
               padding: EdgeInsets.only(
                 bottom: 8,
               ),
@@ -307,7 +307,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             LegendText(
-              text: filter.displayName,
+              filter.displayName,
               padding: EdgeInsets.only(
                 bottom: 8,
               ),
@@ -332,7 +332,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               LegendText(
-                text: filter.displayName,
+                filter.displayName,
                 padding: EdgeInsets.only(
                   bottom: 8,
                 ),

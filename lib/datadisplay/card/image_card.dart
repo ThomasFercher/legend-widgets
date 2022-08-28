@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/widgets/gestures/detector.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_utils/legend_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +58,7 @@ class ImageCard extends StatelessWidget {
                       bottom: theme.sizing.radius1,
                     ),
                     child: LegendText(
-                      text: description,
+                      description,
                       textStyle: theme.typography.h1,
                       overflow: TextOverflow.clip,
                     ),
@@ -80,7 +80,7 @@ class ImageCard extends StatelessWidget {
         top: theme.sizing.radius1,
         bottom: 4,
       ),
-      text: title,
+      title,
       textStyle: theme.typography.h4,
     );
   }

@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 
 import 'package:legend_design_widgets/input/color/legend_color_input.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendColorFormField.dart';
@@ -232,7 +232,7 @@ class _LegendFormState extends State<LegendForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           LegendText(
-            text: field.title,
+            field.title,
             textStyle:
                 field.textStyle ?? context.watch<LegendTheme>().typography.h2,
           ),
@@ -259,7 +259,7 @@ class _LegendFormState extends State<LegendForm> {
               [
                 if (widget.showSubmitButton)
                   LegendButton(
-                    text: LegendText(text: widget.submitText),
+                    text: LegendText(widget.submitText),
                     onPressed: () {
                       _formKey.currentState?.validate();
                       _formKey.currentState?.save();

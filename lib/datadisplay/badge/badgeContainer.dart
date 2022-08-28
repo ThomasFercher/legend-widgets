@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_design_core/styles/typography/typography.dart';
 
 class BadgeContainer extends StatelessWidget {
@@ -37,8 +37,8 @@ class BadgeContainer extends StatelessWidget {
         color: badgeColor,
       ),
       child: LegendText(
-        textStyle: LegendTextStyle(fontSize: 8),
-        text: getData(),
+        textStyle: TextStyle(fontSize: 8),
+        getData(),
       ),
     );
   }

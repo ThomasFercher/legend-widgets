@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_utils/extensions/edge_insets.dart';
 import 'package:legend_utils/extensions/extensions.dart';
 import 'package:provider/provider.dart';
@@ -91,14 +91,14 @@ class Modal extends StatelessWidget {
                               onCancle();
                               Navigator.pop(context);
                             },
-                            text: LegendText(text: "Cancel"),
+                            text: LegendText("Cancel"),
                             style: LegendButtonStyle.danger(),
                           ),
                           LegendButton(
                             onPressed: () {
                               onConfirm();
                             },
-                            text: LegendText(text: "Confirm"),
+                            text: LegendText("Confirm"),
                             style: LegendButtonStyle.normal(),
                           ),
                         ],

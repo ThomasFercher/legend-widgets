@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_utils/legend_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -69,14 +69,14 @@ class LegendCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: LegendText(
-                      text: title ?? "",
+                      title ?? "",
                       textStyle: theme.typography.h3.copyWith(
                         color: theme.colors.foreground4,
                       ),
                     ),
                   ),
                   LegendText(
-                    text: subtitle ?? "",
+                    subtitle ?? "",
                     textStyle: theme.typography.h3.copyWith(
                       color: Colors.greenAccent[400],
                     ),
@@ -97,7 +97,7 @@ class LegendCard extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: LegendText(
-                        text: value ?? "",
+                        value ?? "",
                         textStyle: theme.typography.h3.copyWith(
                           color: theme.colors.foreground4,
                           fontSize: 26,

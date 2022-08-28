@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/typography/legend_text.dart';
+import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_design_core/styles/typography/typography.dart';
 
 import 'package:legend_utils/extensions/extensions.dart';
@@ -76,8 +76,8 @@ class LegendTable extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               alignment: Alignment.centerLeft,
               child: LegendText(
-                text: header!,
-                textStyle: LegendTextStyle(), // LegendTextStyle.tableHeader(),
+                header!,
+                textStyle: TextStyle(), // TextStyle.tableHeader(),
               ),
             ),
           Table(
@@ -98,8 +98,7 @@ class LegendTable extends StatelessWidget {
               flexValues: flexValues,
               columnsCells: columnNames
                       ?.map((name) => LegendTableCell.text(
-                            typography:
-                                style?.headerTextStyle ?? LegendTextStyle(),
+                            typography: style?.headerTextStyle ?? TextStyle(),
                             text: name,
                           ))
                       .toList() ??
@@ -135,7 +134,7 @@ class LegendTable extends StatelessWidget {
         switch (type) {
           case LegendTableValueType.TEXT:
             cell = LegendTableCell.text(
-              typography: style?.textStyle ?? LegendTextStyle(),
+              typography: style?.textStyle ?? TextStyle(),
               text: val.toString(),
             );
             break;
@@ -143,7 +142,7 @@ class LegendTable extends StatelessWidget {
             cell = LegendTableCell.action(
               button: LegendButton(
                 style: LegendButtonStyle.danger(),
-                text: LegendText(text: val.toString()),
+                text: LegendText(val.toString()),
                 onPressed: () {
                   value.actionFunction!();
                 },
@@ -160,7 +159,7 @@ class LegendTable extends StatelessWidget {
             break;
           default:
             cell = LegendTableCell.text(
-              typography: style?.textStyle ?? LegendTextStyle(),
+              typography: style?.textStyle ?? TextStyle(),
               text: val.toString(),
             );
             break;
