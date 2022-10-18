@@ -42,7 +42,7 @@ class _LegendInputDropdownState extends State<LegendInputDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = context.watch<LegendTheme>();
+    LegendTheme theme = LegendTheme.of(context);
     return TextField(
       controller: _controller,
       style: theme.typography.h1.copyWith(

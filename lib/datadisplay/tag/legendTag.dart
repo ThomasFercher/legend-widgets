@@ -20,7 +20,7 @@ class LegendTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = context.watch<LegendTheme>();
+    LegendTheme theme = LegendTheme.of(context);
     return Container(
       height: 32,
       padding: EdgeInsets.symmetric(
@@ -92,7 +92,7 @@ class LegendAnimatedTag extends StatefulWidget {
   double getWidth(BuildContext context) {
     return (theme.height / 2 - 4) * 2 +
         LegendFunctions.calcTextSize(
-                text, context.watch<LegendTheme>().typography.h0)
+                text, LegendTheme.of(context).typography.h0)
             .width;
   }
 
@@ -165,7 +165,7 @@ class _LegendAnimatedTagState extends State<LegendAnimatedTag>
         controller.reverse();
       }
     }
-    LegendTheme t = context.watch<LegendTheme>();
+    LegendTheme t = LegendTheme.of(context);
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {

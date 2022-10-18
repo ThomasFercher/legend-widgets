@@ -29,7 +29,7 @@ class LegendTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = context.watch<LegendTheme>();
+    LegendTheme theme = LegendTheme.of(context);
 
     return TextField(
       controller: ctrl,

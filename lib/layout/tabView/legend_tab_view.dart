@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_widgets/datadisplay/tag/legendTag.dart';
 import 'package:legend_design_widgets/layout/tabView/tab_item.dart';
-import 'package:provider/provider.dart';
 
 class LegendTabBar extends StatefulWidget {
   final List<TabItem> items;
@@ -92,7 +91,7 @@ class _LegendTabBarState extends State<LegendTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = context.watch<LegendTheme>();
+    LegendTheme theme = LegendTheme.of(context);
 
     bool overflow = false;
     return LayoutBuilder(builder: (context, constraints) {
