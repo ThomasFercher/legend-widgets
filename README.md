@@ -1,38 +1,21 @@
-# Custom Widgets
-These Widgets can be fully implemented in the Legend Design ecosystem. But you can also use them without depending on anything.
-There are a few different categories of widgets.
+# Legend Widgets
+These Widgets can be fully implemented in the Legend Design ecosystem. But you can also use them standalone.
+The Widgets are suited for every platform and provide a lot of customizing options.
 
-## Basic
+# Getting Started
+Head over to [Legend Design](https://thomasfercher.github.io) to explore our catalog of widgets. 
 
-### Tag
+## Depend on it
+Currently we are not on pub.dev. 
 
-##  Data Display
-
-### Table
-
-### Carousel
-
-### Chart
-
-### Card
-
-##  Data Input
-
-### Form
-
-### Textfield
-
-### Select Bar
+```
+legend_design_widgets:
+   git:
+     url: https://github.com/ThomasFercher/legend-widgets.git
+```
 
 
-##  Modals
 
-### Alert
-
-### Bottom
-
-### Custom
-
-##  Layout
+ 
 
 
