@@ -52,8 +52,8 @@ class LegendSelectBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LegendPalette theme = Provider.of<LegendTheme>(context).colors;
-    LegendSizing sizing = Provider.of<LegendTheme>(context).sizing;
+    LegendPalette theme = LegendTheme.of(context).colors;
+    LegendSizing sizing = LegendTheme.of(context).sizing;
 
     return ListenableProvider<LegendSelectProvider>(
       create: (c) => new LegendSelectProvider(options.first),

@@ -58,7 +58,7 @@ class _LegendSortIconState extends State<LegendSortIcon> {
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = context.watch<LegendTheme>();
+    LegendTheme theme = LegendTheme.of(context);
 
     return LegendAnimatedIcon(
       icon: getIcon(),

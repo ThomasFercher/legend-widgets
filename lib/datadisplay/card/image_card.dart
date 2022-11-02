@@ -3,7 +3,6 @@ import 'package:legend_design_core/widgets/gestures/detector.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_utils/legend_utils.dart';
-import 'package:provider/provider.dart';
 
 class ImageCard extends StatelessWidget {
   final String imagePath;
@@ -26,7 +25,7 @@ class ImageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = Provider.of<LegendTheme>(context);
+    LegendTheme theme = LegendTheme.of(context);
     return LegendDetector(
       onTap: () {
         onClick();

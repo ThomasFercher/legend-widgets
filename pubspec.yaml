@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
   animations: ^2.0.2
   google_fonts: ^2.1.0
-  provider: ^6.0.1
+  provider: ^6.0.4
   legend_design_core:
     git:
       url: https://github.com/ThomasFercher/legend-core.git

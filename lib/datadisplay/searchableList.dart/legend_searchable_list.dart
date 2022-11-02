@@ -11,7 +11,6 @@ import 'package:legend_design_widgets/input/text/legendInputDecoration.dart';
 import 'package:legend_design_widgets/input/text/legendTextField.dart';
 import 'package:legend_design_widgets/layout/dynamic/flex/legend_custom_flex_layout.dart';
 import 'package:legend_design_widgets/layout/dynamic/flex/legend_dynamic_flex_layout.dart';
-import 'package:provider/provider.dart';
 
 class LegendSearchableList extends StatefulWidget {
   final List<LegendSearchable> items;
@@ -270,7 +269,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
   }
 
   List<Widget> getFilterInputs(List<LegendSearchableFilter> filters) {
-    LegendTheme theme = context.watch<LegendTheme>();
+    LegendTheme theme = LegendTheme.of(context);
     List<Widget> widgets = [];
 
     for (int i = 0; i < filters.length; i++) {

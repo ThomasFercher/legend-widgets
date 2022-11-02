@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:legend_design_core/styles/colors/legend_colors.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
-import 'package:provider/provider.dart';
 
 import '../text/legendInputDecoration.dart';
 import '../text/legendTextField.dart';
@@ -83,7 +82,7 @@ class _LegendColorInputState extends State<LegendColorInput> {
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = context.watch<LegendTheme>();
+    LegendTheme theme = LegendTheme.of(context);
     double width = MediaQuery.of(context).size.width;
 
     return Container(

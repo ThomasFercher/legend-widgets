@@ -3,7 +3,6 @@ import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_design_widgets/legendButton/legendButton.dart';
 import 'package:legend_utils/legend_utils.dart';
-import 'package:provider/provider.dart';
 
 class LegendAlert extends StatelessWidget {
   String? message;
@@ -24,7 +23,7 @@ class LegendAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = Provider.of<LegendTheme>(context);
+    LegendTheme theme = LegendTheme.of(context);
     double height = 140.0;
 
     return Stack(

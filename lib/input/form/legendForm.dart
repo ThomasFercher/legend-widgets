@@ -131,7 +131,7 @@ class _LegendFormState extends State<LegendForm> {
     Widget formField = Container();
     double width = MediaQuery.of(context).size.width;
 
-    LegendTheme theme = context.watch<LegendTheme>();
+    LegendTheme theme = LegendTheme.of(context);
 
     switch (field.type) {
       case LegendFormFieldType.BOOL:
@@ -233,8 +233,7 @@ class _LegendFormState extends State<LegendForm> {
         children: [
           LegendText(
             field.title,
-            textStyle:
-                field.textStyle ?? context.watch<LegendTheme>().typography.h2,
+            textStyle: field.textStyle ?? LegendTheme.of(context).typography.h2,
           ),
           SizedBox(
             height: 8,

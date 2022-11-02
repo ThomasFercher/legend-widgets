@@ -3,7 +3,7 @@ import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_utils/extensions/edge_insets.dart';
 import 'package:legend_utils/extensions/extensions.dart';
-import 'package:provider/provider.dart';
+
 import '../legendButton/legendButton.dart';
 
 class Modal extends StatelessWidget {
@@ -24,7 +24,7 @@ class Modal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = Provider.of<LegendTheme>(context);
+    LegendTheme theme = LegendTheme.of(context);
     double maxWidth = MediaQuery.of(context).size.width;
     double padding = 0;
 

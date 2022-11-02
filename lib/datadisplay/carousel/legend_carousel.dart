@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:legend_design_core/widgets/icons/legend_animated_icon.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_widgets/datadisplay/carousel/legend_carousel_item.dart';
-import 'package:provider/provider.dart';
 
 const Duration duration = const Duration(milliseconds: 360);
 Curve curve = Curves.easeInOutSine;
@@ -167,7 +166,7 @@ class _LegendCarouselState extends State<LegendCarousel>
 
   @override
   Widget build(BuildContext context) {
-    LegendTheme theme = context.watch<LegendTheme>();
+    LegendTheme theme = LegendTheme.of(context);
     double width = MediaQuery.of(context).size.width;
     List<Widget> items = getItems(width);
 
