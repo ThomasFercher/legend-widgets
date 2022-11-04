@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_widgets/input/selectBar/selectProvider.dart';
 import 'package:legend_utils/extensions/extensions.dart';
+import 'package:provider/provider.dart';
 
 import 'legendSelectOption.dart';
 import 'legendselectButton.dart';
