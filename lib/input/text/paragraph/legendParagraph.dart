@@ -44,7 +44,7 @@ class LegendParagraph extends StatelessWidget {
     for (var i = 0; i < values.values.length; i++) {
       ParagraphType type = values.keys.toList()[i];
       String val = values.values.toList()[i];
-      print(type);
+      // print(type);
       tiles.add(
         Column(
           children: [
@@ -68,7 +68,7 @@ class LegendParagraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(values);
+    // print(values);
     return Container(
       margin: margin,
       decoration: BoxDecoration(
