@@ -1,50 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/legend_theme.dart';
+import 'package:legend_design_core/state/legend_state.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_utils/extensions/extensions.dart';
 import 'package:legend_utils/functions/functions.dart';
-import 'package:provider/src/provider.dart';
 
-class LegendTag extends StatelessWidget {
+class LegendTag extends LegendWidget {
   final Color color;
+  final Color background;
+  final Color border;
   final String text;
   final TextStyle? textStyle;
   final bool? dissmissable;
+  final double horizontalPadding;
+  final double verticalPadding;
 
   const LegendTag({
-    required this.color,
     required this.text,
+    required this.color,
+    required this.background,
+    required this.border,
     this.textStyle,
     this.dissmissable,
+    this.horizontalPadding = 12,
+    this.verticalPadding = 6,
   });
 
+  factory LegendTag.fromColor({
+    required String text,
+    required Color color,
+    TextStyle? textStyle,
+    bool? dissmissable,
+    double horizontalPadding = 16,
+  }) {
+    return LegendTag(
+      text: text,
+      color: color,
+      background: color.lighten(0.2),
+      border: color.lighten(0.2),
+      textStyle: textStyle,
+      dissmissable: dissmissable,
+      horizontalPadding: horizontalPadding,
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
-    LegendTheme theme = LegendTheme.of(context);
-    return Container(
-      height: 32,
-      padding: EdgeInsets.symmetric(
-        horizontal: 16.0,
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 4.0),
-      decoration: BoxDecoration(
-        color: color.lighten(0.2),
-        borderRadius: BorderRadius.all(
-          Radius.circular(4.0),
+  Widget build(BuildContext context, LegendTheme theme) {
+    final _textStyle = textStyle ??
+        theme.typography.h1.copyWith(
+          color: color.darken(0.05),
+          fontSize: 16,
+        );
+    final textWidth = LegendFunctions.calcTextSize(text, _textStyle).width;
+
+    return SizedBox(
+      width: textWidth + horizontalPadding * 2,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: color.lighten(0.2),
+          borderRadius: BorderRadius.all(
+            Radius.circular(4.0),
+          ),
+          border: Border.all(
+            color: color,
+            width: 1,
+          ),
         ),
-        border: Border.all(
-          color: color,
-          width: 1,
-        ),
-      ),
-      alignment: Alignment.center,
-      child: LegendText(
-        text,
-        textStyle: textStyle ??
-            theme.typography.h1.copyWith(
-              color: color.darken(0.05),
-              fontSize: 16,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: verticalPadding,
+          ),
+          child: Center(
+            child: LegendText(
+              text,
+              style: _textStyle,
             ),
+          ),
+        ),
       ),
     );
   }
@@ -195,7 +226,7 @@ class _LegendAnimatedTagState extends State<LegendAnimatedTag>
           children: [
             LegendText(
               widget.text,
-              textStyle: t.typography.h0.copyWith(
+              style: t.typography.h0.copyWith(
                 color: foregroundColor,
               ),
             ),
