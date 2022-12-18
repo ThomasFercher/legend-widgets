@@ -3,7 +3,7 @@ import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_design_core/widgets/size_info.dart';
 import 'package:legend_utils/extensions/extensions.dart';
-import '../legendButton/legendButton.dart';
+import '../input/button/legendButton/legendButton.dart';
 
 class LegendBottomSheet extends StatelessWidget {
   final String title;

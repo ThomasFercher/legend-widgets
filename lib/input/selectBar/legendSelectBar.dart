@@ -22,7 +22,7 @@ class LegendSelectBar extends StatelessWidget {
   LegendSelectBar({
     required this.options,
     required this.onSelected,
-    required this.aligment,
+    this.aligment,
     this.color,
     this.iconSize,
     this.isCard,

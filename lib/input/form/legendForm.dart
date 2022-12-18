@@ -9,7 +9,7 @@ import 'package:legend_design_widgets/input/form/formfields.dart/legendColorForm
 import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormField.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';
-import 'package:legend_design_widgets/legendButton/legendButton.dart';
+import 'package:legend_design_widgets/input/button/legendButton/legendButton.dart';
 import 'package:provider/src/provider.dart';
 
 import '../../layout/dynamic/flex/form/legendCustomFormLayout.dart';
@@ -233,7 +233,7 @@ class _LegendFormState extends State<LegendForm> {
         children: [
           LegendText(
             field.title,
-            textStyle: field.textStyle ?? LegendTheme.of(context).typography.h2,
+            style: field.textStyle ?? LegendTheme.of(context).typography.h2,
           ),
           SizedBox(
             height: 8,

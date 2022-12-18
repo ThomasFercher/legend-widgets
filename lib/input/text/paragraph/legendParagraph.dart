@@ -7,16 +7,16 @@ class ParagraphType {
   final Key? key;
   final Widget? bottomW;
 
-  ParagraphType({
-    required this.textStyle,
-    required this.bottom,
+  ParagraphType(
+    this.textStyle, {
+    this.bottom = 12,
     this.bottomW,
     this.key,
   });
 
   ParagraphType get withId => ParagraphType(
+        textStyle,
         bottom: bottom,
-        textStyle: textStyle,
         bottomW: bottomW,
         key: UniqueKey(),
       );
@@ -50,7 +50,7 @@ class LegendParagraph extends StatelessWidget {
           children: [
             LegendText(
               val,
-              textStyle: type.textStyle,
+              style: type.textStyle,
               padding: (type.bottomW != null)
                   ? EdgeInsets.zero
                   : EdgeInsets.only(

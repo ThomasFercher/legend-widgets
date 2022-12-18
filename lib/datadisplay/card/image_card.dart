@@ -58,7 +58,7 @@ class ImageCard extends StatelessWidget {
                     ),
                     child: LegendText(
                       description,
-                      textStyle: theme.typography.h1,
+                      style: theme.typography.h1,
                       overflow: TextOverflow.clip,
                     ),
                   ),
@@ -80,7 +80,7 @@ class ImageCard extends StatelessWidget {
         bottom: 4,
       ),
       title,
-      textStyle: theme.typography.h4,
+      style: theme.typography.h4,
     );
   }
 

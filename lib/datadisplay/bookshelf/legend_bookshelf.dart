@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
-import 'package:legend_design_widgets/legendButton/legendButton.dart';
+import 'package:legend_design_widgets/input/button/legendButton/legendButton.dart';
 
 class LegendBookshelf extends StatefulWidget {
   final double? height;

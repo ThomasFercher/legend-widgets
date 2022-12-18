@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
-import 'package:legend_design_widgets/legendButton/legendButton.dart';
+import 'package:legend_design_widgets/input/button/legendButton/legendButton.dart';
 import 'package:legend_utils/legend_utils.dart';
 
 class LegendAlert extends StatelessWidget {
@@ -55,7 +55,7 @@ class LegendAlert extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: LegendText(
                           message ?? "No Message",
-                          textStyle: theme.typography.h5,
+                          style: theme.typography.h5,
                         ),
                       ),
                     ),
@@ -65,7 +65,7 @@ class LegendAlert extends StatelessWidget {
                     child: LegendButton(
                       text: LegendText(
                         buttonMessage ?? "OK",
-                        textStyle: theme.typography.h5,
+                        style: theme.typography.h5,
                       ),
                       onPressed: () {
                         onConfirm?.call();
