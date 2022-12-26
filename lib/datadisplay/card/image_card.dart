@@ -26,7 +26,7 @@ class ImageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LegendTheme theme = LegendTheme.of(context);
-    return LegendDetector(
+    return GestureDetector(
       onTap: () {
         onClick();
       },

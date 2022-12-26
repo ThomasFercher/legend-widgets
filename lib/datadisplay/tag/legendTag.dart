@@ -35,19 +35,37 @@ class LegendTag extends LegendWidget {
     return LegendTag(
       text: text,
       color: color,
-      background: color.lighten(0.2),
-      border: color.lighten(0.2),
+      background: color.lighten(0.35),
+      border: color,
       textStyle: textStyle,
       dissmissable: dissmissable,
       horizontalPadding: horizontalPadding,
     );
   }
 
+  factory LegendTag.fromForegroundBackground({
+    required String text,
+    required Color foreground,
+    required Color background,
+    TextStyle? textStyle,
+    bool? dissmissable,
+    double horizontalPadding = 16,
+  }) {
+    return LegendTag(
+      text: text,
+      color: foreground,
+      background: background,
+      border: foreground,
+      textStyle: textStyle,
+      dissmissable: dissmissable,
+      horizontalPadding: horizontalPadding,
+    );
+  }
   @override
   Widget build(BuildContext context, LegendTheme theme) {
     final _textStyle = textStyle ??
         theme.typography.h1.copyWith(
-          color: color.darken(0.05),
+          color: color,
           fontSize: 16,
         );
     final textWidth = LegendFunctions.calcTextSize(text, _textStyle).width;
@@ -56,12 +74,12 @@ class LegendTag extends LegendWidget {
       width: textWidth + horizontalPadding * 2,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: color.lighten(0.2),
+          color: background,
           borderRadius: BorderRadius.all(
             Radius.circular(4.0),
           ),
           border: Border.all(
-            color: color,
+            color: border,
             width: 1,
           ),
         ),

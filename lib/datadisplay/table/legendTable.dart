@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
-import 'package:legend_design_core/styles/typography/typography.dart';
-
+import 'package:legend_design_widgets/input/button/legendButton/legend_button.dart';
 import 'package:legend_utils/extensions/extensions.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendRowValue.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendTableCell.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendTableRow.dart';
-import 'package:legend_design_widgets/input/button/legendButton/legendButton.dart';
-import 'package:legend_design_widgets/input/button/legendButton/legendButtonStyle.dart';
 
 class LegendTableStyle {
   final Color backgroundColor;
@@ -113,10 +109,10 @@ class LegendTable extends StatelessWidget {
             break;
           case LegendTableValueType.ACTION:
             cell = LegendTableCell.action(
-              button: LegendButton(
-                style: LegendButtonStyle.danger(),
-                text: LegendText(val.toString()),
-                onPressed: () {
+              button: LegendButton.text(
+                background: Colors.red,
+                text: val.toString(),
+                onTap: () {
                   value.actionFunction!();
                 },
               ),

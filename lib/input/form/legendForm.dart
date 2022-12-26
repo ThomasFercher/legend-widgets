@@ -3,14 +3,13 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
+import 'package:legend_design_widgets/input/button/legendButton/legend_button.dart';
 
 import 'package:legend_design_widgets/input/color/legend_color_input.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendColorFormField.dart';
 import 'package:legend_design_widgets/input/form/formfields.dart/legendTextFormField.dart';
 import 'package:legend_design_widgets/input/form/legendFormField.dart';
 import 'package:legend_design_widgets/input/switch/legendSwitch.dart';
-import 'package:legend_design_widgets/input/button/legendButton/legendButton.dart';
-import 'package:provider/src/provider.dart';
 
 import '../../layout/dynamic/flex/form/legendCustomFormLayout.dart';
 import '../../layout/dynamic/flex/form/legendDynamicFormLayout.dart';
@@ -25,7 +24,7 @@ class LegendForm extends StatefulWidget {
   final bool showSubmitButton;
 
   final String? submitText;
-  final LegendButtonStyle? buttonStyle;
+
   final void Function(Map<String, dynamic> values)? onSubmit;
   final void Function(Map<String, dynamic> values)? onChanged;
   final Widget Function(GlobalKey<FormState> key, SplayTreeMap values)?
@@ -39,7 +38,6 @@ class LegendForm extends StatefulWidget {
     this.showSubmitButton = false,
     this.buildSubmitButton,
     this.submitText,
-    this.buttonStyle,
     this.onChanged,
   }) {
     layouts = children.whereType<Widget>().toList();
@@ -257,14 +255,14 @@ class _LegendFormState extends State<LegendForm> {
           children: getFields(context) +
               [
                 if (widget.showSubmitButton)
-                  LegendButton(
-                    text: LegendText(widget.submitText),
-                    onPressed: () {
+                  LegendButton.text(
+                    text: widget.submitText,
+                    onTap: () {
                       _formKey.currentState?.validate();
                       _formKey.currentState?.save();
                       if (widget.onSubmit != null) widget.onSubmit!(values);
                     },
-                    style: widget.buttonStyle,
+                    background: Colors.yellow,
                   ),
                 if (widget.buildSubmitButton != null)
                   widget.buildSubmitButton!(_formKey, values)
