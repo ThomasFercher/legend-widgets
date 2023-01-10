@@ -18,11 +18,9 @@ dependencies:
   flutter_hooks: ^0.18.5+1
   
   legend_design_core:
-    git:
-      url: https://github.com/ThomasFercher/legend-core
+    path:  ../legend_design_core/
   legend_utils:
-    git: 
-      url: https://github.com/ThomasFercher/legend_utils
+    path: ../legend_utils
 
   
 
