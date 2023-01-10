@@ -6,12 +6,14 @@ class LegendHeader extends StatelessWidget {
   final CrossAxisAlignment crossAxisAlignment;
   final double spacing;
   final EdgeInsetsGeometry? margin;
+  final bool expand;
 
   const LegendHeader({
     Key? key,
     required this.child,
     required this.header,
     this.margin,
+    this.expand = false,
     this.spacing = 4,
     this.crossAxisAlignment = CrossAxisAlignment.start,
   }) : super(key: key);
@@ -27,7 +29,12 @@ class LegendHeader extends StatelessWidget {
           SizedBox(
             height: spacing,
           ),
-          child,
+          if (expand)
+            Expanded(
+              child: child,
+            )
+          else
+            child,
         ],
       ),
     );
