@@ -7,16 +7,16 @@ class ParagraphType {
   final Key? key;
   final Widget? bottomW;
 
-  ParagraphType({
-    required this.textStyle,
-    required this.bottom,
+  ParagraphType(
+    this.textStyle, {
+    this.bottom = 12,
     this.bottomW,
     this.key,
   });
 
   ParagraphType get withId => ParagraphType(
+        textStyle,
         bottom: bottom,
-        textStyle: textStyle,
         bottomW: bottomW,
         key: UniqueKey(),
       );
@@ -44,13 +44,13 @@ class LegendParagraph extends StatelessWidget {
     for (var i = 0; i < values.values.length; i++) {
       ParagraphType type = values.keys.toList()[i];
       String val = values.values.toList()[i];
-      print(type);
+      // print(type);
       tiles.add(
         Column(
           children: [
             LegendText(
               val,
-              textStyle: type.textStyle,
+              style: type.textStyle,
               padding: (type.bottomW != null)
                   ? EdgeInsets.zero
                   : EdgeInsets.only(
@@ -68,7 +68,7 @@ class LegendParagraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(values);
+    // print(values);
     return Container(
       margin: margin,
       decoration: BoxDecoration(

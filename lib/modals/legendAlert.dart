@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
-import 'package:legend_design_widgets/legendButton/legendButton.dart';
+import 'package:legend_design_widgets/input/button/legendButton/legend_button.dart';
 import 'package:legend_utils/legend_utils.dart';
 
 class LegendAlert extends StatelessWidget {
-  String? message;
-  String? buttonMessage;
-  Widget? icon;
-  IconData? iconData;
-  Function? onConfirm;
-  LegendButtonStyle? buttonStyle;
+  final String? message;
+  final String? buttonMessage;
+  final Widget? icon;
+  final IconData? iconData;
+  final Function? onConfirm;
 
-  LegendAlert({
+  const LegendAlert({
     this.message,
     this.buttonMessage,
     this.icon,
     this.iconData,
     this.onConfirm,
-    this.buttonStyle,
   });
 
   @override
@@ -55,23 +53,21 @@ class LegendAlert extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: LegendText(
                           message ?? "No Message",
-                          textStyle: theme.typography.h5,
+                          style: theme.typography.h5,
                         ),
                       ),
                     ),
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: LegendButton(
-                      text: LegendText(
-                        buttonMessage ?? "OK",
-                        textStyle: theme.typography.h5,
-                      ),
-                      onPressed: () {
+                    child: LegendButton.text(
+                      text: buttonMessage ?? "OK",
+                      style: theme.typography.h5,
+                      onTap: () {
                         onConfirm?.call();
                         Navigator.of(context).pop();
                       },
-                      style: buttonStyle ?? LegendButtonStyle.normal(),
+                      background: Colors.red,
                     ),
                   ),
                 ],

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_design_core/widgets/size_info.dart';
+import 'package:legend_design_widgets/input/button/legendButton/legend_button.dart';
 import 'package:legend_utils/extensions/extensions.dart';
-import '../legendButton/legendButton.dart';
 
 class LegendBottomSheet extends StatelessWidget {
   final String title;
@@ -93,7 +93,7 @@ class LegendBottomSheet extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       LegendButton(
-                        onPressed: () {
+                        onTap: () {
                           Navigator.pop(context);
                           onCancel();
                         },
@@ -101,20 +101,15 @@ class LegendBottomSheet extends StatelessWidget {
                           "Cancel",
                           selectable: false,
                         ),
-                        style: LegendButtonStyle.danger(),
+                        background: Colors.red,
                       ),
                       LegendButton(
-                        onPressed: () {
-                          onConfirm();
-                        },
+                        onTap: onConfirm,
                         text: LegendText(
                           "Confirm",
                           selectable: false,
                         ),
-                        style: LegendButtonStyle.confirm(
-                          color: Colors.blue,
-                          activeColor: Colors.blueAccent,
-                        ),
+                        background: Colors.blue,
                       ),
                     ],
                   ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 import 'package:legend_design_widgets/datadisplay/tag/legendTag.dart';
-import 'package:legend_design_widgets/legendButton/legendButton.dart';
+import 'package:legend_design_widgets/input/button/legendButton/legend_button.dart';
+
+import 'package:legend_design_widgets/layout/dynamic/row/dynamic_row.dart';
 
 enum LegendTableValueType {
   TEXT,
@@ -48,17 +50,19 @@ class LegendTableCell extends StatelessWidget {
           padding: EdgeInsets.all(8.0),
           child: LegendText(
             text ?? "",
-            textStyle: typography,
+            style: typography,
           ),
         );
       case LegendTableValueType.ACTION:
         return button!;
       case LegendTableValueType.TAG:
         return Container(
-          child: Row(
+          child: DynamicRow(
+            verticalSpacing: 12,
+            spacing: 12,
             children: List.of(
               tags.map(
-                (t) => LegendTag(
+                (t) => LegendTag.fromColor(
                   textStyle: typography,
                   text: t[0],
                   color: t[1] ?? Colors.transparent,

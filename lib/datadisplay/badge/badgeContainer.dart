@@ -36,7 +36,7 @@ class BadgeContainer extends StatelessWidget {
         color: badgeColor,
       ),
       child: LegendText(
-        textStyle: TextStyle(fontSize: 8),
+        style: TextStyle(fontSize: 8),
         getData(),
       ),
     );

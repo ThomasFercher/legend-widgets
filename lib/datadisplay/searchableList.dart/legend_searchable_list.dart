@@ -285,7 +285,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
               padding: EdgeInsets.only(
                 bottom: 8,
               ),
-              textStyle: theme.typography.h4,
+              style: theme.typography.h4,
             ),
             LegendTextField(
               decoration: LegendInputDecoration.rounded(
@@ -310,7 +310,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
               padding: EdgeInsets.only(
                 bottom: 8,
               ),
-              textStyle: theme.typography.h4,
+              style: theme.typography.h4,
             ),
             LegendRangeSlider(
               rangeValues: RangeValues(
@@ -335,7 +335,7 @@ class _LegendSearchableListState extends State<LegendSearchableList> {
                 padding: EdgeInsets.only(
                   bottom: 8,
                 ),
-                textStyle: theme.typography.h4,
+                style: theme.typography.h4,
               ),
               LegendInputDropdown(
                 options: filter.categories

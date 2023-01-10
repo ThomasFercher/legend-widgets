@@ -8,7 +8,7 @@ class LegendTableRow extends StatefulWidget {
   final Color? avtiveColor;
   final Color? backgroundColor;
   final double height;
-  final BorderRadius? borderRadius;
+
   final EdgeInsets? padding;
   LegendTableRow({
     Key? key,
@@ -18,7 +18,6 @@ class LegendTableRow extends StatefulWidget {
     this.avtiveColor,
     this.backgroundColor,
     this.flexValues,
-    this.borderRadius,
   }) : super(key: key);
 
   @override
@@ -56,35 +55,39 @@ class _LegendTableRowState extends State<LegendTableRow>
     List<Widget> items = [];
     for (int i = 0; i < widget.columnsCells.length; i++) {
       int flex = widget.flexValues?[i] ?? 1;
-      print(flex);
-      items.add(Expanded(flex: flex, child: widget.columnsCells[i]));
+
+      items.add(
+        Expanded(
+          flex: flex,
+          child: widget.columnsCells[i],
+        ),
+      );
     }
     return items;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: widget.borderRadius ?? BorderRadius.zero,
-      child: Container(
-        height: widget.height,
-        decoration: BoxDecoration(
-          color: color,
-          border: Border(
-            bottom: BorderSide(color: Colors.black12),
-          ),
+    return Container(
+      constraints: BoxConstraints(
+        minHeight: widget.height - (widget.padding?.vertical ?? 0),
+      ),
+      decoration: BoxDecoration(
+        color: color,
+        border: Border(
+          bottom: BorderSide(color: Colors.black12),
         ),
-        padding: widget.padding,
-        child: MouseRegion(
-          onEnter: (event) {
-            _controller.forward();
-          },
-          onExit: (event) {
-            _controller.reverse();
-          },
-          child: Row(
-            children: getColumnItems(),
-          ),
+      ),
+      padding: widget.padding,
+      child: MouseRegion(
+        onEnter: (event) {
+          _controller.forward();
+        },
+        onExit: (event) {
+          _controller.reverse();
+        },
+        child: Row(
+          children: getColumnItems(),
         ),
       ),
     );

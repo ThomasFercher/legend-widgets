@@ -48,7 +48,7 @@ class LegendDropdown extends StatelessWidget {
             Expanded(
               child: LegendText(
                 option,
-                textStyle: theme.typography.h1,
+                style: theme.typography.h1,
               ),
             ),
           ],

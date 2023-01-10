@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
-import 'package:legend_design_core/styles/typography/typography.dart';
-
+import 'package:legend_design_widgets/input/button/legendButton/legend_button.dart';
 import 'package:legend_utils/extensions/extensions.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendRowValue.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendTableCell.dart';
 import 'package:legend_design_widgets/datadisplay/table/legendTableRow.dart';
-import 'package:legend_design_widgets/legendButton/legendButton.dart';
-import 'package:legend_design_widgets/legendButton/legendButtonStyle.dart';
 
 class LegendTableStyle {
   final Color backgroundColor;
@@ -29,6 +25,7 @@ class LegendTableStyle {
   });
 }
 
+/// TODO: Implement either with Custom Painter (if layout is possible with it) or else with a MultiChildLayoutDelegate
 class LegendTable extends StatelessWidget {
   final double? height;
   final double? width;
@@ -37,20 +34,16 @@ class LegendTable extends StatelessWidget {
   final List<int>? flexValues;
   final List<LegendRowValue> values;
 
-  final String? header;
   final double? rowHeight;
-  final bool showHeader;
 
   final LegendTableStyle? style;
 
   const LegendTable({
     this.columnNames,
-    this.showHeader = false,
     this.style,
     Key? key,
     this.height,
     this.width,
-    this.header,
     required this.columnTypes,
     required this.values,
     this.flexValues,
@@ -59,69 +52,45 @@ class LegendTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double h = 0;
     double w = width ?? MediaQuery.of(context).size.width;
 
     return Container(
       height: height,
-      width: width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (header != null)
-            Container(
-              width: w,
-              height: rowHeight ?? 48,
-              color: Colors.white.darken(0.16),
-              padding: EdgeInsets.symmetric(horizontal: 8.0),
-              alignment: Alignment.centerLeft,
-              child: LegendText(
-                header!,
-                textStyle: TextStyle(), // TextStyle.tableHeader(),
-              ),
-            ),
-          Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: getRows(),
-          ),
-        ],
+      child: ClipRRect(
+        borderRadius: style?.borderRadiusGeometry ?? BorderRadius.zero,
+        child: Table(
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          children: getHeaderRow(),
+        ),
       ),
     );
   }
 
-  List<TableRow> getRows() {
+  List<TableRow> getHeaderRow() {
     List<TableRow> rows = [
-      if (showHeader)
-        TableRow(
-          children: [
-            LegendTableRow(
-              flexValues: flexValues,
-              columnsCells: columnNames
-                      ?.map((name) => LegendTableCell.text(
-                            typography: style?.headerTextStyle ?? TextStyle(),
-                            text: name,
-                          ))
-                      .toList() ??
-                  [],
-              borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-              height: rowHeight ?? 48,
-              avtiveColor: style?.selectionColor,
-              backgroundColor: style?.headerColor,
-              padding: style?.rowPadding,
-            ),
-          ],
-        ),
+      TableRow(
+        children: [
+          LegendTableRow(
+            flexValues: flexValues,
+            columnsCells: columnNames
+                    ?.map((name) => LegendTableCell.text(
+                          typography: style?.headerTextStyle ?? TextStyle(),
+                          text: name,
+                        ))
+                    .toList() ??
+                [],
+            height: rowHeight ?? 48,
+            avtiveColor: style?.selectionColor,
+            backgroundColor: style?.headerColor,
+            padding: style?.rowPadding,
+          ),
+        ],
+      ),
     ];
 
     // Row
     TableRow row;
     for (var j = 0; j < values.length; j++) {
-      BorderRadius? radius = j == 0 && !showHeader
-          ? BorderRadius.vertical(top: Radius.circular(8))
-          : j == values.length - 1
-              ? BorderRadius.vertical(bottom: Radius.circular(8))
-              : null;
-
       var value = values[j];
       // Columns
       List<LegendTableCell> columnsCells = [];
@@ -140,10 +109,10 @@ class LegendTable extends StatelessWidget {
             break;
           case LegendTableValueType.ACTION:
             cell = LegendTableCell.action(
-              button: LegendButton(
-                style: LegendButtonStyle.danger(),
-                text: LegendText(val.toString()),
-                onPressed: () {
+              button: LegendButton.text(
+                background: Colors.red,
+                text: val.toString(),
+                onTap: () {
                   value.actionFunction!();
                 },
               ),
@@ -172,7 +141,6 @@ class LegendTable extends StatelessWidget {
           LegendTableRow(
             flexValues: flexValues,
             columnsCells: columnsCells,
-            borderRadius: radius,
             height: rowHeight ?? 48,
             avtiveColor: style?.selectionColor,
             backgroundColor: style?.backgroundColor,

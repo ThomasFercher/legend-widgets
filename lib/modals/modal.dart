@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
+import 'package:legend_design_widgets/input/button/legendButton/legend_button.dart';
 import 'package:legend_utils/extensions/edge_insets.dart';
 import 'package:legend_utils/extensions/extensions.dart';
-
-import '../legendButton/legendButton.dart';
 
 class Modal extends StatelessWidget {
   final double? width;
   final double? height;
   final Widget content;
-  final Function onConfirm;
-  final Function onCancle;
+  final void Function() onConfirm;
+  final void Function() onCancle;
 
   const Modal({
     Key? key,
@@ -86,20 +85,18 @@ class Modal extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          LegendButton(
-                            onPressed: () {
-                              onCancle();
+                          LegendButton.text(
+                            onTap: () {
                               Navigator.pop(context);
+                              onCancle();
                             },
-                            text: LegendText("Cancel"),
-                            style: LegendButtonStyle.danger(),
+                            text: "Cancel",
+                            background: Colors.red,
                           ),
-                          LegendButton(
-                            onPressed: () {
-                              onConfirm();
-                            },
-                            text: LegendText("Confirm"),
-                            style: LegendButtonStyle.normal(),
+                          LegendButton.text(
+                            onTap: onConfirm,
+                            text: "Confirm",
+                            background: Colors.blue,
                           ),
                         ],
                       ),

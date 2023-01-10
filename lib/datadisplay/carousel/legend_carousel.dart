@@ -6,26 +6,26 @@ import 'package:legend_design_core/styles/legend_theme.dart';
 import 'package:legend_design_widgets/datadisplay/carousel/legend_carousel_item.dart';
 
 const Duration duration = const Duration(milliseconds: 360);
-Curve curve = Curves.easeInOutSine;
+const Curve curve = Curves.easeInOutSine;
 
 class LegendCarousel extends StatefulWidget {
   final double? height;
   final List<Widget> items;
   final Duration? animationDuration;
   final EdgeInsetsGeometry? padding;
-  late bool isInfinite;
+  final bool isInfinite;
   final Duration? intervall;
+  final BorderRadiusGeometry? borderRadius;
 
-  LegendCarousel({
+  const LegendCarousel({
     required this.items,
     this.height,
     this.animationDuration,
+    this.borderRadius,
     this.padding,
-    bool? isInfinite,
     this.intervall,
-  }) {
-    this.isInfinite = isInfinite ?? false;
-  }
+    bool? isInfinite,
+  }) : this.isInfinite = isInfinite ?? false;
 
   @override
   _LegendCarouselState createState() => _LegendCarouselState();
@@ -218,6 +218,8 @@ class _LegendCarouselState extends State<LegendCarousel>
                 enabled: theme.colors.selection,
                 disabled: theme.colors.disabled,
               ),
+              disableShadow: true,
+              disableFeedback: true,
               padding: EdgeInsets.all(32.0),
               onPressed: () async {
                 await changedSelected(1);
@@ -232,6 +234,8 @@ class _LegendCarouselState extends State<LegendCarousel>
                 enabled: theme.colors.selection,
                 disabled: theme.colors.disabled,
               ),
+              disableShadow: true,
+              disableFeedback: true,
               padding: EdgeInsets.all(32.0),
               onPressed: () async {
                 await changedSelected(-1);
