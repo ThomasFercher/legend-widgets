@@ -6,11 +6,13 @@ class DynamicRow extends RenderObjectWidget
   final List<Widget> children;
   final double? spacing;
   final double? verticalSpacing;
+  final MainAxisSize mainAxisSize;
   const DynamicRow({
     Key? key,
     required this.children,
     this.spacing,
     this.verticalSpacing,
+    this.mainAxisSize = MainAxisSize.max,
   }) : super(key: key);
 
   @override
@@ -30,6 +32,7 @@ class DynamicRow extends RenderObjectWidget
       indexes: slots.toList(),
       spacing: spacing,
       verticalSpacing: verticalSpacing,
+      mainAxisSize: mainAxisSize,
     );
   }
 

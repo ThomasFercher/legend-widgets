@@ -16,6 +16,7 @@ class LegendCarousel extends StatefulWidget {
   final bool isInfinite;
   final Duration? intervall;
   final BorderRadiusGeometry? borderRadius;
+  final double? width;
 
   const LegendCarousel({
     required this.items,
@@ -24,6 +25,7 @@ class LegendCarousel extends StatefulWidget {
     this.borderRadius,
     this.padding,
     this.intervall,
+    this.width,
     bool? isInfinite,
   }) : this.isInfinite = isInfinite ?? false;
 
@@ -167,12 +169,12 @@ class _LegendCarouselState extends State<LegendCarousel>
   @override
   Widget build(BuildContext context) {
     LegendTheme theme = LegendTheme.of(context);
-    double width = MediaQuery.of(context).size.width;
-    List<Widget> items = getItems(width);
+    double _width = widget.width ?? MediaQuery.of(context).size.width;
+    List<Widget> items = getItems(_width);
 
     return Container(
       height: widget.height,
-      width: width,
+      width: _width,
       color: Colors.transparent,
       padding: widget.padding,
       child: Stack(

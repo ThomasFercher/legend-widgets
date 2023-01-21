@@ -7,9 +7,10 @@ class CustomRowRenderBox extends RenderBox
   final Color? background;
   final double? spacing;
   final double? verticalSpacing;
-
+  final MainAxisSize mainAxisSize;
   CustomRowRenderBox({
     required this.indexes,
+    required this.mainAxisSize,
     this.background,
     this.spacing,
     this.verticalSpacing,
@@ -100,6 +101,10 @@ class CustomRowRenderBox extends RenderBox
     if (oneLine) {
       height_sum = max_height;
       width = constraints.maxWidth - rem_width;
+    }
+
+    if (mainAxisSize == MainAxisSize.max) {
+      return Size(constraints.maxWidth, height_sum);
     }
 
     return Size(width, height_sum);
