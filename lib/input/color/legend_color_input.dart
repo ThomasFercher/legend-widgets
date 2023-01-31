@@ -9,10 +9,9 @@ import '../text/legendTextField.dart';
 class LegendColorInput extends StatefulWidget {
   const LegendColorInput({
     Key? key,
-    required this.s,
     required this.onChanged,
   }) : super(key: key);
-  final FormFieldState<Color> s;
+
   final Function(Color) onChanged;
 
   @override

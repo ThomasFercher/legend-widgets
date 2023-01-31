@@ -206,7 +206,6 @@ class _LegendFormState extends State<LegendForm> {
           inital: Colors.red,
           builder: (FormFieldState<Color> s) {
             return LegendColorInput(
-              s: s,
               onChanged: (color) {
                 setState(() {
                   values[field.title] = color;
