@@ -102,15 +102,15 @@ class LegendTag extends LegendWidget {
 class LegendAnimatedTagTheme {
   final Color disabledBackgroundColor;
   final Color disabledForegroundColor;
-  final BorderRadiusGeometry borderRadius;
-  final BoxBorder border;
+  final BorderRadiusGeometry? borderRadius;
+  final BoxBorder? border;
   final double height;
 
   LegendAnimatedTagTheme({
     required this.disabledBackgroundColor,
     required this.disabledForegroundColor,
-    required this.borderRadius,
-    required this.border,
+    this.borderRadius,
+    this.border,
     required this.height,
   });
 }

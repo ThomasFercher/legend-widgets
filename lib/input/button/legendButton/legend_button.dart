@@ -19,6 +19,7 @@ class LegendButton extends HookWidget {
   final EdgeInsetsGeometry margin;
   final Duration duration;
   final Curve curve;
+  final BoxBorder? border;
   final void Function()? onTap;
 
   const LegendButton({
@@ -35,6 +36,7 @@ class LegendButton extends HookWidget {
     this.borderRadius = BorderRadius.zero,
     this.padding = EdgeInsets.zero,
     this.margin = EdgeInsets.zero,
+    this.border,
     Color? selBackground,
     double? selElevation,
   })  : selBackground = selBackground ?? background,
@@ -62,6 +64,7 @@ class LegendButton extends HookWidget {
     BorderRadiusGeometry borderRadius = const BorderRadius.all(
       Radius.circular(12),
     ),
+    BoxBorder? border,
   }) {
     selBackground ??= background.darken(0.1);
     return LegendButton(
@@ -83,6 +86,7 @@ class LegendButton extends HookWidget {
       height: height,
       curve: curve,
       duration: duration,
+      border: border,
     );
   }
 
@@ -114,8 +118,10 @@ class LegendButton extends HookWidget {
               elevation: _elevation.value,
               decoration: BoxDecoration(
                 borderRadius: borderRadius,
+                border: border,
               ),
               shadowColor: shadowColor,
+              padding: EdgeInsets.all(border?.top.width ?? 0),
               child: LegendDetector(
                 background: _background.value,
                 onTap: onTap,
