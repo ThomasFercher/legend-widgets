@@ -115,6 +115,7 @@ class LegendButton extends HookWidget {
           ),
           builder: (context, child) {
             return ElevatedBox(
+              margin: EdgeInsets.zero,
               elevation: _elevation.value,
               decoration: BoxDecoration(
                 borderRadius: borderRadius,
