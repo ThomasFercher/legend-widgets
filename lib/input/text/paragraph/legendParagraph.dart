@@ -3,12 +3,12 @@ import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 
 class ParagraphType {
   final TextStyle textStyle;
-  final double? bottom;
+  final EdgeInsetsGeometry? margin;
   final Widget? bottomW;
 
   const ParagraphType(
     this.textStyle, {
-    this.bottom,
+    this.margin,
     this.bottomW,
   });
 
@@ -54,8 +54,8 @@ class LegendParagraph extends StatelessWidget {
             LegendText(
               entry.value,
               style: entry.type.textStyle,
+              margin: margin,
             ),
-            if (entry.type.bottom != null) SizedBox(height: entry.type.bottom),
             if (entry.type.bottomW != null) entry.type.bottomW!,
           ],
         ],
