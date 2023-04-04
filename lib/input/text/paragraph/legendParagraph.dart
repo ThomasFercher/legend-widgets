@@ -12,6 +12,17 @@ class ParagraphType {
     this.bottomW,
   });
 
+  ParagraphType copyWith({
+    TextStyle? textStyle,
+    EdgeInsetsGeometry? margin,
+    Widget? bottomW,
+  }) =>
+      ParagraphType(
+        textStyle ?? this.textStyle,
+        margin: margin ?? this.margin,
+        bottomW: bottomW ?? this.bottomW,
+      );
+
   PEntry entry(String value) => PEntry(this, value);
 }
 
@@ -54,7 +65,7 @@ class LegendParagraph extends StatelessWidget {
             LegendText(
               entry.value,
               style: entry.type.textStyle,
-              margin: margin,
+              margin: entry.type.margin,
             ),
             if (entry.type.bottomW != null) entry.type.bottomW!,
           ],
