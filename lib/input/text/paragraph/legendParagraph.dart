@@ -11,6 +11,8 @@ class ParagraphType {
     this.bottom,
     this.bottomW,
   });
+
+  PEntry entry(String value) => PEntry(this, value);
 }
 
 class PEntry {
