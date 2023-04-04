@@ -3,72 +3,41 @@ import 'package:legend_design_core/styles/typography/widgets/legend_text.dart';
 
 class ParagraphType {
   final TextStyle textStyle;
-  final double bottom;
-  final Key? key;
+  final double? bottom;
   final Widget? bottomW;
 
-  ParagraphType(
+  const ParagraphType(
     this.textStyle, {
-    this.bottom = 12,
+    this.bottom,
     this.bottomW,
-    this.key,
   });
+}
 
-  ParagraphType get withId => ParagraphType(
-        textStyle,
-        bottom: bottom,
-        bottomW: bottomW,
-        key: UniqueKey(),
-      );
+class PEntry {
+  final ParagraphType type;
+  final String value;
+
+  const PEntry(this.type, this.value);
 }
 
 class LegendParagraph extends StatelessWidget {
-  final Map<ParagraphType, String> values;
+  final List<PEntry> values;
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
   final Color? backgroundColor;
   final BorderRadiusGeometry? borderRadiusGeometry;
 
-  LegendParagraph({
-    Key? key,
-    required this.values,
+  const LegendParagraph(
+    this.values, {
     this.margin,
     this.padding,
     this.borderRadiusGeometry,
     this.backgroundColor,
-  }) : super(key: key);
-
-  List<Widget> getTiles() {
-    List<Widget> tiles = [];
-
-    for (var i = 0; i < values.values.length; i++) {
-      ParagraphType type = values.keys.toList()[i];
-      String val = values.values.toList()[i];
-      // print(type);
-      tiles.add(
-        Column(
-          children: [
-            LegendText(
-              val,
-              style: type.textStyle,
-              padding: (type.bottomW != null)
-                  ? EdgeInsets.zero
-                  : EdgeInsets.only(
-                      bottom: type.bottom,
-                    ),
-            ),
-            if (type.bottomW != null) type.bottomW!,
-          ],
-        ),
-      );
-    }
-
-    return tiles;
-  }
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // print(values);
     return Container(
       margin: margin,
       decoration: BoxDecoration(
@@ -78,7 +47,16 @@ class LegendParagraph extends StatelessWidget {
       padding: padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: getTiles(),
+        children: [
+          for (final entry in values) ...[
+            LegendText(
+              entry.value,
+              style: entry.type.textStyle,
+            ),
+            if (entry.type.bottom != null) SizedBox(height: entry.type.bottom),
+            if (entry.type.bottomW != null) entry.type.bottomW!,
+          ],
+        ],
       ),
     );
   }
