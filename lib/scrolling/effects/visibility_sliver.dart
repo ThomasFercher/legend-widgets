@@ -88,20 +88,20 @@ class _SliverVisState extends State<SliverVis> {
           case VisibilityType.ONCE:
             if (_wasFullSize) break;
             if (widget.binary) {
-              if (_visible == widget.binaryThreshold && !_wasFullSize) {
+              if (_visible >= widget.binaryThreshold && !_wasFullSize) {
                 _wasFullSize = true;
                 rebuild();
                 return;
               }
             } else if (!_wasFullSize) {
-              if (_visible == widget.binaryThreshold) _wasFullSize = true;
+              if (_visible >= widget.binaryThreshold) _wasFullSize = true;
               rebuild();
               return;
             }
             return;
           case VisibilityType.IN:
             if (widget.binary) {
-              if (_visible == widget.binaryThreshold && !_wasFullSize) {
+              if (_visible >= widget.binaryThreshold && !_wasFullSize) {
                 _wasFullSize = true;
                 rebuild();
               }
@@ -113,7 +113,7 @@ class _SliverVisState extends State<SliverVis> {
             return;
           case VisibilityType.IN_OUT:
             if (widget.binary) {
-              if (widget.binary && _visible == widget.binaryThreshold) {
+              if (widget.binary && _visible >= widget.binaryThreshold) {
                 _wasFullSize = true;
                 rebuild();
               }
