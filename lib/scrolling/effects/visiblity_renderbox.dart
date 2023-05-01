@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
 
@@ -36,9 +35,6 @@ class VisibilityPercentageRenderSliver extends RenderSliverSingleBoxAdapter {
     assert(paintedChildSize.isFinite);
     assert(paintedChildSize >= 0.0);
 
-    // final paintExtent = math.min(extent, constraints.remainingPaintExtent);
-    // final cacheExtent = math.min(extent, constraints.remainingCacheExtent);
-
     geometry = SliverGeometry(
       scrollExtent: childExtent,
       paintExtent: paintedChildSize,
@@ -49,9 +45,16 @@ class VisibilityPercentageRenderSliver extends RenderSliverSingleBoxAdapter {
           constraints.scrollOffset > 0.0,
     );
 
-    final displayRatio = constraints.remainingPaintExtent / childExtent;
-    final _ratio = displayRatio > 1 ? 1.0 : displayRatio;
+    final paintRatio = paintedChildSize / childExtent;
 
+    final scollRatio = math.max(
+      0.0,
+      1 - (constraints.scrollOffset / childExtent),
+    );
+
+    final inverted = constraints.scrollOffset > 0.0;
+
+    final _ratio = inverted ? scollRatio : paintRatio;
     onVisibilityChanged(_ratio);
 
     setChildParentData(child!, constraints, geometry!);

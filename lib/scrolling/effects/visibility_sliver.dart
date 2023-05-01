@@ -5,7 +5,7 @@ import 'package:legend_design_widgets/scrolling/effects/visiblity_renderbox.dart
 typedef VisibilityBuilder = Widget Function(
   BuildContext context,
   Widget? child,
-  double? visible,
+  double visible,
 );
 
 class VisibilitySliver extends SingleChildRenderObjectWidget {
@@ -25,11 +25,19 @@ class VisibilitySliver extends SingleChildRenderObjectWidget {
   // should rebuild
 }
 
+enum VisibilityType {
+  ONCE,
+  IN,
+  IN_OUT,
+}
+
 class SliverVis extends StatefulWidget {
   final VisibilityBuilder builder;
   final Widget? child;
   final Duration duration;
   final Curve curve;
+  final VisibilityType type;
+  final bool binary;
 
   const SliverVis({
     super.key,
@@ -37,6 +45,8 @@ class SliverVis extends StatefulWidget {
     this.child,
     this.duration = const Duration(milliseconds: 300),
     this.curve = Curves.easeInOut,
+    this.type = VisibilityType.ONCE,
+    this.binary = true,
   });
 
   @override
@@ -44,7 +54,8 @@ class SliverVis extends StatefulWidget {
 }
 
 class _SliverVisState extends State<SliverVis> {
-  late double? _visible;
+  late double _visible;
+  late bool _wasFullSize;
 
   void _scheduleRebuild(Function callback) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -57,19 +68,65 @@ class _SliverVisState extends State<SliverVis> {
   @override
   void initState() {
     super.initState();
-    _visible = null;
+    _visible = 1.0;
+    _wasFullSize = false;
   }
+
+  void rebuild() => _scheduleRebuild(() => setState(() {}));
 
   @override
   Widget build(BuildContext context) {
     return VisibilitySliver(
       onVisibilityChanged: (visible) {
         if (visible == _visible) return;
-        _scheduleRebuild(() {
-          setState(() {
-            _visible = visible;
-          });
-        });
+        final diff = visible - _visible;
+        _visible = visible;
+
+        switch (widget.type) {
+          case VisibilityType.ONCE:
+            if (_wasFullSize) break;
+            if (widget.binary) {
+              if (_visible == 1.0 && !_wasFullSize) {
+                _wasFullSize = true;
+                rebuild();
+                return;
+              }
+            } else if (!_wasFullSize) {
+              if (_visible == 1.0) _wasFullSize = true;
+              rebuild();
+              return;
+            }
+            return;
+          case VisibilityType.IN:
+            if (widget.binary) {
+              if (_visible == 1.0 && !_wasFullSize) {
+                _wasFullSize = true;
+                rebuild();
+              }
+              if (diff < 0 && _wasFullSize) _wasFullSize = false;
+              if (_visible == 0.0) rebuild();
+              return;
+            }
+            if (diff > 0) rebuild();
+            return;
+          case VisibilityType.IN_OUT:
+            if (widget.binary) {
+              if (widget.binary && _visible == 1) {
+                _wasFullSize = true;
+                rebuild();
+              }
+              if (_wasFullSize && diff < 0) {
+                _wasFullSize = false;
+                _scheduleRebuild(() => setState(() {
+                      _visible = 0.0;
+                    }));
+              }
+              return;
+            }
+            rebuild();
+            return;
+        }
+        return;
       },
       child: widget.builder(
         context,
