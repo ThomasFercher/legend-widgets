@@ -58,6 +58,7 @@ class SliverVis extends StatefulWidget {
 class _SliverVisState extends State<SliverVis> {
   late double _visible;
   late bool _wasFullSize;
+  late double _lastVisible;
 
   void _scheduleRebuild(Function callback) {
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -72,9 +73,13 @@ class _SliverVisState extends State<SliverVis> {
     super.initState();
     _visible = 0.0;
     _wasFullSize = false;
+    _lastVisible = 0.0;
   }
 
-  void rebuild() => _scheduleRebuild(() => setState(() {}));
+  void rebuild() {
+    _lastVisible = _visible;
+    _scheduleRebuild(() => setState(() {}));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +88,10 @@ class _SliverVisState extends State<SliverVis> {
         if (visible == _visible) return;
         final diff = visible - _visible;
         _visible = visible;
-
         switch (widget.type) {
           case VisibilityType.ONCE:
             if (_wasFullSize) break;
+
             if (widget.binary) {
               if (_visible >= widget.binaryThreshold && !_wasFullSize) {
                 _wasFullSize = true;
@@ -138,7 +143,7 @@ class _SliverVisState extends State<SliverVis> {
       child: widget.builder(
         context,
         widget.child,
-        _visible,
+        _lastVisible,
       ),
     );
   }
