@@ -6,7 +6,7 @@ import 'package:legend_design_core/widgets/gestures/detector.dart';
 import 'package:legend_utils/legend_utils.dart';
 
 class LegendButton extends HookWidget {
-  final Widget text;
+  final Widget? text;
   final Color background;
   final Color selBackground;
   final double elevation;
@@ -21,11 +21,12 @@ class LegendButton extends HookWidget {
   final Curve curve;
   final BoxBorder? border;
   final void Function()? onTap;
+  final Widget Function(bool hovered)? builder;
 
   const LegendButton({
     super.key,
     required this.background,
-    required this.text,
+    this.text,
     this.onTap,
     this.shadowColor,
     this.height,
@@ -37,6 +38,7 @@ class LegendButton extends HookWidget {
     this.padding = EdgeInsets.zero,
     this.margin = EdgeInsets.zero,
     this.border,
+    this.builder,
     Color? selBackground,
     double? selElevation,
   })  : selBackground = selBackground ?? background,
@@ -100,6 +102,7 @@ class LegendButton extends HookWidget {
     final _elevation =
         Tween(begin: elevation, end: selElevation).animate(_parentAnimation);
 
+    final child = text ?? builder?.call(isSelected.value);
     return Padding(
       padding: margin,
       child: SizedBox(
@@ -110,7 +113,7 @@ class LegendButton extends HookWidget {
           child: Padding(
             padding: padding,
             child: Center(
-              child: text,
+              child: child,
             ),
           ),
           builder: (context, child) {
