@@ -70,7 +70,7 @@ class _SliverVisState extends State<SliverVis> {
   @override
   void initState() {
     super.initState();
-    _visible = 1.0;
+    _visible = 0.0;
     _wasFullSize = false;
   }
 
