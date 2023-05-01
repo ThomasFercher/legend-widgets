@@ -90,11 +90,16 @@ class _SliverVisState extends State<SliverVis> {
             if (widget.binary) {
               if (_visible >= widget.binaryThreshold && !_wasFullSize) {
                 _wasFullSize = true;
+                _visible = 1.0;
                 rebuild();
                 return;
               }
             } else if (!_wasFullSize) {
-              if (_visible >= widget.binaryThreshold) _wasFullSize = true;
+              if (_visible >= widget.binaryThreshold) {
+                _wasFullSize = true;
+                _visible = 1.0;
+              }
+
               rebuild();
               return;
             }
@@ -103,6 +108,7 @@ class _SliverVisState extends State<SliverVis> {
             if (widget.binary) {
               if (_visible >= widget.binaryThreshold && !_wasFullSize) {
                 _wasFullSize = true;
+                _visible = 1.0;
                 rebuild();
               }
               if (diff < 0 && _wasFullSize) _wasFullSize = false;
@@ -119,9 +125,8 @@ class _SliverVisState extends State<SliverVis> {
               }
               if (_wasFullSize && diff < 0) {
                 _wasFullSize = false;
-                _scheduleRebuild(() => setState(() {
-                      _visible = 0.0;
-                    }));
+                _visible = 0.0;
+                rebuild();
               }
               return;
             }
