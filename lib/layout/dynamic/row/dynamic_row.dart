@@ -133,14 +133,6 @@ class CustomRenderBox extends RenderBox
       context.paintChild(child, childParentData.offset + offset);
       child = childAfter(child);
     }
-
-    // Paint the background
-    final paint = Paint()
-      ..color = Color(0xFF000000)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-
-    context.canvas.drawRect(offset & size, paint);
   }
 }
 
