@@ -69,6 +69,21 @@ class CustomRenderBox extends RenderBox
   }
 
   @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) {
+    var child = lastChild;
+    while (child != null) {
+      if (child.hitTest(
+        BoxHitTestResult.wrap(result),
+        position: position - child.pData.offset,
+      )) {
+        return true;
+      }
+      child = childBefore(child);
+    }
+    return false;
+  }
+
+  @override
   void performLayout() {
     // Size and position all children here.
     var constraints = this.constraints;
