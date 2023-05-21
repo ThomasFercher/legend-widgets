@@ -58,8 +58,8 @@ class LegendTableCell extends StatelessWidget {
       case LegendTableValueType.TAG:
         return Container(
           child: DynamicRow(
-            verticalSpacing: 12,
-            spacing: 12,
+            vSpacing: 12,
+            hSpacing: 12,
             children: List.of(
               tags.map(
                 (t) => LegendTag.fromColor(
